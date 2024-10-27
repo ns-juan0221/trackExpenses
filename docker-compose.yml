@@ -1,0 +1,100 @@
+version: "3"
+
+services:
+  # Nginx Webサーバー
+  nginx:
+    container_name: trackExpenses-web
+    image: nginx:1.20.0-alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html  # LaravelのコードをPHP-FPMと共有する
+      - ./docker/nginx:/etc/nginx/conf.d  # NGINX設定ファイル
+    depends_on:
+      - php-fpm
+    networks:
+      - sail
+
+  # Node.js サーバー (フロントエンド用)
+  node:
+    image: node:18-alpine
+    container_name: trackExpenses-node
+    working_dir: /var/www/html
+    tty: true
+    volumes:
+      - .:/var/www/html  # Laravelプロジェクトのディレクトリをマウント
+    ports:
+      - "3000:3000"  # 必要であればNode.jsのポートを公開
+    environment:
+      NODE_ENV: development  # Node.jsの環境変数（開発用）
+    depends_on:
+      - php-fpm
+    networks:
+      - sail
+
+  # PHP-FPMアプリケーションサーバー
+  php-fpm:
+    container_name: trackExpenses-app
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    # コンテナ内で使用される環境変数を定義
+    environment:
+      DB_ROOT_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - .:/var/www/html # Laravelのコードをマウント
+    depends_on:
+      - mysql
+    networks:
+      - sail
+
+  # MySQLデータベースサーバー
+  mysql:
+    container_name: trackExpenses-db
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}  # rootユーザーのパスワード
+      MYSQL_DATABASE: ${DB_DATABASE}  # 自動生成するデータベース名
+      MYSQL_USER: ${DB_USERNAME}  # 任意のユーザー名
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      DB_ROOT_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      # 名前付きボリュームを MySQL コンテナに紐づける
+      - mysqldata:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    ports:
+      - "3306:3306"
+    networks:
+      - sail
+
+  # Redisサーバー
+  redis:
+    container_name: trackExpenses-redis
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - sail
+
+  # Mailhog (開発用メール確認ツール)
+  mailhog:
+    container_name: trackExpenses-mailhog
+    image: mailhog/mailhog
+    ports:
+      - "8025:8025"  # MailhogのWebインターフェース
+    networks:
+      - sail
+
+volumes:
+  mysqldata:
+
+networks:
+  sail:
+    driver: bridge

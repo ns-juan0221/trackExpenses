@@ -1,0 +1,250 @@
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@100;400;700&display=swap');
+
+body {
+    /* background-image: url('../images/login_bg.png'); */
+    background-image: url('../images/bg.png');
+    background-size: cover;
+    font-family: "M PLUS Rounded 1c", sans-serif;
+
+}
+
+.container-fluid {
+    display: flex;
+}
+
+.year-gragh {
+    height: 100%;
+    width: 70%;
+}
+
+.year-gragh .gragh-title {
+    width: auto;
+}
+
+.year-gragh .gragh-main {
+    flex-grow: 1;
+    width: auto;
+}
+
+.history {
+    height: 100%;
+    width: 30%;
+}
+
+.history .history-title{
+    height: auto;
+}
+
+.history .history-list{
+    flex-grow: 1;
+}
+
+.list-item  {
+    display: flex;
+    flex-direction: column;
+    background-color: #fdfd96; /* 付箋のような淡い黄色 */
+    border-radius: 5px; /* 角を丸めて付箋風に */
+    padding: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4); /* 立体感のための影 */
+    transition: transform 0.2s, box-shadow 0.2s; /* ホバー時のアニメーション */
+    position: relative;
+}
+
+.list-item:hover {
+    transform: translateY(-2px); /* ホバー時に少し浮かせる */
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5); /* ホバー時に影を強くする */
+}
+
+.item-link {
+    color: black;           /* リンクを黒色にする */
+    text-decoration: none;  /* 下線を消す */
+}
+
+.item-link:hover {
+    color: black;           /* ホバー時も黒色を維持する */
+    text-decoration: underline;  /* ホバー時に下線を追加（オプション） */
+}
+
+.list-price {
+    text-align: right; /* 右詰にする */
+}
+
+.switch-nav ul  {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.switch-nav ul li {
+    text-align: center;      /* テキストを中央揃え */
+    width: 33%;
+}
+
+.switch-nav ul li.outcome {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.switch-nav ul li.income {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.switch-nav ul li:not(.active) {
+    background-color: #ffffff; /* デフォルトの背景色を白に設定 */
+}
+
+.switch-nav ul li.active {
+    background-color: #bbf7d0; /* activeクラスの背景色を薄い緑色に設定 */
+}
+
+.switch-nav ul li.outcome:hover {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.switch-nav ul li.income:hover {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.switch-nav ul li a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;  /* 下線を消す */
+}
+
+.switch-nav ul li:not(.active) a {
+    color: #000000;            /* リンクの色を黒に設定 */
+}
+
+.switch-nav ul li.active a {
+    color: #49c54f ;            /* リンクの色を黒に設定 */
+}
+
+.switch-nav ul li.active a:hover {
+    background-color: #dcfce7;
+    color: #81cc85;
+}
+
+.switch-nav ul li:not(.active) a:hover {
+    background-color: #fafafa;
+    color: #a2a2a2;
+}
+
+.switch-nav ul li.outcome a:hover {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.switch-nav ul li.income a:hover {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.expenses-form {
+    background-color: rgba(250, 250, 250, 0.95);
+    height: auto; /* フォームに応じて自動で広がる */
+    max-height: calc(100vh - 170px);
+    overflow-y: auto; /* 縦スクロールを有効化 */
+}
+
+.form-item, .form-category, .form-price, .form-amount {
+    flex: 1; /* 各要素が同じ幅になる */
+}
+
+#form-group-block .form-group:first-of-type .remove-form {
+    visibility: hidden;
+}
+
+
+
+.calendar-container {
+    justify-content: space-around;
+}
+
+.calendar-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.calendar {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+.calendar th, .calendar td {
+    border: 1px solid #ccc;
+    width: 14.28%;
+    height: 70px;
+    vertical-align: top;
+    position: relative;
+}
+
+.calendar th {
+    background-color: #f8f9fa;
+    font-size: 12px;
+    text-align: center;
+    padding: 0px 5px;
+    height: auto;
+}
+
+.calendar td {
+    background-color: #fff;
+    padding: 5px;
+}
+
+.day-number {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    font-size: 12px;
+    color: #666;
+}
+
+.controls {
+    align-items: center;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.calendar-title button {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+}
+
+/* 土曜日の列を青く */
+.calendar th:nth-child(7) { /* 土曜日の列ヘッダー */
+    background-color: #cce5ff !important; /* 青色背景 */
+}
+
+.calendar td:nth-child(7) { /* 土曜日の列セル */
+    background-color: #e1eefd !important; /* 青色背景 */
+}
+
+.calendar th:nth-child(7) {
+    color: #4d96e3 !important;
+}
+
+/* 日曜日の列を赤く */
+.calendar th:nth-child(1) { /* 日曜日の列ヘッダー */
+    background-color: #f8d7da !important; /* 赤色背景 */
+}
+
+.calendar td:nth-child(1) { /* 日曜日の列セル */
+    background-color: #fceaec !important; /* 赤色背景 */
+}
+
+.calendar th:nth-child(1){
+    color: #dc5763 !important;
+}
+
+/* 今日の日付用のスタイル */
+.today {
+    background-color: #ffeb3b !important; /* 明るい黄色の背景 */
+    color:#d32f2f !important;
+    font-weight: bold;
+}

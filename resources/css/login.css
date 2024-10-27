@@ -1,0 +1,69 @@
+body {
+    background-image: url('../images/login_bg.png');
+}
+
+.loginBox {
+    padding: 100px 0px 0px 0px;
+}
+
+.registBox {
+    padding: 100px 0px 0px 0px;
+}
+
+img.logo {
+    display: inline;
+}
+
+.loginBox .form-container {
+    background-color: rgba(250, 250, 250, 0.95);
+    max-width: 330px;
+    margin: auto;
+    border-radius: 5px;
+}
+
+.registBox .form-container {
+    background-color: rgba(250, 250, 250, 0.95);
+    max-width: 600px;
+    margin: auto;
+    border-radius: 5px;
+}
+
+.registBox .form-label {
+    text-align: justify;
+    width:200px;
+}
+
+.form-container .form-control {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    font-size: 16px;
+}
+
+.loginBox .form-container input[type="email"] {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.loginBox .form-container input[type="password"] {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.form-control:focus {
+        box-shadow: none;
+        border-color: inherit;
+}
+
+/* 標準のチェックボックス */
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/* フォームラベルのスタイル */
+.custom-label {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 16px;
+}

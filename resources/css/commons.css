@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@100;400;700&display=swap');
+
+p {
+    margin: 0;
+}
+
+body {
+    background-size: cover;
+    font-family: "M PLUS Rounded 1c", sans-serif;
+}
+
+header {
+    background-color:  rgba(255, 255, 255, 0.7) !important;
+    height: 50px;
+    justify-content: space-between; /* 左右に要素を配置 */
+    align-items: center; /* 上下中央に配置 */
+    padding: 0 20px; /* 左右のパディングを調整 */
+}
+
+#nav {
+    text-align: right;
+}
+
+#nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#nav li {
+    display: inline-block;
+}
+
+a.btn-success {
+    background-color:#22c55e !important;
+    border: 1px solid #22c55e !important;
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2); /* 立体感の影 */
+    transition: transform 0.2s, box-shadow 0.2s; /* ホバー時のアニメーション */
+}
+
+a.btn-success:hover {
+    background-color: #34ce6c !important;
+    transform: translateY(-1px); /* ホバー時に少し浮かせる */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* ホバー時に影を強める */
+}
+
+a.btn-success:active {
+    background-color: #22c55e;
+    box-shadow: none; /* active時に影を外す */
+    transform: none; /* active時は元の位置に戻す */
+}
+
+a.btn-light {
+    background-color: #fff !important;
+    border: 1px solid #22c55e !important;
+    color:#22c55e !important;
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2); /* 立体感の影 */
+    transition: transform 0.2s, box-shadow 0.2s; /* ホバー時のアニメーション */
+}
+
+a.btn-light:hover {
+    background-color: #fff !important;
+    transform: translateY(-1px); /* ホバー時に少し浮かせる */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* ホバー時に影を強める */
+}
+
+a.btn-light:active {
+    background-color: #fff !important; /* active状態で白色に変更 */
+    box-shadow: none !important; /* active時に影を外す */
+    transform: none !important; /* active時は元の位置に戻す */
+}
+
+main {
+    min-height: calc(100vh - 100px);
+}
+
+button.btn-success {
+    background-color:#22c55e !important;
+    border: 1px solid #22c55e !important;
+}
+
+button.btn-success:hover {
+    background-color: #34ce6c !important;
+    border: 1px solid #34ce6c !important;
+}
+
+button.btn-danger:hover {
+    background-color: #ef4444 !important;
+    border: 1px solid #ef4444 !important;
+}
+
+button.btn-primary:hover {
+    background-color: #3b78fa !important;
+    border: 1px solid #3b78fa !important;
+}
+
+button.btn-success:active {
+    background-color: #22c55e;
+}
+
+footer {
+    height: 50px;
+    width: 100%;
+    background-color: rgba(34, 197, 94, 0.7) !important;
+}
+
+.social-links a {
+    margin-right: 15px; /* アイコンの間にスペースを追加 */
+    color: white; /* アイコンの色を白に */
+    text-decoration: none;
+}
+
+.social-links a:hover {
+    color: #22c55e; /* ホバー時に緑色に */
+}
+
+.social-links i {
+    transition: color 0.3s ease; /* アイコンの色をスムーズに変える */
+}
