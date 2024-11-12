@@ -31,20 +31,25 @@
                     <a href="{{ route('regist') }}" class="btn btn-success text-center">新規登録</a>
                 </li>
                 <li>
-                    <a href="{{ route('login.guest')}}" class="btn btn-light text-center">ログイン</a>
+                    <a href="{{ route('login')}}" class="btn btn-light text-center">ログイン</a>
                 </li>
             </ul>
         </nav>
     </header>
     @else
     <header id="header" class="border-bottom d-flex w-100 align-items-center">
+        {{--  　　　　　　　　　追加機能　　　　　　　　　　 --}}
+        {{-- 認証されていない箇所ではhrefをなくすか、mainに飛ばないようにする --}}
         <a href="{{ route('main')}}" class="header-logo">
             <img src="{{ asset('images/header_icon.png') }}" alt="マネーログ" height="50" width="150">
         </a>
         <nav id="nav">
             <ul class="nav-btn">
                 <li>
-                    <a href="{{ route('new') }}" class="btn btn-success text-center">入力</a>
+                    <a href="{{ route('new') }}" class="btn btn-light text-center">入力</a>
+                </li>
+                <li>
+                    <a href="#" class="btn btn-success text-center">検索</a>
                 </li>
                 <li>
                     <a href="{{ route('new', ['type' => 'month']) }}" class="btn btn-light text-center">入出金履歴</a>

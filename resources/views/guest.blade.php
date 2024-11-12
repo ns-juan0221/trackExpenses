@@ -7,7 +7,15 @@
             <div class="gragh-title mt-3 d-flex justify-content-center align-items-center">
                     <p class="fs-3">半年間の支出遷移</p>
             </div>
-            <div class="gragh-main mt-3 border border-dark border-4">
+
+            <script>
+                // BladeからデータをJavaScriptのグローバル変数に渡す
+                window.labels = @json($labels);
+                window.lastYearValues = @json($lastYearValues);
+                window.currentYearValues = @json($currentYearValues);
+            </script>
+
+            <div class="gragh-main mt-3">
                 <canvas id="myChart" width="600" height="300"></canvas>
             </div>
         </div>
@@ -17,7 +25,7 @@
             </div>
             <div class="history-list pe-2 flex-grow-1 overflow-auto mt-3">
                 <div class="list-item mb-2">
-                    <a href="編集用のURL" class="item-link">
+                    <a href="{{ route('guest') }}" class="item-link">
                         <div class="d-flex justify-content-between">
                             <div class="list-date w-50 ps-2">
                                 2024/10/16
@@ -32,7 +40,7 @@
                     </a>
                 </div>
                 <div class="list-item mb-2">
-                    <a href="編集用のURL" class="item-link">
+                    <a href="{{ route('guest') }}" class="item-link">
                         <div class="d-flex justify-content-between">
                             <div class="list-date w-50 ps-2">
                                 2024/10/15
@@ -47,7 +55,7 @@
                     </a>
                 </div>
                 <div class="list-item mb-2">
-                    <a href="編集用のURL" class="item-link">
+                    <a href="{{ route('guest') }}" class="item-link">
                         <div class="d-flex justify-content-between">
                             <div class="list-date w-50 ps-2">
                                 2024/10/15
@@ -62,7 +70,7 @@
                     </a>
                 </div>
                 <div class="list-item mb-2">
-                    <a href="編集用のURL" class="item-link">
+                    <a href="{{ route('guest') }}" class="item-link">
                         <div class="d-flex justify-content-between">
                             <div class="list-date w-50 ps-2">
                                 2024/10/15
@@ -77,7 +85,7 @@
                     </a>
                 </div>
                 <div class="list-item mb-2">
-                    <a href="編集用のURL" class="item-link">
+                    <a href="{{ route('guest') }}" class="item-link">
                         <div class="d-flex justify-content-between">
                             <div class="list-date w-50 ps-2">
                                 2024/10/15
@@ -92,7 +100,7 @@
                     </a>
                 </div>
                 <div class="list-item mb-2">
-                    <a href="編集用のURL" class="item-link">
+                    <a href="{{ route('guest') }}" class="item-link">
                         <div class="d-flex justify-content-between">
                             <div class="list-date w-50 ps-2">
                                 2024/10/15
@@ -110,5 +118,5 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{{ asset('js/bar-chart-sample.js')}}"></script>
+    <script src="{{ asset('js/bar-chart.js')}}"></script>
 @endsection

@@ -5,17 +5,17 @@
     <div class="container-fluid">
         <div class="year-gragh d-flex flex-column">
             <div class="gragh-title mt-3 d-flex justify-content-center align-items-center">
-                <div class="previous_year">
-                    <a href="#"><img src="{{ asset('images/left.png') }}" height="40" width="40"></a>
-                </div>
-                <div class="this_year ps-3 pe-3 ms-2 me-2">
-                    <p class="fs-3">2024年</p>
-                </div>
-                <div class="next_year">
-                    <a href="#"><img src="{{ asset('images/right.png') }}" height="40" width="40"></a>
-                </div>
+                <p class="fs-3">半年間の支出遷移</p>
             </div>
-            <div class="gragh-main mt-3 border border-dark border-4">
+
+            <script>
+                // BladeからデータをJavaScriptのグローバル変数に渡す
+                window.labels = @json($labels);
+                window.lastYearValues = @json($lastYearValues);
+                window.currentYearValues = @json($currentYearValues);
+            </script>
+
+            <div class="gragh-main mt-3">
                 <canvas id="myChart" width="600" height="300"></canvas>
             </div>
         </div>

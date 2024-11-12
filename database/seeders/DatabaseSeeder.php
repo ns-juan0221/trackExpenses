@@ -13,6 +13,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        // 各シーダーを実行
+        $this->call([
+            IncomeCategorySeeder::class,
+            OutcomeMainCategorySeeder::class,
+            OutcomeSubCategorySeeder::class,
+            UserSeeder::class,
+            IncomeSeeder::class,
+            OutcomeGroupSeeder::class,
+            OutcomeItemSeeder::class,
+        ]);
     }
 }

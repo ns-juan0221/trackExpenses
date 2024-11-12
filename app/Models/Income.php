@@ -1,68 +1,62 @@
 <?php
 
-class Income
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Income extends Model
 {
-    private $date;      // 収入の日付
-    private $amount;    // 収入の金額
-    private $category;  // 収入のカテゴリ（例: 給与、副収入など）
-    private $memo;      // メモ（任意）
+    use HasFactory;
 
-    // コンストラクタ
-    public function __construct($date, $amount, $category, $memo = "") {
-        $this->date = $date;
-        $this->amount = $amount;
-        $this->category = $category;
-        $this->memo = $memo;
+    /**
+     * テーブル名の指定
+     *
+     * @var string
+     */
+    protected $table = 'incomes';
+
+    /**
+     * 複数代入可能な属性
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'date',
+        'amount',
+        'category_id',
+        'memo',
+        'user_id',
+        'del_flg',
+    ];
+
+    /**
+     * 属性に対するキャスト
+     *
+     * @var array
+     */
+    protected $casts = [
+        'del_flg' => 'boolean',
+        'amount' => 'decimal:2',
+    ];
+
+    /**
+     * リレーション - ユーザー
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
-    // ゲッター・セッター
-
-    // 日付
-    public function getDate() {
-        return $this->date;
-    }
-
-    public function setDate($date) {
-        $this->date = $date;
-    }
-
-    // 金額
-    public function getAmount() {
-        return $this->amount;
-    }
-
-    public function setAmount($amount) {
-        $this->amount = $amount;
-    }
-
-    // カテゴリ
-    public function getCategory() {
-        return $this->category;
-    }
-
-    public function setCategory($category) {
-        $this->category = $category;
-    }
-
-    // メモ
-    public function getMemo() {
-        return $this->memo;
-    }
-
-    public function setMemo($memo) {
-        $this->memo = $memo;
-    }
-
-    // 収入の詳細表示
-    public function displayIncome() {
-        return "日付: " . $this->date . ", 金額: " . $this->amount .
-               ", カテゴリ: " . $this->category . ", メモ: " . $this->memo;
-    }
-
-    // 金額のバリデーション
-    public function isValidAmount() {
-        return $this->amount > 0;  // 金額が正の値か確認
+    /**
+     * リレーション - カテゴリ
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function category()
+    {
+        return $this->belongsTo(IncomeCategory::class);
     }
 }
-
-?>

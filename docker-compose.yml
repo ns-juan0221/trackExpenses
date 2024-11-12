@@ -1,5 +1,9 @@
 version: "3"
 
+volumes:
+  mysqldata:
+  php-fpm-socket: #unixドメインソケットを使う為に名前付きボリュームを設定
+
 services:
   # Nginx Webサーバー
   nginx:
@@ -8,8 +12,10 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - .:/var/www/html  # LaravelのコードをPHP-FPMと共有する
-      - ./docker/nginx:/etc/nginx/conf.d  # NGINX設定ファイル
+      - .:/var/www/html # LaravelのコードをPHP-FPMと共有する
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d  # NGINX設定ファイル
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf  # NGINX設定ファイル
+      - php-fpm-socket:/var/run/php-fpm
     depends_on:
       - php-fpm
     networks:
@@ -44,8 +50,11 @@ services:
       DB_DATABASE: ${DB_DATABASE}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
+      XDEBUG_MODE: debug    # Xdebugのデバッグモードを有効化
+      XDEBUG_CONFIG: client_host=host.docker.internal client_port=9004   # Xdebugのホスト設定
     volumes:
       - .:/var/www/html # Laravelのコードをマウント
+      - php-fpm-socket:/var/run/php-fpm
     depends_on:
       - mysql
     networks:
@@ -56,21 +65,17 @@ services:
     container_name: trackExpenses-db
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}  # rootユーザーのパスワード
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_ROOT_PASSWORD: password  # rootユーザーのパスワード
       MYSQL_DATABASE: ${DB_DATABASE}  # 自動生成するデータベース名
       MYSQL_USER: ${DB_USERNAME}  # 任意のユーザー名
       MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      DB_ROOT_PASSWORD: ${DB_PASSWORD}
-      DB_DATABASE: ${DB_DATABASE}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
     volumes:
       # 名前付きボリュームを MySQL コンテナに紐づける
       - mysqldata:/var/lib/mysql
       - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
     ports:
-      - "3306:3306"
+      - "3307:3306"
     networks:
       - sail
 
@@ -91,9 +96,6 @@ services:
       - "8025:8025"  # MailhogのWebインターフェース
     networks:
       - sail
-
-volumes:
-  mysqldata:
 
 networks:
   sail:

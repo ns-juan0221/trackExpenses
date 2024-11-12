@@ -2,9 +2,9 @@ const ctx = document.getElementById('myChart').getContext('2d');
 
 // 各バーに対応するURL（リンク先）
 const links = [
-    '/login', '/2024-january', null,
-    '/2023-february', '/2024-february', null,
-    '/2023-march', '/2024-march', null,
+    '/guest', '/guest', null,
+    '/guest', '/guest', null,
+    '/guest', '/guest', null,
 ];
 
 const data = {

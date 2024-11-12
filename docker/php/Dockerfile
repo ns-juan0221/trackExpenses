@@ -2,18 +2,26 @@
 FROM php:8.2-fpm
 
 # 必要なPHP拡張機能をインストール
-RUN apt-get update && apt-get install -y \
+RUN addgroup --system nginx && adduser --system --ingroup nginx nginx && \
+    mkdir /var/run/php-fpm && \
+    apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
     zip \
     unzip \
     libzip-dev \
+    default-mysql-client \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd \
-    && docker-php-ext-install pdo pdo_mysql zip
+    && docker-php-ext-install pdo pdo_mysql zip \
+    && pecl install xdebug \
+    && docker-php-ext-enable xdebug \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY ./php.ini /usr/local/etc/php/php.ini
+
+COPY ./php-fpm.d/zzz-www.conf /usr/local/etc/php-fpm.d/zzz-www.conf
 
 COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
 
