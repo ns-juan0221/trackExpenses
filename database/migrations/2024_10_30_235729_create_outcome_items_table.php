@@ -22,7 +22,8 @@ class CreateOutcomeItemsTable extends Migration
             $table->unsignedBigInteger('s_category_id'); // s_category_id
             $table->decimal('price', 10, 2); // price
             $table->text('memo')->nullable(); // memo
-            $table->timestamps(); // created_at, updated_at
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->tinyInteger('del_flg')->default(0); // del_flg
 
             // 外部キー制約

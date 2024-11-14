@@ -20,7 +20,8 @@ class CreateIncomesTable extends Migration
             $table->unsignedBigInteger('category_id'); // category_id
             $table->text('memo')->nullable(); // memo
             $table->unsignedBigInteger('user_id'); // user_id
-            $table->timestamps(); // created_at, updated_at
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->tinyInteger('del_flg')->default(0); // del_flg
 
             // 外部キー制約を追加する場合（例：user_idとcategory_id）

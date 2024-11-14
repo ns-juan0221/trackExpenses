@@ -58,7 +58,7 @@
                     <a href="{{ route('setting') }}" class="btn btn-success text-center">設定</a>
                 </li>
                 <li>
-                    <a href="#" class="btn btn-light text-center">ログアウト</a>
+                    <a href="{{ route('logout') }}" class="btn btn-light text-center">ログアウト</a>
                 </li>
             </ul>
         </nav>

@@ -16,6 +16,8 @@ class Income extends Model
      */
     protected $table = 'incomes';
 
+    public $timestamps = false; // Laravelの自動タイムスタンプ管理を無効化
+
     /**
      * 複数代入可能な属性
      *
@@ -51,7 +53,7 @@ class Income extends Model
     }
 
     /**
-     * リレーション - カテゴリ
+     * リレーション - 収入カテゴリ
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

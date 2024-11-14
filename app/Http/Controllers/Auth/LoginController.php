@@ -12,9 +12,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller {
-
-    public function showLoginForm() {
-        Log::info('loginページにアクセスします。');
+    public function index() {
         return view('login'); // ログイン画面のビューを返す
     }
 
@@ -26,9 +24,14 @@ class LoginController extends Controller {
         ]);
 
         if (Auth::attempt($credentials)) {
+
+            // Laravelセッションの再生成
             $request->session()->regenerate();
-            Log::info('mainへ飛びます');
-            return redirect()->route('showMonthlyHalfYear', ['userId' => Auth::id()]);
+
+            // 認証成功後、user_idをセッションに保存
+            session(['user_id' => Auth::id()]);
+
+            return redirect()->route('redirectMain');
         }
 
         throw ValidationException::withMessages([
@@ -39,9 +42,15 @@ class LoginController extends Controller {
     // ログアウト処理
     public function logout(Request $request) {
         Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
 
-        return redirect('/login');
+    // user_idのセッションも削除
+    session()->forget('user_id');
+
+    // Laravelセッションを無効化
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect('/login');
+
     }
 }

@@ -16,6 +16,8 @@ class OutcomeGroup extends Model
      */
     protected $table = 'outcome_groups';
 
+    public $timestamps = false; // Laravelの自動タイムスタンプ管理を無効化
+
     /**
      * 複数代入可能な属性
      *
@@ -45,6 +47,16 @@ class OutcomeGroup extends Model
      */
     public function outcomeItems()
     {
-        return $this->hasMany(OutcomeItem::class, 'group_id');
+        return $this->hasMany(OutcomeItem::class);
+    }
+
+    /**
+     * リレーション - ユーザー
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

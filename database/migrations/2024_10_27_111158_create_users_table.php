@@ -20,7 +20,8 @@ class CreateUsersTable extends Migration
             $table->string('username')->unique(); // username
             $table->string('mailaddress')->unique(); // mailaddress
             $table->string('password'); // password
-            $table->timestamps(); // created_at, updated_at
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->tinyInteger('del_flg')->default(0); // del_flg
         });
     }

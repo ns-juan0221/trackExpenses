@@ -16,7 +16,8 @@ class CreateIncomeCategoriesTable extends Migration
         Schema::create('income_categories', function (Blueprint $table) {
             $table->id(); // id
             $table->string('name'); // カテゴリ名
-            $table->timestamps(); // 作成日時・更新日時
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->tinyInteger('del_flg')->default(0); // 論理削除フラグ
         });
     }

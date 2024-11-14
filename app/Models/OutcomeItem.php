@@ -16,12 +16,15 @@ class OutcomeItem extends Model
      */
     protected $table = 'outcome_items';
 
+    public $timestamps = false; // Laravelの自動タイムスタンプ管理を無効化
+
     /**
      * 複数代入可能な属性
      *
      * @var array
      */
     protected $fillable = [
+        'user_id',
         'group_id',
         'date',
         'item',
@@ -43,32 +46,42 @@ class OutcomeItem extends Model
     ];
 
     /**
-     * リレーション - グループ
+     * リレーション - ユーザー
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function group()
+    public function user()
     {
-        return $this->belongsTo(OutcomeGroup::class, 'group_id');
+        return $this->belongsTo(User::class);
     }
 
     /**
-     * リレーション - 中カテゴリ
+     * リレーション - 支出グループ
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function mCategory()
+    public function outcomeGgroup()
     {
-        return $this->belongsTo(OutcomeMainCategory::class, 'm_category_id');
+        return $this->belongsTo(OutcomeGroup::class);
     }
 
     /**
-     * リレーション - 小カテゴリ
+     * リレーション - 支出中カテゴリ
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function sCategory()
+    public function mainCategory()
     {
-        return $this->belongsTo(OutcomeSubCategory::class, 's_category_id');
+        return $this->belongsTo(OutcomeMainCategory::class);
+    }
+
+    /**
+     * リレーション - 支出小カテゴリ
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function subCategory()
+    {
+        return $this->belongsTo(OutcomeSubCategory::class);
     }
 }

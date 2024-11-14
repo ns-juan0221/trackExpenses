@@ -16,6 +16,8 @@ class IncomeCategory extends Model
      */
     protected $table = 'income_categories';
 
+    public $timestamps = false; // Laravelの自動タイムスタンプ管理を無効化
+
     /**
      * 複数代入可能な属性
      *
@@ -34,4 +36,13 @@ class IncomeCategory extends Model
     protected $casts = [
         'del_flg' => 'boolean',
     ];
+
+    /**
+     * リレーション - 収入アイテム
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function income() {
+        return $this->hasMany(Income::class);
+    }
 }

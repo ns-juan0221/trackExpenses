@@ -18,7 +18,8 @@ class CreateOutcomeGroupsTable extends Migration
             $table->date('date'); // date
             $table->string('shop'); // shop
             $table->decimal('totalPrice', 10, 2); // totalPrice
-            $table->timestamps(); // created_at, updated_at
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->tinyInteger('del_flg')->default(0); // del_flg
         });
     }

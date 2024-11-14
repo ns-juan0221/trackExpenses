@@ -24,15 +24,24 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('guest', [OutcomeController::class, 'sampleShowMonthlyHalfYear'])->name('guest');
+
+Route::get('guest', [OutcomeController::class, 'sampleShowMonthlyHalfYear'])
+->name('guest');
 
 // ログイン関連
-Route::get('login', [LoginController::class, 'showLoginForm'])->name('login'); // ログイン画面
-Route::post('login', [LoginController::class, 'login']); // 認証処理
-Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('login', [LoginController::class, 'index'])
+->name('login'); // ログイン画面
 
-Route::get('showMonthlyHalfYear/{userId}', [OutcomeController::class, 'showMonthlyHalfYear'])->name('showMonthlyHalfYear');
-Route::get('main', [MainController::class, 'index'])->name('main')->middleware('auth'); // メイン画面
+Route::post('login', [LoginController::class, 'login']); // 認証処理
+
+Route::get('logout', [LoginController::class, 'logout'])
+->name('logout');
+
+Route::get('redirectMain', [OutcomeController::class, 'redirectMain'])
+->name('redirectMain')->middleware('auth'); // メイン画面の入り口
+
+Route::get('main', [MainController::class, 'index'])
+->name('main')->middleware('auth');
 
 
 // パスワードリセット関連

@@ -24,96 +24,24 @@
                 <p>直近の履歴</p>
             </div>
             <div class="history-list pe-2 flex-grow-1 overflow-auto mt-3">
+                @foreach($items as $item)
                 <div class="list-item mb-2">
-                    <a href="編集用のURL" class="item-link">
+                    {{-- {{ url('/edit/' . $item->id) }} --}}
+                    <a href="#" class="item-link">
                         <div class="d-flex justify-content-between">
                             <div class="list-date w-50 ps-2">
-                                2024/10/16
+                                {{ \Carbon\Carbon::parse($item->date)->format('Y/m/d') }}
                             </div>
                             <div class="list-price w-50 pe-3">
-                                -123円
+                                -{{ number_format($item->totalPrice) }}円
                             </div>
                         </div>
                         <div class="list-category ps-2">
-                            食費　->　食料品
+                            {{ $item->m_category_name }} -> {{ $item->s_category_name }}
                         </div>
                     </a>
                 </div>
-                <div class="list-item mb-2">
-                    <a href="編集用のURL" class="item-link">
-                        <div class="d-flex justify-content-between">
-                            <div class="list-date w-50 ps-2">
-                                2024/10/15
-                            </div>
-                            <div class="list-price w-50 pe-3">
-                                -1234円
-                            </div>
-                        </div>
-                        <div class="list-category ps-2">
-                            趣味・娯楽　->　本
-                        </div>
-                    </a>
-                </div>
-                <div class="list-item mb-2">
-                    <a href="編集用のURL" class="item-link">
-                        <div class="d-flex justify-content-between">
-                            <div class="list-date w-50 ps-2">
-                                2024/10/15
-                            </div>
-                            <div class="list-price w-50 pe-3">
-                                -1234円
-                            </div>
-                        </div>
-                        <div class="list-category ps-2">
-                            趣味・娯楽　->　本
-                        </div>
-                    </a>
-                </div>
-                <div class="list-item mb-2">
-                    <a href="編集用のURL" class="item-link">
-                        <div class="d-flex justify-content-between">
-                            <div class="list-date w-50 ps-2">
-                                2024/10/15
-                            </div>
-                            <div class="list-price w-50 pe-3">
-                                -1234円
-                            </div>
-                        </div>
-                        <div class="list-category ps-2">
-                            趣味・娯楽　->　本
-                        </div>
-                    </a>
-                </div>
-                <div class="list-item mb-2">
-                    <a href="編集用のURL" class="item-link">
-                        <div class="d-flex justify-content-between">
-                            <div class="list-date w-50 ps-2">
-                                2024/10/15
-                            </div>
-                            <div class="list-price w-50 pe-3">
-                                -1234円
-                            </div>
-                        </div>
-                        <div class="list-category ps-2">
-                            趣味・娯楽　->　本
-                        </div>
-                    </a>
-                </div>
-                <div class="list-item mb-2">
-                    <a href="編集用のURL" class="item-link">
-                        <div class="d-flex justify-content-between">
-                            <div class="list-date w-50 ps-2">
-                                2024/10/15
-                            </div>
-                            <div class="list-price w-50 pe-3">
-                                -1234円
-                            </div>
-                        </div>
-                        <div class="list-category ps-2">
-                            趣味・娯楽　->　本
-                        </div>
-                    </a>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>

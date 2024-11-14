@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
+
 
 class MainController extends Controller {
     /**
@@ -11,7 +14,15 @@ class MainController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return view('main');
+        // セッションからデータを取得（デフォルト値を指定）
+        $labels = Session::get('labels');
+        $lastYearValues = Session::get('lastYearValues');
+        $currentYearValues = Session::get('currentYearValues');
+        $items = Session::get('items');
+
+        Log::info($items);
+
+        return view('main',compact('labels', 'lastYearValues', 'currentYearValues','items'));
     }
 
     /**

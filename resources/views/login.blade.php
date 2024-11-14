@@ -32,6 +32,7 @@
             </div>
             <button class="btn btn-lg btn-success w-100 mb-2 mt-3" type="submit">Login</button>
             {{-- 　　　　　　　　　　　　　　追加機能　　　　　　　　　　　　　　　　 --}}
+            {{-- $_SESSIONで解決できる？ --}}
             {{-- <div class="checkbox p-2">
                 <label>
                     <input type="checkbox" name="auto-login" value="remember-me"> 次回から自動でログイン
