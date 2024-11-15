@@ -15,8 +15,8 @@ class RegisterController extends Controller
 {
     // 新規登録画面を表示
     public function showRegistrationForm() {
-        Log::info('registページにアクセスします。');
-        return view('regist');
+        Log::info('registerページにアクセスします。');
+        return view('register');
     }
 
     // 新規ユーザー登録

@@ -60,7 +60,7 @@ class OutcomeItem extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function outcomeGgroup()
+    public function outcomeGroup()
     {
         return $this->belongsTo(OutcomeGroup::class);
     }

@@ -3,8 +3,8 @@
 
 @section('content')
     <div class="container-fluid">
-        <div class="year-gragh d-flex flex-column">
-            <div class="gragh-title mt-3 d-flex justify-content-center align-items-center">
+        <div class="year-graph d-flex flex-column">
+            <div class="graph-title mt-3 d-flex justify-content-center align-items-center">
                     <p class="fs-3">半年間の支出遷移</p>
             </div>
 
@@ -15,7 +15,7 @@
                 window.currentYearValues = @json($currentYearValues);
             </script>
 
-            <div class="gragh-main mt-3">
+            <div class="graph-main mt-3">
                 <canvas id="myChart" width="600" height="300"></canvas>
             </div>
         </div>

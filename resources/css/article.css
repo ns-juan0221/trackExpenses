@@ -12,16 +12,16 @@ body {
     display: flex;
 }
 
-.year-gragh {
+.year-graph {
     height: 100%;
     width: 70%;
 }
 
-.year-gragh .gragh-title {
+.year-graph .graph-title {
     width: auto;
 }
 
-.year-gragh .gragh-main {
+.year-graph .graph-main {
     flex-grow: 1;
     width: auto;
 }
