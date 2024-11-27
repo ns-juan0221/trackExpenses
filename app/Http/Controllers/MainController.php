@@ -14,13 +14,10 @@ class MainController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        // セッションからデータを取得（デフォルト値を指定）
         $labels = Session::get('labels');
         $lastYearValues = Session::get('lastYearValues');
         $currentYearValues = Session::get('currentYearValues');
         $items = Session::get('items');
-
-        Log::info($items);
 
         return view('main',compact('labels', 'lastYearValues', 'currentYearValues','items'));
     }

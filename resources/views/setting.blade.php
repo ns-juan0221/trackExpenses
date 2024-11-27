@@ -3,7 +3,7 @@
 
 @section('content')
     <div class="registBox text-center">
-        <form action="" class="form-container border p-2 align-items-center" method="">
+        <form action="" class="formContainer border p-2 align-items-center" method="">
             @csrf
             <h1 class="h3 mb-3">新規登録</h1>
             <div class="form-group d-flex flex-row align-items-center mb-3">

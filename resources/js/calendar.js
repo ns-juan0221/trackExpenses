@@ -1,4 +1,4 @@
-const calendarBody = document.getElementById('calendar-body');
+const calendarBody = document.getElementById('calendarBody');
 const currentMonthYear = document.getElementById('currentMonthYear');
 let currentDate = new Date();
 

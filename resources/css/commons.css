@@ -84,6 +84,20 @@ button.btn-success:hover {
     border: 1px solid #34ce6c !important;
 }
 
+button.btn-success:active {
+    background-color: #22c55e;
+}
+
+button.btn-light {
+    background-color: #fff !important;
+    border: 1px solid #22c55e !important;
+    color:#22c55e !important;
+}
+
+button.btn-light:hover {
+    background-color: #fff !important;
+}
+
 button.btn-danger:hover {
     background-color: #ef4444 !important;
     border: 1px solid #ef4444 !important;
@@ -94,9 +108,6 @@ button.btn-primary:hover {
     border: 1px solid #3b78fa !important;
 }
 
-button.btn-success:active {
-    background-color: #22c55e;
-}
 
 footer {
     height: 50px;

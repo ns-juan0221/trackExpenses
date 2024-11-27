@@ -36,8 +36,11 @@ class RegisterController extends Controller
             // 登録後に自動ログイン
             auth()->login($user);
 
+            // user_idをセッションに保存
+            session(['user_id' => auth()->id()]);
+
             // 登録後のリダイレクト
-            return redirect()->route('main');
+            return redirect()->route('redirectMain');
         } catch (ValidationException $e) {
             Log::error('Validation failed', ['errors' => $e->errors()]);
             return back()->withErrors($e->errors())->withInput();
@@ -49,7 +52,7 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'name_kana' => ['nullable', 'string', 'max:255'], // name_kanaは任意入力
+            'name_kana' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -61,7 +64,7 @@ class RegisterController extends Controller
     {
         return User::create([
             'name' => $data['name'],
-            'name_kana' => $data['name_kana'] ?? null, // name_kanaがnullでも保存
+            'name_kana' => $data['name_kana'],
             'username' => $data['username'],
             'email' => $data['email'],
             'password' => $data['password'], // Userモデルのミューテタで自動ハッシュ化

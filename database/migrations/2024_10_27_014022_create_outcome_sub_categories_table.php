@@ -11,8 +11,7 @@ class CreateOutcomeSubCategoriesTable extends Migration
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('outcome_sub_categories', function (Blueprint $table) {
             $table->id(); // id
             $table->unsignedBigInteger('main_category_id'); // 中項目カテゴリへの外部キー
@@ -31,8 +30,7 @@ class CreateOutcomeSubCategoriesTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('outcome_sub_categories');
     }
 }

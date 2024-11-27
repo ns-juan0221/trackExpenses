@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@100;400;700&display=swap');
+
+body {
+    background-image: url('../images/bg.png');
+    height: 100vh; /* 高さを100%に設定 */
+    display: flex; /* フレックスボックスを有効化 */
+    justify-content: center; /* 横方向に中央揃え */
+    align-items: center; /* 縦方向に中央揃え */
+    margin: 0; /* 余白をリセット */
+}
+
+main {
+    width: 100%;
+    display: flex;
+}
+
+.container-fluid {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.searchBox {
+    width: 100%; /* 横幅を全体に広げる */
+    display: flex; /* Flexboxを適用 */
+    flex-grow: 1; /* main内で余った高さを全て使用 */
+    justify-content: center; /* 横方向の中央揃え */
+    align-items: center; /* 縦方向の中央揃え */
+
+}
+
+.searchBox .formContainer {
+    margin: 0 auto;
+    justify-content: center; /* y軸方向も必要なら中央揃え */
+}
+
+.searchTable .searchLabel {
+    padding-right: 40px;
+}
+
+.keywordLabelList {
+    border-top: 1px solid #4ade80;
+    border-right: 1px solid #4ade80;
+    background-color: #4ade80;
+    padding: 10px;
+    color: #ffffff;
+}
+
+.itemLabel,.shopLabel,.memoLabel {
+    border-top: 1px solid #4ade80;
+    background-color: #4ade80;
+    padding: 10px;
+    color: #ffffff;
+}
+
+.priceLabel,.dateLabel,.categoryLabel {
+    border-top: 1px solid #FFFFFF;
+    background-color: #4ade80;
+    padding: 10px;
+    color: #ffffff;
+}
+
+.displayFormatLabel {
+    border-top: 1px solid #FFFFFF;
+    border-bottom: 1px solid #4ade80;
+    background-color: #4ade80;
+    padding: 10px;
+    color: #ffffff;
+}
+
+.itemKeywordInput,.priceInput,.dateInput,.categoryInput {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-top: 1px solid #22c55e;
+    border-right: 1px solid #22c55e;
+    padding: 10px;
+}
+
+.shopKeywordInput,.memoKeywordInput {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-right: 1px solid #22c55e;
+    padding: 10px;
+}
+
+.displayFormatInput {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-top: 1px solid #22c55e;
+    border-bottom: 1px solid #22c55e;
+    border-right: 1px solid #22c55e;
+    padding: 10px;
+}
+
+.formBtnGroup {
+    padding: 10px;
+}
+
+.searchTable .form-price,.form-date {
+    position: relative;
+    display: inline-block;
+    width: 200px; /* 必要に応じて調整 */
+}
+
+.searchTable #minPrice,#maxPrice {
+    width: 100%;
+    padding-left: 30px; /* ¥記号のスペース分 */
+    padding-right: 10px; /* 余白調整 */
+    box-sizing: border-box;
+}
+
+.searchTable .from-to {
+    margin: 0 6px;
+}
+
+.searchTable .yen {
+    position: absolute;
+    left: 16px; /* ¥記号の位置調整 */
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px; /* フォントサイズを調整 */
+    color: #666;
+}
+
+.searchResultDisplayFormat {
+    list-style: none; /* 点を削除 */
+    margin: 0; /* デフォルトの余白を削除 */
+    padding: 0; /* デフォルトのパディングを削除 */
+    display: flex; /* 子要素を横並びに */
+    gap: 20px; /* 各リストアイテム間のスペース */
+}
+
+.DisplayFormat-li {
+    display: flex; /* 子要素を横並びに */
+    align-items: center; /* 縦方向を中央揃え */
+}
+
+.checkbox {
+    margin-right: 10px; /* テキストとの間隔を設定 */
+}
+
+.selected-category {
+    display: inline-block;
+    margin: 5px;
+    padding: 5px 10px;
+    background-color: #e1feeb;
+    border: 1px solid #8ef8b5;
+    border-radius: 15px;
+}
+.selected-category button {
+    border: none;
+    background: transparent;
+    color: #f44336;
+    margin-left: 5px;
+}
+.main-category {
+    font-weight: bold;
+    margin-top: 15px;
+}
+.sub-category {
+    margin-left: 20px;
+}
+
+.btnGroup {
+    display: flex;
+    justify-content: center; /* x軸方向の中央揃え */
+    margin-top: 20px; /* ボタン上部の余白 */
+}
+
+.btnGroup .btn {
+    margin: 0 10px; /* ボタン間のスペース */
+    padding: 10px 20px; /* ボタンのパディング */
+}

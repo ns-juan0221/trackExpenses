@@ -9,8 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
-class OutcomeController extends Controller
-{
+class OutcomeController extends Controller {
     protected $outcomeRepository;
 
     /**
@@ -30,8 +29,7 @@ class OutcomeController extends Controller
         // sessionに$items
         $this->showSixItem($userId);
 
-
-        return redirect()->route('main');
+        return redirect('/main');
     }
 
     /**
@@ -41,7 +39,6 @@ class OutcomeController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function showMonthlyHalfYear($userId) {
-        Log::info('showMonthlyTotalsメソッドに入りました');
         $monthlyTotals = $this->outcomeRepository->getMonthlyHalfYear($userId);
 
         if (empty($monthlyTotals) || count($monthlyTotals) === 0) {
@@ -51,18 +48,6 @@ class OutcomeController extends Controller
 
             $this->dataHalfYear($monthlyTotals);
         }
-    }
-
-    public function sampleShowMonthlyHalfYear() {
-
-        $this->emptyDataHalfYear();
-
-        // セッションからデータを取得
-        $labels = Session::get('labels');
-        $lastYearValues = Session::get('lastYearValues');
-        $currentYearValues = Session::get('currentYearValues');
-
-        return view('guest', compact('labels', 'lastYearValues', 'currentYearValues'));
     }
 
     public function dataHalfYear($monthlyTotals) {
@@ -118,7 +103,7 @@ class OutcomeController extends Controller
             $monthDate = (new DateTime())->modify("-$i month");
             $currentYearData[] = [
                 'month' => $monthDate->format('Y年n月'),
-                'total_sum' => rand(20000, 40000)  // ランダムな支出額（サンプルデータ）
+                'total_sum' => 0
             ];
         }
 
@@ -127,7 +112,65 @@ class OutcomeController extends Controller
             $monthDate = (new DateTime())->modify("-$i month")->modify('-1 year');
             $lastYearData[] = [
                 'month' => $monthDate->format('Y年n月'),
-                'total_sum' => rand(20000, 40000)  // ランダムな支出額（サンプルデータ）
+                'total_sum' => 0
+            ];
+        }
+
+        // JavaScriptで使いやすい形式に整形
+        $labels = [];
+        $currentYearValues = [];
+        $lastYearValues = [];
+
+        for ($i = 0; $i < 6; $i++) {
+            $labels[] = $lastYearData[$i]['month'];
+            $labels[] = $currentYearData[$i]['month'];
+            $labels[] = '';  // 空のラベルを追加
+
+            $lastYearValues[] = $lastYearData[$i]['total_sum'];
+            $lastYearValues[] = null;
+            $lastYearValues[] = null;
+
+            $currentYearValues[] = null;
+            $currentYearValues[] = $currentYearData[$i]['total_sum'];
+            $currentYearValues[] = null;
+        }
+
+        Session::put('labels', $labels);
+        Session::put('lastYearValues', $lastYearValues);
+        Session::put('currentYearValues', $currentYearValues);
+    }
+
+    public function sampleShowMonthlyHalfYear() {
+
+        $this->sampleDataHalfYear();
+
+        // セッションからデータを取得
+        $labels = Session::get('labels');
+        $lastYearValues = Session::get('lastYearValues');
+        $currentYearValues = Session::get('currentYearValues');
+
+        return view('guest', compact('labels', 'lastYearValues', 'currentYearValues'));
+    }
+
+    public function sampleDataHalfYear() {
+        $lastYearData = [];
+        $currentYearData = [];
+
+        // 最新6か月分
+        for ($i = 5; $i >= 0; $i--) {
+            $monthDate = (new DateTime())->modify("-$i month");
+            $currentYearData[] = [
+                'month' => $monthDate->format('Y年n月'),
+                'total_sum' => rand(1000,10000)
+            ];
+        }
+
+        // 前年の同じ月
+        for ($i = 5; $i >= 0; $i--) {
+            $monthDate = (new DateTime())->modify("-$i month")->modify('-1 year');
+            $lastYearData[] = [
+                'month' => $monthDate->format('Y年n月'),
+                'total_sum' => rand(1000,10000)
             ];
         }
 
