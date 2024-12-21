@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 新しいフォームグループをフォームコンテナに追加
         document.getElementById('formListBlock').appendChild(formList);
+        
         formCount++; // カウンターをインクリメント
     });
 
@@ -51,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var amount = parseFloat(group.querySelector('.amount').value) || 1; // 個数を取得 (デフォルト1)
             total += price * amount; // 金額 × 個数を合計
         });
-        
+
         document.getElementById('totalPrice').value = total; // 合計値を表示
     }
 });
