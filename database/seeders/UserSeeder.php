@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
             'name_kana' => 'test',
             'username' => 'test',
             'email' => 'test@test.test',
-            'password' => 'testtest',
+            'password' => 'testest',
             'del_flg' => 0,
         ]);
     }

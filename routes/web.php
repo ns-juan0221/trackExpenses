@@ -26,7 +26,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('guest', [OutcomeController::class, 'sampleShowMonthlyHalfYear'])
+Route::get('guest', [OutcomeController::class, 'getSampleHalfYearGroups'])
 ->name('guest');
 
 // ログイン関連
@@ -38,8 +38,8 @@ Route::post('login', [LoginController::class, 'login']); // 認証処理
 Route::get('logout', [LoginController::class, 'logout'])
 ->name('logout');
 
-Route::get('redirectMain', [OutcomeController::class, 'redirectMain'])
-->name('redirectMain')->middleware('auth');
+Route::get('getHalfYearGroupsAndLeastItems', [OutcomeController::class, 'getHalfYearGroupsAndLeastItems'])
+->name('getHalfYearGroupsAndLeastItems')->middleware('auth');
 Route::get('main', [MainController::class, 'index'])->middleware('auth');
 
 
@@ -54,18 +54,14 @@ Route::get('register', [RegisterController::class, 'showRegistrationForm'])
 ->name('register');
 Route::post('register', [RegisterController::class, 'register']);
 
-Route::get('redirectSearch', [CategoryController::class, 'redirectSearch'])
-->name('redirectSearch')->middleware('auth');
+Route::get('getCategoriesToSearch', [CategoryController::class, 'getCategoriesToSearch'])
+->name('getCategoriesToSearch')->middleware('auth');
 Route::get('search', [SearchController::class, 'index']);
 
-Route::get('new', function () {
-    return view('create');
-})->name('new-income');
-
-Route::get('new', function () {
-    $toggle = request('toggle');
-    return view('create', ['toggle' => $toggle]);
-})->name('new');
+Route::get('getCategoriesToInsert', [CategoryController::class, 'getCategoriesToInsert'])
+->name('getCategoriesToInsert')->middleware('auth');
+Route::get('new', [MainController::class, 'create'])
+->name('new');
 
 Route::get('setting', function() {
     return view('setting');

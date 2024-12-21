@@ -28,7 +28,10 @@ class MainController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        //
+            $toggle = request('toggle');
+            $groupedCategories = Session::get('groupedCategories');
+
+            return view('create', compact('groupedCategories','toggle'));
     }
 
     /**

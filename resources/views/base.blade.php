@@ -14,6 +14,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.1/remodal.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.1/remodal-default-theme.min.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="{{ asset('css/commons.css') }}">
     @if (Request::is('login') || Request::is('register'))
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
     @elseif (Request::is('search'))
@@ -21,13 +22,20 @@
     @else
     <link rel="stylesheet" href="{{ asset('css/article.css') }}">
     @endif
-    <link rel="stylesheet" href="{{ asset('css/commons.css') }}">
     <title>@yield('title')</title>
 </head>
 <body  class="d-flex flex-column min-vh-100">
+    <!-- jQuery (CDN) -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <!-- jQuery UI (最新版1.14.0) -->
+    <script src="https://code.jquery.com/ui/1.14.0/jquery-ui.min.js"></script>
+    <!-- Remodal (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.1/remodal.min.js"></script>
+
     @if (Request::is('login') || Request::is('register') || Request::is('guest'))
     <header id="header" class="border-bottom d-flex w-100 align-items-center">
-        <a href="{{ route('redirectMain') }}" class="header-logo">
+        <a href="{{ route('getHalfYearGroupsAndLeastItems') }}" class="header-logo">
             <img src="{{ asset('images/header_icon.png') }}" alt="マネーログ" height="50" width="150">
         </a>
         <nav id="nav">
@@ -45,16 +53,16 @@
     <header id="header" class="border-bottom d-flex w-100 align-items-center">
         {{--  　　　　　　　　　追加機能　　　　　　　　　　 --}}
         {{-- 認証されていない箇所ではhrefをなくすか、mainに飛ばないようにする --}}
-        <a href="{{ route('redirectMain') }}" class="header-logo">
+        <a href="{{ route('getHalfYearGroupsAndLeastItems') }}" class="header-logo">
             <img src="{{ asset('images/header_icon.png') }}" alt="マネーログ" height="50" width="150">
         </a>
         <nav id="nav">
             <ul class="nav-btn">
                 <li>
-                    <a href="{{ route('new') }}" class="btn btn-light text-center">入力</a>
+                    <a href="{{ route('getCategoriesToInsert') }}" class="btn btn-light text-center">入力</a>
                 </li>
                 <li>
-                    <a href="{{ route('redirectSearch') }}" class="btn btn-success text-center">検索</a>
+                    <a href="{{ route('getCategoriesToSearch') }}" class="btn btn-success text-center">検索</a>
                 </li>
                 <li>
                     <a href="{{ route('new', ['type' => 'month']) }}" class="btn btn-light text-center">入出金履歴</a>
@@ -90,13 +98,6 @@
             </div>
         </div>
     </footer>
-    <!-- jQuery (CDN) -->
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <!-- jQuery UI (最新版1.14.0) -->
-    <script src="https://code.jquery.com/ui/1.14.0/jquery-ui.min.js"></script>
-    <!-- Remodal (CDN) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.1/remodal.min.js"></script>
     <!-- 日本語化ファイル (最新バージョンの適合するファイルを使用) -->
     <script src="{{ asset('js/datepicker-ja.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>

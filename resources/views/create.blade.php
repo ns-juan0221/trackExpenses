@@ -5,7 +5,7 @@
 <div class="container-fluid">
     <div class="col-8 pe-3">
         <div class="routeDisplay">
-            <p class="ms-2 p-1"><a href="{{ route('redirectMain') }}">ホーム</a>  ->  <a href="{{ route('new') }}">入出金入力画面</a></p>
+            <p class="ms-2 p-1"><a href="{{ route('getHalfYearGroupsAndLeastItems') }}">ホーム</a>  ->  <a href="{{ route('new') }}">入出金入力画面</a></p>
         </div>
         <div class="switch-nav">
             <ul class="d-flex">
@@ -13,6 +13,12 @@
                 <li class="col-4 income {{ $toggle === 'income' ? 'active' : '' }}"><a href="{{ route('new', ['toggle' => 'income']) }}">収入</a></li>
             </ul>
         </div>
+
+        <script>
+            // BladeからデータをJavaScriptのグローバル変数に渡す
+            window.groupedCategories = @json($groupedCategories);
+        </script>
+        
         <div class="createBox p-2 mt-2">
             @if($toggle === 'income')
             <!-- 収入フォーム -->
@@ -65,7 +71,16 @@
                             </div>
                             <div class="formUnit form-category col-md-3 me-1">
                                 <label class="form-label visually-hidden" for="category">カテゴリ</label>
-                                <input type="text" id="category" class="form-control category" name="category[]" placeholder="カテゴリ" required>
+                                <select name="category" id="category" class="form-control">
+                                    @foreach ($groupedCategories as $groupedCategory)
+                                        <!-- メインカテゴリ（選択不可） -->
+                                        <option value="main-{{ $groupedCategory['main_id'] }}" disabled>{{ $groupedCategory['main_name'] }}</option>
+                                        @foreach ($groupedCategory['sub_categories'] as $subCategory)
+                                            <!-- サブカテゴリ -->
+                                            <option value="sub-{{ $subCategory['sub_id'] }}">{{ $subCategory['sub_name'] }}</option>
+                                        @endforeach
+                                    @endforeach
+                                </select>                                
                             </div>
                             <div class="formUnit form-price col-md-3 me-1">
                                 <label class="form-label visually-hidden" for="price">金額</label>

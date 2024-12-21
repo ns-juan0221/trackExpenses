@@ -31,7 +31,7 @@ class LoginController extends Controller {
             // 認証成功後、user_idをセッションに保存
             session(['user_id' => Auth::id()]);
 
-            return redirect()->route('redirectMain');
+            return redirect()->route('getHalfYearGroupsAndLeastItems');
         }
 
         throw ValidationException::withMessages([

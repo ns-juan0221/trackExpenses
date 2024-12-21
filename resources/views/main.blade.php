@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="col-9">
             <div class="routeDisplay">
-                <p class="ms-2 p-1"><a href="{{ route('redirectMain') }}">ホーム</a></p>
+                <p class="ms-2 p-1"><a href="{{ route('getHalfYearGroupsAndLeastItems') }}">ホーム</a></p>
             </div>
             <div class="yearGraph d-flex flex-column">
                 <div class="graphTitle d-flex justify-content-center align-items-center">

@@ -5,7 +5,7 @@ namespace App\Repositories;
 use Illuminate\Support\Facades\DB;
 
 class CategoryRepository {
-    public function getCategory() {
+    public function getCategories() {
         return DB::select("
             SELECT 
                 m.id AS main_id,m.name AS main_name,s.id AS sub_id,s.name AS sub_name

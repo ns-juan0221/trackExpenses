@@ -21,36 +21,30 @@ class OutcomeController extends Controller {
         $this->outcomeRepository = $outcomeRepository;
     }
 
-    public function redirectMain() {
+    public function getHalfYearGroupsAndLeastItems() {
         $userId = session('user_id');
 
         // sessionに$labels,$lastYearValues,$currentYearValues
-        $this->showMonthlyHalfYear($userId);
+        $this->getHalfYearGroups($userId);
         // sessionに$items
-        $this->showSixItem($userId);
+        $this->getLeastItems($userId);
 
         return redirect('/main');
     }
 
-    /**
-     * 過去6ヶ月の月ごとの合計を取得
-     *
-     * @param int $userId
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function showMonthlyHalfYear($userId) {
+    public function getHalfYearGroups($userId) {
         $monthlyTotals = $this->outcomeRepository->getMonthlyHalfYear($userId);
 
         if (empty($monthlyTotals) || count($monthlyTotals) === 0) {
 
-            $this->emptyDataHalfYear();
+            $this->getEmptyHalfYearGroupsAndFormatData();
         }else {
 
-            $this->dataHalfYear($monthlyTotals);
+            $this->getHalfYearGroupsAndFormatData($monthlyTotals);
         }
     }
 
-    public function dataHalfYear($monthlyTotals) {
+    public function getHalfYearGroupsAndFormatData($monthlyTotals) {
         $labels = [];
         $lastYearValues = [];
         $currentYearValues = [];
@@ -94,7 +88,7 @@ class OutcomeController extends Controller {
         Session::put('currentYearValues', $currentYearValues);
     }
 
-    public function emptyDataHalfYear() {
+    public function getEmptyHalfYearGroupsAndFormatData() {
         $lastYearData = [];
         $currentYearData = [];
 
@@ -140,9 +134,9 @@ class OutcomeController extends Controller {
         Session::put('currentYearValues', $currentYearValues);
     }
 
-    public function sampleShowMonthlyHalfYear() {
+    public function getSampleHalfYearGroups() {
 
-        $this->sampleDataHalfYear();
+        $this->getSampleHalfYearGroupsAndFormatData();
 
         // セッションからデータを取得
         $labels = Session::get('labels');
@@ -152,7 +146,7 @@ class OutcomeController extends Controller {
         return view('guest', compact('labels', 'lastYearValues', 'currentYearValues'));
     }
 
-    public function sampleDataHalfYear() {
+    public function getSampleHalfYearGroupsAndFormatData() {
         $lastYearData = [];
         $currentYearData = [];
 
@@ -198,7 +192,7 @@ class OutcomeController extends Controller {
         Session::put('currentYearValues', $currentYearValues);
     }
 
-    public function showSixItem($userId) {
+    public function getLeastItems($userId) {
         $items = $this->outcomeRepository->getSixItems($userId);
 
         Session::put('items', $items);

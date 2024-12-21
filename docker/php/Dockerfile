@@ -1,6 +1,9 @@
 # PHP 8.0 FPMベース
 FROM php:8.2-fpm
 
+# Laravelプロジェクト用ディレクトリを作成
+WORKDIR /var/www/html
+
 # 必要なPHP拡張機能をインストール
 RUN addgroup --system nginx && adduser --system --ingroup nginx nginx && \
     mkdir /var/run/php-fpm && \
@@ -16,17 +19,13 @@ RUN addgroup --system nginx && adduser --system --ingroup nginx nginx && \
     && docker-php-ext-install gd \
     && docker-php-ext-install pdo pdo_mysql zip \
     && pecl install xdebug \
-    && docker-php-ext-enable xdebug \
+    docker-php-ext-enable xdebug \
     && rm -rf /var/lib/apt/lists/*
-
-COPY ./php.ini /usr/local/etc/php/php.ini
-
-COPY ./php-fpm.d/zzz-www.conf /usr/local/etc/php-fpm.d/zzz-www.conf
 
 COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
 
-# Laravelプロジェクト用ディレクトリを作成
-WORKDIR /var/www/html
+COPY ./php-fpm.d/zzz-www.conf /usr/local/etc/php-fpm.d/zzz-www.conf
+COPY ./php.ini /usr/local/etc/php/php.ini
 
 # PHP-FPMをデフォルトコマンドに設定
 CMD ["php-fpm"]

@@ -1,0 +1,23 @@
+{
+    "name": "Multi-Service Dev Container for trackExpenses",
+    "dockerComposeFile": [
+        "../docker-compose.yml"
+    ],
+    "service": "workspace",  // VS Codeで使用する作業用コンテナ
+    "workspaceFolder": "/var/www/html",
+    "forwardPorts": [8080, 9003, 3000],  // 必要なポートを転送
+    // "postCreateCommand": "composer install && npm install",  // 自動セットアップ
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "xdebug.php-debug",
+                "bmewburn.vscode-intelephense-client",
+                "oderwat.indent-rainbow",
+                "streetsidesoftware.code-spell-checker",
+                "ms-azuretools.vscode-docker",
+                "esbenp.prettier-vscode",
+                "cweijan.vscode-mysql-client2"
+            ]
+        }
+    }
+}

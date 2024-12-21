@@ -40,7 +40,7 @@ class RegisterController extends Controller
             session(['user_id' => auth()->id()]);
 
             // 登録後のリダイレクト
-            return redirect()->route('redirectMain');
+            return redirect()->route('getHalfYearGroupsAndLeastItems');
         } catch (ValidationException $e) {
             Log::error('Validation failed', ['errors' => $e->errors()]);
             return back()->withErrors($e->errors())->withInput();

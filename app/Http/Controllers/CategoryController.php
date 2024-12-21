@@ -19,27 +19,31 @@ class CategoryController extends Controller {
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function redirectSearch() {
-        Log::info('getCategoryメソッド入ります');
-        $this->getCategory();
+    public function getCategoriesToSearch() {
+        $this->getCategoriesAndFormatData();
 
         return redirect('/search');
     }
 
-    public function getCategory() {
-        $categories = $this->categoryRepository->getCategory();
+    public function getCategoriesToInsert() {
+        $this->getCategoriesAndFormatData();
+
+        return redirect('/new');
+    }
+
+    public function getCategoriesAndFormatData() {
+        $categories = $this->categoryRepository->getCategories();
 
         $groupedCategories = [];
 
         foreach ($categories as $category) {
+            $groupedCategories[$category->main_id]['main_id'] = $category->main_id;
             $groupedCategories[$category->main_id]['main_name'] = $category->main_name;
             $groupedCategories[$category->main_id]['sub_categories'][] = [
                 'sub_id' => $category->sub_id,
                 'sub_name' => $category->sub_name
             ];
         }
-
-        Log::info($groupedCategories);
 
         Session::put('groupedCategories', $groupedCategories);
     }
