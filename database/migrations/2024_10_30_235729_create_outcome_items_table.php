@@ -4,15 +4,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOutcomeItemsTable extends Migration
-{
+class CreateOutcomeItemsTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('outcome_items', function (Blueprint $table) {
             $table->id(); // id
             $table->unsignedBigInteger('group_id'); // group_id
@@ -38,8 +36,7 @@ class CreateOutcomeItemsTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('outcome_items');
     }
 }

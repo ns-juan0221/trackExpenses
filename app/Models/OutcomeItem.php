@@ -5,8 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OutcomeItem extends Model
-{
+class OutcomeItem extends Model {
     use HasFactory;
 
     /**
@@ -31,7 +30,7 @@ class OutcomeItem extends Model
         'm_category_id',
         's_category_id',
         'price',
-        'memo',
+        'amount',
         'del_flg',
     ];
 

@@ -2,27 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\OutcomeItem;
-use App\Services\OutcomeService;
-use App\Repositories\OutcomeRepository;
+use App\Repositories\IncomeRepository;
+use App\Services\IncomeService;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
-class OutcomeController extends Controller {
-    protected $outcomeService;
+class IncomeController extends Controller {
+    protected $incomeService;
 
     /**
      * コンストラクタ
      *
-     * @param \App\Services\OutcomeService $outcomeService
+     * @param \App\Services\IncomeService $incomeService
      */
-    public function __construct(OutcomeService $outcomeService) {
-        $this->outcomeService = $outcomeService;
+    public function __construct(IncomeService $incomeService) {
+        $this->incomeService = $incomeService;
     }
 
         /**
@@ -33,19 +31,10 @@ class OutcomeController extends Controller {
      */
     public function store(Request $request) {
         try {
-            $validator = $this->outcomeService->validateOutcome($request->all());
+            $validator = $this->incomeService->validateIncome($request->all());
             $validator->validate();
 
-            $groupData = [
-                'user_id' => session('user_id'),
-                'date' => $request['date'],
-                'shop' => $request['shop'],
-                'totalPrice' => $request['totalPrice'],
-                'memo' => $request['memo'],
-            ];
-
-            $itemsData = $this->outcomeService->prepareItemsData($request->all());
-            $this->outcomeService->createOutcome($groupData, $itemsData);
+            $this->incomeService->createIncome($request->all());
 
             // 登録後のリダイレクト
             return redirect()->route('getCategoriesToInsert');
@@ -53,7 +42,7 @@ class OutcomeController extends Controller {
             Log::error('Validation failed', ['errors' => $e->errors()]);
             return back()->withErrors($e->errors())->withInput();
         } catch (\Throwable $e) {
-            Log::error('Outcome creation failed', ['message' => $e->getMessage()]);
+            Log::error('Income creation failed', ['message' => $e->getMessage()]);
             return back()->with('error', 'アイテムの作成に失敗しました。もう一度お試しください。');
         }
     }

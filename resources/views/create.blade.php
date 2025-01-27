@@ -2,140 +2,185 @@
 @section('title', 'マネーログ')
 
 @section('content')
-<div class="container-fluid">
-    <div class="col-8 pe-3">
-        <div class="routeDisplay">
-            <p class="ms-2 p-1"><a href="{{ route('getHalfYearGroupsAndLeastItems') }}">ホーム</a>  ->  <a href="{{ route('new') }}">入出金入力画面</a></p>
-        </div>
-        <div class="switch-nav">
-            <ul class="d-flex">
-                <li class="col-4 outcome {{ !$toggle || $toggle === 'outcome' ? 'active' : '' }}"><a href="{{ route('new', ['toggle' => 'outcome']) }}">支出</a></li>
-                <li class="col-4 income {{ $toggle === 'income' ? 'active' : '' }}"><a href="{{ route('new', ['toggle' => 'income']) }}">収入</a></li>
-            </ul>
-        </div>
-
-        <script>
-            // BladeからデータをJavaScriptのグローバル変数に渡す
-            window.groupedCategories = @json($groupedCategories);
-        </script>
-        
-        <div class="createBox p-2 mt-2">
-            @if($toggle === 'income')
-            <!-- 収入フォーム -->
-            <form action="" class="formContainer" method="post">
-                @csrf
-                <div class="formGroup">
-                    <div class="formUnit mb-2">
-                        <label class="form-label" for="date">日付</label>
-                        <input type="text" id="date" class="form-control" name="date" placeholder="日付を入力してください" required>
-                    </div>
-                    <div class="formUnit mb-2">
-                        <label class="form-label" for="amount">金額</label>
-                        <input type="number" class="form-control" id="amount" name="amount" placeholder="金額を入力" required>
-                    </div>
-                    <div class="formUnit mb-2">
-                        <label class="form-label" for="category">カテゴリ</label>
-                        <select class="form-control" id="category" name="category" required>
-                            <option value="">カテゴリを選択</option>
-                            <option value="food">食費</option>
-                            <option value="transport">交通費</option>
-                            <option value="entertainment">娯楽</option>
-                            <option value="other">その他</option>
-                        </select>
-                    </div>
-                    <div class="formUnit mb-2">
-                        <label class="form-label" for="memo">メモ</label>
-                        <textarea class="form-control" id="memo" name="memo" rows="3" placeholder="メモを入力"></textarea>
-                    </div>
+    <div class="routeDisplay w-100 border-bottom border-2">
+        <p class="ms-2 p-1">
+            <a href="{{ route('getHalfYearGroupsAndLeastItemsToRedirectMain') }}">ホーム</a>  ->  <a href="{{ route('getCategoriesToInsert') }}">入力</a>
+        </p>
+    </div>
+    <div class="container-fluid  flex-grow-1">
+        <div class="mainArticle d-flex justify-content-center">
+            <div class="createForm col-8 mt-4 me-1">
+                <div class="switch-nav">
+                    <ul class="d-flex">
+                        <li class="col-4 outcome {{ !$toggle || $toggle === 'outcome' ? 'active' : '' }} me-2"><a href="{{ route('new', ['toggle' => 'outcome']) }}">支出</a></li>
+                        <li class="col-4 income {{ $toggle === 'income' ? 'active' : '' }}"><a href="{{ route('new', ['toggle' => 'income']) }}">収入</a></li>
+                    </ul>
                 </div>
-                <button type="submit" class="btn btn-success w-100">入力する</button>
-            </form>
-            @else
-            <!-- 支出フォーム -->
-            <form action="" id="formContainer" method="post">
-                @csrf
-                <div class="formGroup">
-                    <div class="formUnit mb-2">
-                        <label class="form-label" for="date">日付</label>
-                        <input type="text" id="date" class="form-control" name="date" placeholder="日付を入力してください" required>
-                    </div>
-                    <div class="formUnit mb-2">
-                        <label class="form-label" for="shop">お店</label>
-                        <input type="text" id="shop" class="form-control" name="shop" placeholder="お店の名前を入力してください" required>
-                    </div>
-                    <div id="formListBlock">
-                        <div class="formList mb-2 d-flex flex-row">
-                            <div class="formUnit form-item col-md-3 me-1">
-                                <label class="form-label visually-hidden" for="item">品目</label>
-                                <input type="text" id="item" class="form-control item" name="item[]" placeholder="品目" required>
+
+                <script>
+                    // BladeからデータをJavaScriptのグローバル変数に渡す
+                    window.groupedOutcomeCategories = @json($groupedOutcomeCategories);
+                </script>
+                
+                <div class="createBox p-2">
+                    @if($toggle === 'income')
+                    <!-- 収入フォーム -->
+                    <form action="{{ route('store') }}" class="formContainer needs-validation" method="post">
+                        @csrf
+                        <input type="hidden" name="toggle" value="{{ request('toggle') }}">
+                        <div class="formGroupBlock">
+                            <div class="form-group">
+                                <label class="form-label" for="inputDate">日付</label>
+                                <input type="text" name="date" id="inputDate" class="form-control" placeholder="日付を入力してください" value="{{ $errors->has('date') ? '' : old('date') }}" required autocomplete="off">
+                                <div class="text-danger dateValidationErrorJs"></div>
+                                @error('date')
+                                    <div class="validationError dateValidationError text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
-                            <div class="formUnit form-category col-md-3 me-1">
-                                <label class="form-label visually-hidden" for="category">カテゴリ</label>
-                                <select name="category" id="category" class="form-control">
-                                    @foreach ($groupedCategories as $groupedCategory)
-                                        <!-- メインカテゴリ（選択不可） -->
-                                        <option value="main-{{ $groupedCategory['main_id'] }}" disabled>{{ $groupedCategory['main_name'] }}</option>
-                                        @foreach ($groupedCategory['sub_categories'] as $subCategory)
-                                            <!-- サブカテゴリ -->
-                                            <option value="sub-{{ $subCategory['sub_id'] }}">{{ $subCategory['sub_name'] }}</option>
-                                        @endforeach
+                            <div class="form-group mt-2">
+                                <label class="form-label" for="inputAmount">金額</label>
+                                <input type="text" name="amount" id="inputAmount" class="form-control" placeholder="金額を入力してください" value="{{ $errors->has('amount') ? '' : old('amount') }}" required autocomplete="off">
+                                <div class="text-danger amountValidationErrorJs"></div>
+                                @error('date')
+                                    <div class="validationError amountValidationError text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group mt-2">
+                                <label class="form-label" for="inputCategory">カテゴリ</label>
+                                <select name="category" class="form-control" id="inputCategory" required>
+                                    <option value="default" selected>カテゴリを選択してください</option>
+                                    @foreach ($incomeCategories as $incomeCategory)
+                                        <option value="category-{{ $incomeCategory->id }}" {{ old('category') == "category-$incomeCategory->id" ? 'selected' : ''}}>
+                                            {{ $incomeCategory->name }}
+                                        </option>
                                     @endforeach
-                                </select>                                
+                                </select>
+                                @error('category')
+                                    <div class="validationError categoryValidationError text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
-                            <div class="formUnit form-price col-md-3 me-1">
-                                <label class="form-label visually-hidden" for="price">金額</label>
-                                <input type="text" id="price" class="form-control price" name="price[]" placeholder="金額" required>
+                            <div class="form-group mt-2">
+                                <label class="form-label" for="inputMemo">メモ</label>
+                                <textarea name="memo" id="inputMemo" class="form-control" placeholder="メモを入力してください" value="{{ $errors->has('memo') ? '' : old('memo') }}" rows="3"></textarea>
                             </div>
-                            <div class="formUnit form-amount col-md-3 me-1">
-                                <label class="form-label visually-hidden" for="amount">個数</label>
-                                <input type="text" id="amount" class="form-control amount" name="amount[]" placeholder="1" required>
-                            </div>
-                            <!-- 削除ボタン -->
-                            <button type="button" class="btn btn-danger remove-form">削除</button>
                         </div>
-                    </div>
-                    <div class="text-end">
-                        <!-- プラスボタン -->
-                        <button type="button" id="add-form" class="btn btn-primary mt-2 mb-2 text-end">＋ フォームを追加</button>
-                    </div>
-                    <div class="formUnit mb-2">
-                        <label class="form-label" for="totalPrice">合計金額</label>
-                        <input type="text" id="totalPrice" class="form-control totalPrice" name="totalPrice" required>
-                    </div>
+                        <button type="submit" class="btn btn-success w-100 mt-2">入力する</button>
+                    </form>
+                    @else
+                    <!-- 支出フォーム -->
+                    <form action="{{ route('store') }}" class="formContainer needs-validation" method="post">
+                        @csrf
+                        <input type="hidden" name="toggle" value="{{ request('toggle') }}">
+                        <div class="formGroupBlock">
+                            <div class="form-group">
+                                <label class="form-label" for="inputDate">日付</label>
+                                <input type="text" name="date" id="inputDate" class="form-control" placeholder="日付を入力してください" value="{{ $errors->has('date') ? '' : old('date') }}" required autocomplete="off">
+                                <div class="text-danger dateValidationErrorJs"></div>
+                                @error('date')
+                                    <div class="validationError dateValidationError text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group mt-2">
+                                <label class="form-label" for="inputShop">お店</label>
+                                <input type="text" name="shop" id="inputShop" class="form-control" placeholder="お店の名前を入力してください" value="{{ $errors->has('shop') ? '' : old('shop') }}" required autocomplete="off">
+                                <div class="text-danger shopValidationErrorJs"></div>
+                                @error('shop')
+                                    <div class="validationError shopValidationError text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div id="formListBlock" class="mt-2">
+                                @foreach (old('item', ['']) as $index => $oldItem)
+                                    <div class="formList d-flex flex-column">
+                                        <div class="inputList mb-2 d-flex flex-row">
+                                            <div class="form-group form-item col-md-3 me-1">
+                                                <label class="form-label visually-hidden" for="item-{{ $index }}">品目</label>
+                                                <input type="text" name="item[]" id="item-{{ $index }}" class="form-control item" placeholder="商品名" value="{{ $oldItem }}" required autocomplete="off">
+                                            </div>
+                                            <div class="form-group form-category col-md-3 me-1">
+                                                <label class="form-label visually-hidden" for="category-{{ $index }}">カテゴリ</label>
+                                                <select name="category[]" id="category-{{ $index }}" class="form-control category" >
+                                                    @foreach ($groupedOutcomeCategories as $groupedOutcomeCategory)
+                                                        <!-- メインカテゴリ（選択不可） -->
+                                                        <option value="outcome-main-{{ $groupedOutcomeCategory['main_id'] }}" disabled>
+                                                            {{ $groupedOutcomeCategory['main_name'] }}
+                                                        </option>
+                                                        @foreach ($groupedOutcomeCategory['sub_categories'] as $subCategory)
+                                                            <!-- サブカテゴリ -->
+                                                            <option value="outcome-main-{{ $groupedOutcomeCategory['main_id'] }}|outcome-sub-{{ $subCategory['sub_id'] }}" {{ old('category' . $index) == "outcome-main-{$groupedOutcomeCategory['main_id']} | outcome-sub-{$subCategory['sub_id']}" ? 'selected' : ''}}>
+                                                                {{ $subCategory['sub_name'] }}
+                                                            </option>
+                                                        @endforeach
+                                                    @endforeach
+                                                </select>                                
+                                            </div>
+                                            <div class="form-group form-price col-md-3 me-1">
+                                                <label class="form-label visually-hidden" for="price-{{ $index }}">金額</label>
+                                                <input type="text" name="price[]" id="price-{{ $index }}" class="form-control price" placeholder="金額" value="{{ old('price.' . $index) }}" required autocomplete="off">
+                                            </div>
+                                            <div class="form-group form-amount col-md-3 me-1">
+                                                <label class="form-label visually-hidden" for="amount-{{ $index }}">個数</label>
+                                                <input type="text" name="amount[]" id="amount-{{ $index }}" class="form-control amount" placeholder="1" value="{{ old('amount' . $index) }}" required autocomplete="off">
+                                            </div>
+                                            <!-- 削除ボタン -->
+                                            <button type="button" class="btn btn-danger remove-form">削除</button>
+                                        </div>
+                                        <div class="errorList">
+                                            <div class="formListValidationErrorJs"></div>
+                                            <div class="validationError formListValidationError"></div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <div class="text-end">
+                                <!-- プラスボタン -->
+                                <button type="button" id="add-form" class="btn btn-primary mt-2 mb-2 text-end">＋ フォームを追加</button>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="totalPrice">合計金額</label>
+                                <input type="text" id="totalPrice" class="form-control totalPrice" name="totalPrice" required>
+                            </div>
+                            <div class="form-group mt-2">
+                                <label class="form-label" for="inputMemo">メモ</label>
+                                <textarea name="memo" id="inputMemo" class="form-control" placeholder="メモを入力してください" value="{{ $errors->has('memo') ? '' : old('memo') }}" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100 mt-2">入力する</button>
+                    </form>
+                    @endif
+
                 </div>
-                <button class="btn btn-success w-100" type="submit">入力する</button>
-            </form>
-            @endif
-
+            </div>
+            <div class="calendar col-4 mt-4 ms-1">
+                <div class="calendarTitle text-center">
+                    <button onclick="prevMonth()"><img src="{{ asset('images/left.png') }}" height="20" width="20"></button>
+                    <span id="currentMonthYear"></span>
+                    <button onclick="nextMonth()"><img src="{{ asset('images/right.png') }}" height="20" width="20"></button>
+                </div>
+                <div class="calendarContainer">
+                    <table class="calendarTable">
+                        <thead>
+                            <tr>
+                                <th>日</th>
+                                <th>月</th>
+                                <th>火</th>
+                                <th>水</th>
+                                <th>木</th>
+                                <th>金</th>
+                                <th>土</th>
+                            </tr>
+                        </thead>
+                        <tbody id="calendarBody">
+                            <!-- 1ヶ月目のカレンダーがJSで生成されます -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="col-4 mt-4">
-        <div class="calendarTitle text-center">
-            <button onclick="prevMonth()"><img src="{{ asset('images/left.png') }}" height="20" width="20"></button>
-        <span id="currentMonthYear"></span>
-        <button onclick="nextMonth()"><img src="{{ asset('images/right.png') }}" height="20" width="20"></button>
-        </div>
-        <div class="calendarContainer">
-            <table class="calendarTable">
-                <thead>
-                    <tr>
-                        <th>日</th>
-                        <th>月</th>
-                        <th>火</th>
-                        <th>水</th>
-                        <th>木</th>
-                        <th>金</th>
-                        <th>土</th>
-                    </tr>
-                </thead>
-                <tbody id="calendarBody">
-                    <!-- 1ヶ月目のカレンダーがJSで生成されます -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<script src="{{ asset('js/expenses-form.js')}}"></script>
-<script src="{{ asset('js/calendar.js')}}"></script>
+    @if($toggle === 'income')
+        <script src="{{ asset('js/income-form.js')}}"></script>
+    @else
+        <script src="{{ asset('js/outcome-form.js')}}"></script>
+    @endif
+    <script src="{{ asset('js/calendar.js')}}"></script>
 @endsection

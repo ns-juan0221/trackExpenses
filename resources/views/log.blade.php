@@ -2,13 +2,19 @@
 @section('title', 'マネーログ')
 
 @section('content')
-    <div class="container-fluid flex-grow-1">
-        <div class="routeDisplay w-100">
-            <p class="ms-2 p-1">
-                <a href="{{ route('getHalfYearGroupsAndLeastItemsToRedirectMain') }}">ホーム</a> -> <a href="{{ route('getCategoriesToSeeHistories') }}">検索</a>
-            </p>
+<div class="container-fluid d-flex">
+    <div class="routeDisplay w-100 border-bottom border-2">
+        <p class="ms-2 p-1">
+            <a href="{{ route('getHalfYearGroupsAndLeastItemsToRedirectMain') }}">ホーム</a>  ->  <a href="{{ route('getCategoriesToInsert') }}">履歴</a>
+        </p>
+    </div>
+    <div class="searchBox d-flex flex-column">
+        <div class="searchBtn d-flex justify-content-end w-100 pe-5">
+            <button class="btn btn-primary toggleButton" id="toggleSearchButton" type="button" data-bs-toggle="collapse" data-bs-target="#searchForm" aria-expanded="false" aria-controls="searchForm">
+                検索
+            </button>
         </div>
-        <div class="searchBox">
+        <div class="searchForm collapse" id="searchForm">
             <form action="/view" class="formContainer p-2 align-items-center d-flex flex-column" method="post">
                 @csrf
                 <div class="form-group">
@@ -182,6 +188,53 @@
             </form>
         </div>
     </div>
+    <div class="log m-3">
+        <div class="logTitle d-flex flex-row mt-2 align-items-center">
+            <div class="itemData flex-grow-1 d-flex flex-row col-6">
+                <div class="day col-3">
+                    <p>日付</p>
+                </div>
+                <div class="shop col-5">
+                    <p>お店</p>
+                </div>
+                <div class="totalPrice col-4">
+                    <p>合計金額</p>
+                </div>
+            </div>
+            <div class="blank col-3"></div>
+            <div class="btnGroup d-flex justify-content-end col-3">
+                <div class="editBtn">
+                    <p class="px-3 mx-4"> 編集 </p>
+                </div>
+                <div class="deleteBtn">
+                    <p class="px-3 mx-4">削除</p>
+                </div>
+            </div>
+        </div>
+        <div class="logItem d-flex flex-row mt-2 align-items-center">
+            <div class="itemData flex-grow-1 d-flex flex-row col-6">
+                <div class="day col-3">
+                    <p>2024/12/10</p>
+                </div>
+                <div class="shop col-5">
+                    <p>ショップ10</p>
+                </div>
+                <div class="totalPrice col-4">
+                    <p>-1802円</p>
+                </div>
+            </div>
+            <div class="blank col-3"></div>
+            <div class="btnGroup d-flex justify-content-end col-3">
+                <div class="editBtn">
+                    <button class="btn px-3 mx-4"><img src="{{ asset('images/editBtn2.png') }}" width="30"></button>
+                </div>
+                <div class="deleteBtn">
+                    <button class="btn px-3 mx-4"><img src="{{ asset('images/deleteBtn2.png') }}" width="30"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <script src="{{ asset('js/categoriesSelect.js') }}"></script>
+<script src="{{ asset('js/categoriesSelect.js') }}"></script>
 @endsection

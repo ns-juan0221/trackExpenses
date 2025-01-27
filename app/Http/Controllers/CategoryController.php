@@ -19,32 +19,39 @@ class CategoryController extends Controller {
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function getCategoriesToSearch() {
-        $this->getCategoriesAndFormatData();
+    public function getCategoriesToSeeHistories() {
+        $this->getOutcomeCategoriesAndFormatData();
 
-        return redirect('/search');
+        return redirect('/histories');
     }
 
     public function getCategoriesToInsert() {
-        $this->getCategoriesAndFormatData();
+        $this->getOutcomeCategoriesAndFormatData();
+        $this->getIncomeCategories();
 
         return redirect('/new');
     }
 
-    public function getCategoriesAndFormatData() {
-        $categories = $this->categoryRepository->getCategories();
+    public function getIncomeCategories() {
+        $incomeCategories = $this->categoryRepository->getIncomeCategories();
 
-        $groupedCategories = [];
+        Session::put('incomeCategories', $incomeCategories);
+    }
+
+    public function getOutcomeCategoriesAndFormatData() {
+        $categories = $this->categoryRepository->getOutcomeCategories();
+
+        $groupedOutcomeCategories = [];
 
         foreach ($categories as $category) {
-            $groupedCategories[$category->main_id]['main_id'] = $category->main_id;
-            $groupedCategories[$category->main_id]['main_name'] = $category->main_name;
-            $groupedCategories[$category->main_id]['sub_categories'][] = [
+            $groupedOutcomeCategories[$category->main_id]['main_id'] = $category->main_id;
+            $groupedOutcomeCategories[$category->main_id]['main_name'] = $category->main_name;
+            $groupedOutcomeCategories[$category->main_id]['sub_categories'][] = [
                 'sub_id' => $category->sub_id,
                 'sub_name' => $category->sub_name
             ];
         }
 
-        Session::put('groupedCategories', $groupedCategories);
+        Session::put('groupedOutcomeCategories', $groupedOutcomeCategories);
     }
 }

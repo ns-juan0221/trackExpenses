@@ -4,8 +4,7 @@ namespace App\Repositories;
 
 use Illuminate\Support\Facades\DB;
 
-class OutcomeRepository
-{
+class OutcomeRepository {
     /**
      * 指定したユーザーの過去6ヶ月分の月ごとの合計を取得
      *
@@ -36,7 +35,7 @@ class OutcomeRepository
         return DB::select("
             WITH latest_items AS (
                 SELECT
-                    oi.id,oi.user_id,oi.group_id,oi.date,oi.item,oi.price,oi.memo,oi.m_category_id,oi.s_category_id,og.shop,og.totalPrice,ROW_NUMBER() OVER (PARTITION BY oi.group_id ORDER BY oi.date DESC) AS rn
+                    oi.id,oi.user_id,oi.group_id,oi.date,oi.item,oi.price,oi.m_category_id,oi.s_category_id,og.shop,og.totalPrice,ROW_NUMBER() OVER (PARTITION BY oi.group_id ORDER BY oi.date DESC) AS rn
                 FROM
                     outcome_items AS oi
                 JOIN
@@ -47,7 +46,7 @@ class OutcomeRepository
                     oi.user_id = :user_id AND oi.del_flg = 0 AND og.del_flg = 0
             )
             SELECT
-                li.id,li.user_id,li.group_id,li.date,li.item,li.price,li.memo,li.shop,li.totalPrice,li.m_category_id,mcat.name AS m_category_name,li.s_category_id,scat.name AS s_category_name
+                li.id,li.user_id,li.group_id,li.date,li.item,li.price,li.shop,li.totalPrice,li.m_category_id,mcat.name AS m_category_name,li.s_category_id,scat.name AS s_category_name
             FROM
                 latest_items AS li
             LEFT JOIN

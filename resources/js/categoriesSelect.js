@@ -18,8 +18,8 @@ function renderCategoriesList(searchTerm = '') {
     const listContainer = $('#categoriesList');
     listContainer.empty();
 
-    // groupedCategoriesを配列として扱う
-    Object.values(groupedCategories).forEach(mainCategory => {
+    // groupedOutcomeCategoriesを配列として扱う
+    Object.values(groupedOutcomeCategories).forEach(mainCategory => {
         const mainName = mainCategory.main_name;
         const subCategories = mainCategory.sub_categories;
 
@@ -110,7 +110,7 @@ function updateSelectedCategories() {
     const container = $('#selected-categories');
     container.empty();
 
-    Object.values(groupedCategories).forEach(mainCategory => {
+    Object.values(groupedOutcomeCategories).forEach(mainCategory => {
         const mainName = mainCategory.main_name;
         const subCategories = mainCategory.sub_categories;
 

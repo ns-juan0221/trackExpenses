@@ -2,12 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\OutcomeRepository;
+use App\Repositories\IncomeRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
 
 
 class MainController extends Controller {
+    protected $incomeController;
+    protected $outcomeController;
+
+    /**
+     * ViewController constructor.
+     *
+     * @param OutcomeController $outcomeController
+     * @param IncomeController $incomeController
+     */
+    public function __construct(OutcomeController $outcomeController, IncomeController $incomeController) {
+        $this->incomeController = $incomeController;
+        $this->outcomeController = $outcomeController;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,6 +35,10 @@ class MainController extends Controller {
         $currentYearValues = Session::get('currentYearValues');
         $items = Session::get('items');
 
+        if (is_null($labels) || is_null($lastYearValues) || is_null($currentYearValues)) {
+            return redirect()->route('login')->withErrors(['login_error' => 'ログインが必要です'])->withInput();
+        }
+
         return view('main',compact('labels', 'lastYearValues', 'currentYearValues','items'));
     }
 
@@ -28,10 +48,15 @@ class MainController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-            $toggle = request('toggle');
-            $groupedCategories = Session::get('groupedCategories');
+        $toggle = request('toggle');
+        $groupedOutcomeCategories = Session::get('groupedOutcomeCategories');
+        $incomeCategories = Session::get('incomeCategories');
 
-            return view('create', compact('groupedCategories','toggle'));
+        if (is_null($groupedOutcomeCategories) || is_null($incomeCategories)) {
+            return redirect()->route('login')->withErrors(['login_error' => 'ログインが必要です'])->withInput();
+        }
+
+        return view('create', compact('groupedOutcomeCategories','incomeCategories','toggle'));
     }
 
     /**
@@ -41,7 +66,14 @@ class MainController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        //
+
+        if ($request->input('toggle') === 'income') {
+            Log::info('incomeControllerに入りました');
+            return $this->incomeController->store($request);
+        }
+
+        Log::info('outcomeControllerに入りました');
+        return $this->outcomeController->store($request);
     }
 
     /**

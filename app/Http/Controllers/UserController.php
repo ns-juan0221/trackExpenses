@@ -2,9 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller {
+    protected $userService;
+
+    /**
+     * コンストラクタ
+     *
+     * @param \App\Services\UserService $userService
+     */
+    public function __construct(UserService $userService) {
+        $this->userService = $userService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +39,7 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        //
+        return view('register');
     }
 
     /**
@@ -30,7 +49,32 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        //
+        try {
+            $validator = $this->userService->validateUser($request->all());
+            $validator->validate();
+            Log::info('Validation passed'); // バリデーションが通ったことを記録
+
+            $user = $this->userService->createUser($request->all());
+            Log::info('User created: ' . $user->id);
+
+            // ユーザー登録イベントの発火
+            event(new Registered($user));
+
+            // 登録後に自動ログイン
+            auth()->login($user);
+
+            // user_idをセッションに保存
+            session(['user_id' => auth()->id()]);
+
+            // 登録後のリダイレクト
+            return redirect()->route('getHalfYearGroupsAndLeastItemsToRedirectMain');
+        } catch (ValidationException $e) {
+            Log::error('Validation failed', ['errors' => $e->errors()]);
+            return back()->withErrors($e->errors())->withInput();
+        } catch (\Throwable $e) {
+            Log::error('User creation failed', ['message' => $e->getMessage()]);
+            return back()->with('error', 'ユーザーの作成に失敗しました。もう一度お試しください。');
+        }
     }
 
     /**

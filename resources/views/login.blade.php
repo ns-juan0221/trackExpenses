@@ -3,23 +3,23 @@
 
 @section('content')
     <div class="loginBox text-center">
-    @if($errors->has('login_error'))
-        <div class="alert alert-danger">
-            {{ $errors->first('login_error') }}
-        </div>
-    @endif
+        @if($errors->has('login_error'))
+            <div class="validationError alert alert-danger">
+                {{ $errors->first('login_error') }}
+            </div>
+        @endif
 
-        <form action="/login" class="formContainer border p-2" method="post">
+        <form action="/login" class="formContainer needs-validation border p-2" method="post">
             @csrf
             <img src="{{ asset('images/icon.png') }}" alt="logo" class="logo" height="100" width="100">
             <h1 class="h3 mb-3"></h1>
-            <div class="formGroup">
+            <div class="form-group">
                 <div class="formUnit d-flex flex-row align-items-center">
-                    <label for="inputEmail" class="form-label visually-hidden">Email address</label>
+                    <label for="inputEmail" class="form-label visually-hidden">メールアドレス</label>
                     <input name="email" type="email" id="inputEmail" class="form-control" placeholder="メールアドレス" required autofocus>
                 </div>
                 <div class="formUnit d-flex flex-row align-items-center mt-2">
-                    <label for="inputPassword" class="form-label visually-hidden">Password</label>
+                    <label for="inputPassword" class="form-label visually-hidden">パスワード</label>
                     <input name="password" type="password" id="inputPassword" class="form-control" placeholder="パスワード" required autofocus autocomplete="current-password">
                 </div>
                 <!-- パスワード表示用のチェックボックス -->

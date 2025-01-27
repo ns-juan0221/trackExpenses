@@ -4,15 +4,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateIncomeCategoriesTable extends Migration
-{
+class CreateIncomeCategoriesTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('income_categories', function (Blueprint $table) {
             $table->id(); // id
             $table->string('name'); // カテゴリ名
@@ -27,8 +25,7 @@ class CreateIncomeCategoriesTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('income_categories');
     }
 }

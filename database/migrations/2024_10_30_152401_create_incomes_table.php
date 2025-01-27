@@ -4,22 +4,20 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateIncomesTable extends Migration
-{
+class CreateIncomesTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('incomes', function (Blueprint $table) {
             $table->id(); // id
-            $table->date('date'); // date
-            $table->decimal('amount', 10, 2); // amount
-            $table->unsignedBigInteger('category_id'); // category_id
-            $table->text('memo')->nullable(); // memo
             $table->unsignedBigInteger('user_id'); // user_id
+            $table->date('date'); // date
+            $table->unsignedBigInteger('category_id'); // category_id
+            $table->decimal('amount', 10, 2); // amount
+            $table->text('memo')->nullable(); // memo
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->tinyInteger('del_flg')->default(0); // del_flg
@@ -35,8 +33,7 @@ class CreateIncomesTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('incomes');
     }
 }

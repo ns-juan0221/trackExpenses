@@ -5,8 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OutcomeGroup extends Model
-{
+class OutcomeGroup extends Model {
     use HasFactory;
 
     /**
@@ -24,9 +23,11 @@ class OutcomeGroup extends Model
      * @var array
      */
     protected $fillable = [
+        'user_id',  
         'date',
         'shop',
         'totalPrice',
+        'memo',  
         'del_flg',
     ];
 

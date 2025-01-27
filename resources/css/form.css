@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@100;400;700&display=swap');
 
+/* #22c55e rgba(34, 197, 94, 1) */
+/* #4ade80 rgba(74, 222, 128, 1) */
+/* #5fde8d rgba(99, 222, 141, 1) */
+/* #bbf7d0 rgba(187, 247, 208, 1) */
+
 body {
     background-image: url('../images/bg.png');
     height: 100vh; /* 高さを100%に設定 */
@@ -23,10 +28,8 @@ main {
 .searchBox {
     width: 100%; /* 横幅を全体に広げる */
     display: flex; /* Flexboxを適用 */
-    flex-grow: 1; /* main内で余った高さを全て使用 */
     justify-content: center; /* 横方向の中央揃え */
     align-items: center; /* 縦方向の中央揃え */
-
 }
 
 .searchBox .formContainer {
@@ -136,62 +139,10 @@ main {
     margin-right: 10px; /* テキストとの間隔を設定 */
 }
 
-.categoryModal {
-    position: absolute;
-    background-color: #ffffff;
-    margin: 0;
-    min-width: 300px;
-    z-index: 100;
-    padding: 10px;
-    max-height: 300px;
-
-}
-
-.selected-category {
-    display: inline-block;
-    margin: 5px;
-    padding: 5px 10px;
-    background-color: #e1feeb;
-    border: 1px solid #8ef8b5;
-    border-radius: 15px;
-} 
-
-.selected-category button {
-    border: none;
-    background: transparent;
-    color: #f44336;
-    margin-left: 5px;
-}
-/*
-.main-category {
-    font-weight: bold;
-    margin-top: 15px;
-} */
-
-.btnGroup {
-    display: flex;
-    justify-content: center; /* x軸方向の中央揃え */
-    margin-top: 20px; /* ボタン上部の余白 */
-}
-
-.btnGroup .btn {
-    margin: 0 10px; /* ボタン間のスペース */
-    padding: 10px 20px; /* ボタンのパディング */
-}
-
-.categoryMenu {
-    position: absolute;
-    background-color: #ffffff;
-    margin: 0;
-    min-width: 160px;
-    min-height: 50px;
-    max-height: 260px;
-    z-index: 100;
-    padding: 10px;
-    border: 1px solid #4ade80;
-    color: #999;
-    font-weight: bold;
-    overflow-y: auto;
-    overflow-x: hidden;
-    box-shadow: 0 0 5px #f44336;
+.searchForm.collapse {
+    top: 100%; /* 親要素の直下に配置 */
+    left: 0;
+    width: 100%; /* 親要素に合わせる */
+    z-index: 10; /* 必要に応じて他の要素より前面に表示 */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* ドロップシャドウ（オプション） */
 }

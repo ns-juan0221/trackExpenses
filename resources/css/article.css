@@ -1,30 +1,34 @@
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@100;400;700&display=swap');
 
+/* #22c55e rgba(34, 197, 94, 1) */
+/* #34ce6c rgba(52, 206, 108, 1) */
+/* #4ade80 rgba(74, 222, 128, 1) */
+/* #5fde8d rgba(99, 222, 141, 1) */
+/* #bbf7d0 rgba(187, 247, 208, 1) */
+
 body {
     background-image: url('../images/bg.png');
 }
 
-.container-fluid {
-    display: flex;
+.BarGraph {
+    background-color:  rgba(255, 255, 255, 0.7) !important;
 }
 
-.yearGraph {
-    height: auto;
+.BarGraph .graphTitle {
     width: auto;
 }
 
-.yearGraph .graphTitle {
-    width: auto;
-}
-
-.yearGraph .graphMain {
+.BarGraph .graphMain {
     flex-grow: 1;
     width: auto;
+    height: auto;
+    /* height: 400px; */
 }
 
 .history {
     height: 100%;
     width: auto;
+    background-color:  rgba(255, 255, 255, 0.7) !important;
 }
 
 .history .historyTitle {
@@ -87,80 +91,73 @@ body {
     list-style: none;
     margin: 0;
     padding: 0;
+    position: relative;
 }
 
 .switch-nav ul li {
     text-align: center;      /* テキストを中央揃え */
-    width: 33%;
-}
-
-.switch-nav ul li.outcome {
+    position: relative;
+    z-index: 1;
     border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-}
-
-.switch-nav ul li.income {
     border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
 }
 
 .switch-nav ul li:not(.active) {
-    background-color: #ffffff; /* デフォルトの背景色を白に設定 */
+    background-color: #22c55e; 
+    z-index: 1;
 }
 
 .switch-nav ul li.active {
-    background-color: #bbf7d0; /* activeクラスの背景色を薄い緑色に設定 */
+    background-color: #fafafa;
+    border-top: 2px solid #000000;
+    border-left: 2px solid #000000;
+    border-right: 2px solid #000000;
+    z-index: 10;
 }
 
-.switch-nav ul li.outcome:hover {
+.switch-nav ul li:hover {
     border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-}
-
-.switch-nav ul li.income:hover {
     border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
 }
 
 .switch-nav ul li a {
     display: block;
     padding: 10px;
-    text-decoration: none;  /* 下線を消す */
+    text-decoration: none;
 }
 
 .switch-nav ul li:not(.active) a {
-    color: #000000;            /* リンクの色を黒に設定 */
+    color: #ffffff; 
 }
 
 .switch-nav ul li.active a {
-    color: #49c54f ;            /* リンクの色を黒に設定 */
+    color: #000000 ; 
+}
+
+.switch-nav ul li a:hover {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .switch-nav ul li.active a:hover {
-    background-color: #dcfce7;
-    color: #81cc85;
-}
-
-.switch-nav ul li:not(.active) a:hover {
     background-color: #fafafa;
     color: #a2a2a2;
 }
 
-.switch-nav ul li.outcome a:hover {
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-}
-
-.switch-nav ul li.income a:hover {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
+.switch-nav ul li:not(.active) a:hover {
+    background-color: #34ce6c;
+    color: #ffffff;
 }
 
 .createBox {
-    background-color: rgba(250, 250, 250, 0.95);
+    background-color: #fafafa;
     height: auto; /* フォームに応じて自動で広がる */
-    max-height: calc(100vh - 200px);
-    overflow-y: auto; /* 縦スクロールを有効化 */
+    max-height: calc(100vh - 250px);
+    overflow-y: auto; 
+    border: 2px solid #000000;
+    margin-top: -2px;
+    position: relative;
+    z-index: 5;
 }
 
 .form-item, .form-category, .form-price, .form-amount {

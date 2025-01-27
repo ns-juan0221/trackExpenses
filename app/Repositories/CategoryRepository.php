@@ -5,7 +5,7 @@ namespace App\Repositories;
 use Illuminate\Support\Facades\DB;
 
 class CategoryRepository {
-    public function getCategories() {
+    public function getOutcomeCategories() {
         return DB::select("
             SELECT 
                 m.id AS main_id,m.name AS main_name,s.id AS sub_id,s.name AS sub_name
@@ -17,6 +17,17 @@ class CategoryRepository {
                 m.id = s.main_category_id
             WHERE 
                 m.del_flg = 0 AND s.del_flg = 0;
+        ");
+    }
+
+    public function getIncomeCategories() {
+        return DB::select("
+            SELECT 
+                id,name
+            FROM 
+                income_categories
+            WHERE 
+                del_flg = 0;
         ");
     }
 }

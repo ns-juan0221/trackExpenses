@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -18,25 +19,36 @@ class LoginController extends Controller {
 
     // 認証処理
     public function login(Request $request) {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
+        try{
+            $validator = Validator::make($request->all(), [
+                'email' => ['required', 'email'],
+                'password' => ['required'],
+            ]);
+            $validator->validate();
 
-        if (Auth::attempt($credentials)) {
+            // 認証処理
+            if (Auth::attempt($request->only('email', 'password'))) {
+                // Laravelセッションの再生成
+                $request->session()->regenerate();
 
-            // Laravelセッションの再生成
-            $request->session()->regenerate();
+                // 認証成功後、user_idをセッションに保存
+                session(['user_id' => Auth::id()]);
 
-            // 認証成功後、user_idをセッションに保存
-            session(['user_id' => Auth::id()]);
+                // メイン画面へリダイレクト
+                return redirect()->route('getHalfYearGroupsAndLeastItemsToRedirectMain');
+            } else {
+                // 認証失敗の場合はエラーメッセージを返す
+                return back()->withErrors(['login_error' => 'メールアドレスまたはパスワードが間違っています']) ;
+            }
 
-            return redirect()->route('getHalfYearGroupsAndLeastItems');
+        }catch(ValidationException $e) {
+            return back()->withErrors(['login_error' => '入力内容にエラーがあります'])->withInput();
+
+        }catch (\Exception $e) {
+            // その他の例外をキャッチしてエラーメッセージを表示
+            return back()->withErrors(['login_error' => '予期しないエラーが発生しました'])->withInput();
+
         }
-
-        throw ValidationException::withMessages([
-            'email' => __('ログイン情報が正しくありません。'),
-        ]);
     }
 
     // ログアウト処理

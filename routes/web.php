@@ -6,7 +6,10 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\OutcomeController;
+use App\Http\Controllers\IncomeController;
+use App\Http\Controllers\ViewController;
 use App\Http\Controllers\SearchController;
 use App\Repositories\CategoryRepository;
 use Illuminate\Support\Facades\Route;
@@ -26,42 +29,48 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('guest', [OutcomeController::class, 'getSampleHalfYearGroups'])
+//ゲストページ
+Route::get('guest', [ViewController::class, 'getSampleHalfYearGroupsAndLeastItems'])
 ->name('guest');
 
+// ユーザー登録関連
+Route::get('register', [UserController::class, 'create'])
+->name('register');
+Route::post('register', [UserController::class, 'store']);
+
 // ログイン関連
+// ログイン画面
 Route::get('login', [LoginController::class, 'index'])
-->name('login'); // ログイン画面
-
-Route::post('login', [LoginController::class, 'login']); // 認証処理
-
+->name('login'); 
+// ログイン処理
+Route::post('login', [LoginController::class, 'login']); 
+//ログアウト処理
 Route::get('logout', [LoginController::class, 'logout'])
 ->name('logout');
 
-Route::get('getHalfYearGroupsAndLeastItems', [OutcomeController::class, 'getHalfYearGroupsAndLeastItems'])
-->name('getHalfYearGroupsAndLeastItems')->middleware('auth');
+//メイン画面
+Route::get('getHalfYearGroupsAndLeastItemsToRedirectMain', [ViewController::class, 'getHalfYearGroupsAndLeastItemsToRedirectMain'])
+->name('getHalfYearGroupsAndLeastItemsToRedirectMain')->middleware('auth');
 Route::get('main', [MainController::class, 'index'])->middleware('auth');
 
+//追加画面
+Route::get('getCategoriesToInsert', [CategoryController::class, 'getCategoriesToInsert'])
+->name('getCategoriesToInsert')->middleware('auth');
+Route::get('new', [MainController::class, 'create'])
+->name('new');
+
+Route::post('store', [MainController::class, 'store']) -> name('store');
+
+//検索画面
+Route::get('getCategoriesToSeeHistories', [CategoryController::class, 'getCategoriesToSeeHistories'])
+->name('getCategoriesToSeeHistories')->middleware('auth');
+Route::get('histories', [ViewController::class, 'index']);
 
 // パスワードリセット関連
 Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
 Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('/password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
-
-// ユーザー登録関連
-Route::get('register', [RegisterController::class, 'showRegistrationForm'])
-->name('register');
-Route::post('register', [RegisterController::class, 'register']);
-
-Route::get('getCategoriesToSearch', [CategoryController::class, 'getCategoriesToSearch'])
-->name('getCategoriesToSearch')->middleware('auth');
-Route::get('search', [SearchController::class, 'index']);
-
-Route::get('getCategoriesToInsert', [CategoryController::class, 'getCategoriesToInsert'])
-->name('getCategoriesToInsert')->middleware('auth');
-Route::get('new', [MainController::class, 'create'])
-->name('new');
 
 Route::get('setting', function() {
     return view('setting');

@@ -92,6 +92,7 @@ class OutcomeItemSeeder extends Seeder
                 'm_category_id' => $m_category_id,
                 's_category_id' => $s_category_id,
                 'price' => rand(100, 500),  
+                'amount' => rand(1,3),
                 'del_flg' => 0,
             ]);
         }

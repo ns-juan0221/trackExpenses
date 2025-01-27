@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Session;
 class SearchController extends Controller
 {
     public function index() {
-        $groupedCategories = Session::get('groupedCategories');
+        $groupedOutcomeCategories = Session::get('groupedOutcomeCategories');
 
-        return view('search',compact('groupedCategories'));
+        return view('log',compact('groupedOutcomeCategories'));
     }
 
 

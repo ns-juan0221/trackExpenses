@@ -6,12 +6,12 @@ document.addEventListener("DOMContentLoaded", function() {
         datasets: [
             {
                 label: '前年の支出',
-                backgroundColor: 'rgba(75, 192, 192, 0.8)',
+                backgroundColor: 'rgba(187, 247, 208, 1)',
                 data: window.lastYearValues,
             },
             {
                 label: '今年の支出',
-                backgroundColor: 'rgba(255, 99, 132, 0.8)',
+                backgroundColor: 'rgba(34, 197, 94, 1)',
                 data: window.currentYearValues,
             }
         ]
@@ -21,32 +21,40 @@ document.addEventListener("DOMContentLoaded", function() {
         type: 'bar',
         data: data,
         options: {
-            responsive: true,
+            responsive: false,
             scales: {
                 x: {
                     stacked: true,  // 同じ月で前年度と今年を並べる
                     grid: {
-                        display: false,  // 通常のグリッド線は非表示
+                        display: false, 
                     },
                     border: {
                         display: true,
-                        color: 'rgba(0, 0, 0, 0.5)',  // x=0のラインの色
-                        width: 1.5                    // x=0のラインの太さ
+                        color: 'rgba(0, 0, 0, 0.5)',  
+                        width: 1.5 
                     }
                 },
                 y: {
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: '支出金額（円）'
+                        text: '支出金額（円）',
+                        color: '#000', 
+                        font: {
+                            size: 14,           // フォントサイズ
+                            family: 'M PLUS Rounded 1c', 
+                            weight: 'bold',     // フォントの太さ
+                        },
+                        padding: 10,            // タイトルと軸ラベルの余白
+                        align: 'center'         // タイトルを中央に配置
                     },
                     grid: {
-                        display: false, // 通常のグリッド線は非表示
+                        display: false, 
                     },
                     border: {
                         display: true,
-                        color: 'rgba(0, 0, 0, 0.5)',  // y=0のラインの色
-                        width: 1.5                    // y=0のラインの太さ
+                        color: 'rgba(0, 0, 0, 0.5)', 
+                        width: 1.5  
                     }
                 }
             },
@@ -64,11 +72,10 @@ document.addEventListener("DOMContentLoaded", function() {
                     position: 'top'
                 }
             },
-            // クリック時のイベント処理
             onClick: (event, elements) => {
-                if (elements.length > 0) {  // クリックした箇所に要素がある場合
-                    const index = elements[0].index;  // クリックしたデータのインデックスを取得
-                    const url = links[index];         // 対応するリンク先を取得
+                if (elements.length > 0) { 
+                    const index = elements[0].index;
+                    const url = links[index]; 
 
                     if (url) {
                         window.location.href = url;
