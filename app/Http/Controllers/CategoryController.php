@@ -22,14 +22,15 @@ class CategoryController extends Controller {
     public function getCategoriesToSeeHistories() {
         $this->getOutcomeCategoriesAndFormatData();
 
-        return redirect('/histories');
+        $userId = session('user_id'); 
+        return app(MainController::class)->show($userId);
     }
 
     public function getCategoriesToInsert() {
         $this->getOutcomeCategoriesAndFormatData();
         $this->getIncomeCategories();
 
-        return redirect('/new');
+        return app(MainController::class)->create();
     }
 
     public function getIncomeCategories() {

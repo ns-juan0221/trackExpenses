@@ -43,7 +43,7 @@ class ViewController extends Controller {
         // sessionに$items
         $this->getLeastItems($userId);
 
-        return redirect('/main');
+        return app(MainController::class)->index();
     }
 
     public function getSampleHalfYearGroupsAndLeastItems() {

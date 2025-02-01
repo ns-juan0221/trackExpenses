@@ -4,10 +4,10 @@
 @section('content')
     <div class="routeDisplay w-100 border-bottom border-2">
         <p class="ms-2 p-1">
-            <a href="{{ route('getHalfYearGroupsAndLeastItemsToRedirectMain') }}">ホーム</a>  ->  <a href="{{ route('getCategoriesToInsert') }}">入力</a>
+            <a href="{{ route('main') }}">ホーム</a>  ->  <a href="{{ route('new') }}">入力</a>
         </p>
     </div>
-    <div class="container-fluid  flex-grow-1">
+    <div class="container-fluid flex-grow-1">
         <div class="mainArticle d-flex justify-content-center">
             <div class="createForm col-8 mt-4 me-1">
                 <div class="switch-nav">

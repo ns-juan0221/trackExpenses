@@ -4,7 +4,7 @@
 @section('content')
     <div class="routeDisplay w-100 border-bottom border-2">
         <p class="ms-2 p-1">
-            <a href="{{ route('getHalfYearGroupsAndLeastItemsToRedirectMain') }}">ホーム</a>
+            <a href="{{ route('main') }}">ホーム</a>
         </p>
     </div>
     <div class="container-fluid flex-grow-1">

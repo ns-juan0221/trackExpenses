@@ -7,6 +7,7 @@ use App\Repositories\IncomeRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 
 class MainController extends Controller {
@@ -68,11 +69,9 @@ class MainController extends Controller {
     public function store(Request $request) {
 
         if ($request->input('toggle') === 'income') {
-            Log::info('incomeControllerに入りました');
             return $this->incomeController->store($request);
         }
 
-        Log::info('outcomeControllerに入りました');
         return $this->outcomeController->store($request);
     }
 
@@ -83,7 +82,24 @@ class MainController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        //
+        $incomes = collect($this->incomeController->getByUserId($id));
+        $outcomes = collect($this->outcomeController->getGroupsByUserId($id));
+        $totalBalances = $incomes->merge($outcomes)->sortByDesc('date');
+
+        $currentPage = request()->input('page', 1);
+        $perPage = 10;
+        $totalBalances = new LengthAwarePaginator(
+            $totalBalances->forPage($currentPage, $perPage),
+            $totalBalances->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url()]
+        );
+
+        $groupedOutcomeCategories = Session::get('groupedOutcomeCategories');
+
+        Log::info($totalBalances);
+        return view('log', compact('totalBalances','groupedOutcomeCategories'));
     }
 
     /**

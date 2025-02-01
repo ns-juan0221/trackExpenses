@@ -40,7 +40,7 @@
             </div> --}}
         </form>
         <div class="additionalLinks">
-            <a class="m-2" href="{{ route('reset-password') }}">パスワードを忘れた方</a>
+            <a class="m-2" href="#">パスワードを忘れた方</a>
             <a class="m-2" href="{{ route('register') }}">新規作成</a>
             {{-- <a href="#">サインインできませんか？ここをクリック</a> --}}
         </div>

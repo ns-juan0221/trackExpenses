@@ -31,58 +31,52 @@ Route::get('/', function () {
 
 //ゲストページ
 Route::get('guest', [ViewController::class, 'getSampleHalfYearGroupsAndLeastItems'])
-->name('guest');
+    ->name('guest');
 
 // ユーザー登録関連
 Route::get('register', [UserController::class, 'create'])
-->name('register');
+    ->name('register');
 Route::post('register', [UserController::class, 'store']);
 
 // ログイン関連
-// ログイン画面
 Route::get('login', [LoginController::class, 'index'])
-->name('login'); 
-// ログイン処理
+    ->name('login'); 
 Route::post('login', [LoginController::class, 'login']); 
-//ログアウト処理
 Route::get('logout', [LoginController::class, 'logout'])
-->name('logout');
+    ->name('logout');
 
 //メイン画面
-Route::get('getHalfYearGroupsAndLeastItemsToRedirectMain', [ViewController::class, 'getHalfYearGroupsAndLeastItemsToRedirectMain'])
-->name('getHalfYearGroupsAndLeastItemsToRedirectMain')->middleware('auth');
-Route::get('main', [MainController::class, 'index'])->middleware('auth');
+Route::get('main', [ViewController::class, 'getHalfYearGroupsAndLeastItemsToRedirectMain'])
+    ->name('main')
+    ->middleware('auth');
 
 //追加画面
-Route::get('getCategoriesToInsert', [CategoryController::class, 'getCategoriesToInsert'])
-->name('getCategoriesToInsert')->middleware('auth');
-Route::get('new', [MainController::class, 'create'])
-->name('new');
+Route::get('new', [CategoryController::class, 'getCategoriesToInsert'])
+    ->name('new')
+    ->middleware('auth');
 
-Route::post('store', [MainController::class, 'store']) -> name('store');
+Route::post('store', [MainController::class, 'store'])
+    ->name('store');
 
 //検索画面
-Route::get('getCategoriesToSeeHistories', [CategoryController::class, 'getCategoriesToSeeHistories'])
-->name('getCategoriesToSeeHistories')->middleware('auth');
-Route::get('histories', [ViewController::class, 'index']);
+Route::get('histories', [CategoryController::class, 'getCategoriesToSeeHistories'])
+    ->name('histories')
+    ->middleware('auth');
 
 // パスワードリセット関連
-Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
-Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
-Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
-Route::post('/password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
+// Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])
+// ->name('password.request');
+// Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])
+// ->name('password.email');
+// Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])
+// ->name('password.reset');
+// Route::post('/password/reset', [ResetPasswordController::class, 'reset'])
+// ->name('password.update');
 
-Route::get('setting', function() {
-    return view('setting');
-})->name('setting');
+// Route::get('setting', function() {
+//     return view('setting');
+// })->name('setting');
 
-Route::get('reset-password', function() {
-    return view('reset-password');
-})->name('reset-password');
-
-Route::get('log', function () {
-    $type = request('type');
-    return view('log', ['type' => $type]);
-})->name('log');
-
-
+// Route::get('reset-password', function() {
+//     return view('reset-password');
+// })->name('reset-password');

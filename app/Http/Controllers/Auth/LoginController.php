@@ -35,7 +35,7 @@ class LoginController extends Controller {
                 session(['user_id' => Auth::id()]);
 
                 // メイン画面へリダイレクト
-                return redirect()->route('getHalfYearGroupsAndLeastItemsToRedirectMain');
+                return redirect()->route('main');
             } else {
                 // 認証失敗の場合はエラーメッセージを返す
                 return back()->withErrors(['login_error' => 'メールアドレスまたはパスワードが間違っています']) ;

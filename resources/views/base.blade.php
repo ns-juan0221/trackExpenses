@@ -17,8 +17,6 @@
     <link rel="stylesheet" href="{{ asset('css/commons.css') }}">
     @if (Request::is('login') || Request::is('register'))
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
-    @elseif (Request::is('histories'))
-    <link rel="stylesheet" href="{{ asset('css/form.css') }}">
     @else
     <link rel="stylesheet" href="{{ asset('css/article.css') }}">
     @endif
@@ -35,7 +33,7 @@
 
     @if (Request::is('login') || Request::is('register') || Request::is('guest'))
     <header id="header" class="header d-flex w-100 align-items-center border-bottom border-2 py-2">
-        <a href="{{ route('getHalfYearGroupsAndLeastItemsToRedirectMain') }}" class="header-logo">
+        <a href="{{ route('main') }}" class="header-logo">
             <img src="{{ asset('images/header_icon.png') }}" alt="マネーログ" height="50" width="150">
         </a>
         <nav id="nav">
@@ -53,19 +51,19 @@
     <header id="header" class="header d-flex w-100 align-items-center border-bottom border-2 py-2">
         {{--  　　　　　　　　　追加機能　　　　　　　　　　 --}}
         {{-- 認証されていない箇所ではhrefをなくすか、mainに飛ばないようにする --}}
-        <a href="{{ route('getHalfYearGroupsAndLeastItemsToRedirectMain') }}" class="header-logo">
+        <a href="{{ route('main') }}" class="header-logo">
             <img src="{{ asset('images/header_icon.png') }}" alt="マネーログ" height="50" width="150">
         </a>
         <nav id="nav">
             <ul class="nav-btn">
                 <li>
-                    <a href="{{ route('getCategoriesToInsert') }}" class="btn btn-success text-center">入力</a>
+                    <a href="{{ route('new') }}" class="btn btn-success text-center">入力</a>
                 </li>
                 <li>
-                    <a href="{{ route('new', ['type' => 'month']) }}" class="btn btn-light text-center">入出金履歴</a>
+                    <a href="{{ route('histories') }}" class="btn btn-light text-center">入出金履歴</a>
                 </li>
                 <li>
-                    <a href="{{ route('setting') }}" class="btn btn-success text-center">設定</a>
+                    <a href="#" class="btn btn-success text-center">設定</a>
                 </li>
                 <li>
                     <a href="{{ route('logout') }}" class="btn btn-light text-center">ログアウト</a>

@@ -5,6 +5,17 @@ namespace App\Repositories;
 use Illuminate\Support\Facades\DB;
 
 class OutcomeRepository {
+
+    public function getGroupsByUserId(int $userId) {
+        return DB::select("
+            SELECT 
+                id, date, shop, totalPrice AS amount, memo, user_id, del_flg, 
+                '-' AS category_id, '-' AS name, 'outcome' AS type
+            FROM outcome_groups
+            WHERE del_flg = 0 AND user_id = :userId
+        ", ['userId' => $userId]);
+    }
+
     /**
      * 指定したユーザーの過去6ヶ月分の月ごとの合計を取得
      *
@@ -12,30 +23,34 @@ class OutcomeRepository {
      * @return \Illuminate\Support\Collection
      */
     public function getMonthlyHalfYear(int $userId) {
-        return DB::table('outcome_groups')
-            ->select(DB::raw("DATE_FORMAT(date, '%Y年%m月') AS month"), DB::raw("ROUND(SUM(totalPrice), 0) AS total_sum"))
-            ->where('user_id', $userId)
-            ->where(function($query) {
-                $query->whereBetween('date', [
-                    DB::raw('DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 5 MONTH), "%Y-%m-01")'),
-                    DB::raw('LAST_DAY(CURDATE())')
-                ])
-                ->orWhereBetween('date', [
-                    DB::raw('DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 17 MONTH), "%Y-%m-01")'),
-                    DB::raw('LAST_DAY(DATE_SUB(CURDATE(), INTERVAL 12 MONTH))')
-                ]);
-            })
-            ->where('del_flg', 0)
-            ->groupBy(DB::raw("DATE_FORMAT(date, '%Y年%m月')"))
-            ->orderBy('month', 'ASC')
-            ->get();
+        return DB::select("
+            SELECT 
+                DATE_FORMAT(date, '%Y年%m月') AS month,
+                ROUND(SUM(totalPrice), 0) AS total_sum
+            FROM 
+                outcome_groups
+            WHERE 
+                user_id = :userId
+                AND del_flg = 0
+                AND (
+                    (date BETWEEN DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 5 MONTH), '%Y-%m-01') 
+                            AND LAST_DAY(CURDATE()))
+                    OR
+                    (date BETWEEN DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 17 MONTH), '%Y-%m-01') 
+                            AND LAST_DAY(DATE_SUB(CURDATE(), INTERVAL 12 MONTH)))
+                )
+            GROUP BY 
+                DATE_FORMAT(date, '%Y年%m月')
+            ORDER BY 
+                month ASC
+        ", ['userId' => $userId]);
     }
 
     public function getSixItems(int $userId) {
         return DB::select("
             WITH latest_items AS (
                 SELECT
-                    oi.id,oi.user_id,oi.group_id,oi.date,oi.item,oi.price,oi.m_category_id,oi.s_category_id,og.shop,og.totalPrice,ROW_NUMBER() OVER (PARTITION BY oi.group_id ORDER BY oi.date DESC) AS rn
+                    oi.group_id,oi.date,oi.item,oi.price,oi.m_category_id,oi.s_category_id,og.shop,og.totalPrice,ROW_NUMBER() OVER (PARTITION BY oi.group_id ORDER BY oi.date DESC) AS rn
                 FROM
                     outcome_items AS oi
                 JOIN
@@ -46,7 +61,7 @@ class OutcomeRepository {
                     oi.user_id = :user_id AND oi.del_flg = 0 AND og.del_flg = 0
             )
             SELECT
-                li.id,li.user_id,li.group_id,li.date,li.item,li.price,li.shop,li.totalPrice,li.m_category_id,mcat.name AS m_category_name,li.s_category_id,scat.name AS s_category_name
+                li.group_id,li.date,li.item,li.price,li.shop,li.totalPrice,li.m_category_id,mcat.name AS m_category_name,li.s_category_id,scat.name AS s_category_name
             FROM
                 latest_items AS li
             LEFT JOIN

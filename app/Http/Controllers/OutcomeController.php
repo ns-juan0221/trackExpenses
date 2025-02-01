@@ -15,14 +15,21 @@ use Illuminate\Validation\ValidationException;
 
 class OutcomeController extends Controller {
     protected $outcomeService;
+    protected $outcomeRepository;
 
     /**
      * コンストラクタ
      *
      * @param \App\Services\OutcomeService $outcomeService
+     * @param \App\Repositories\OutcomeRepository $outcomeRepository
      */
-    public function __construct(OutcomeService $outcomeService) {
+    public function __construct(OutcomeService $outcomeService, OutcomeRepository $outcomeRepository) {
         $this->outcomeService = $outcomeService;
+        $this->outcomeRepository = $outcomeRepository;
+    }
+
+    public function getGroupsByUserId($id) {
+        return $this->outcomeRepository->getGroupsByUserId($id);
     }
 
         /**
@@ -48,7 +55,7 @@ class OutcomeController extends Controller {
             $this->outcomeService->createOutcome($groupData, $itemsData);
 
             // 登録後のリダイレクト
-            return redirect()->route('getCategoriesToInsert');
+            return redirect()->route('new');
         } catch (ValidationException $e) {
             Log::error('Validation failed', ['errors' => $e->errors()]);
             return back()->withErrors($e->errors())->withInput();

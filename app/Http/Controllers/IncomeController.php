@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Repositories\IncomeRepository;
 use App\Services\IncomeService;
+
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
@@ -13,14 +14,21 @@ use Illuminate\Validation\ValidationException;
 
 class IncomeController extends Controller {
     protected $incomeService;
+    protected $incomeRepository;
 
     /**
      * コンストラクタ
      *
      * @param \App\Services\IncomeService $incomeService
+     * @param \App\Repositories\IncomeRepository $incomeRepository
      */
-    public function __construct(IncomeService $incomeService) {
+    public function __construct(IncomeService $incomeService, IncomeRepository $incomeRepository) {
         $this->incomeService = $incomeService;
+        $this->incomeRepository = $incomeRepository;
+    }
+
+    public function getByUserId($id) {
+        return $this->incomeRepository->getByUserId($id);
     }
 
         /**
@@ -37,7 +45,7 @@ class IncomeController extends Controller {
             $this->incomeService->createIncome($request->all());
 
             // 登録後のリダイレクト
-            return redirect()->route('getCategoriesToInsert');
+            return redirect()->route('new');
         } catch (ValidationException $e) {
             Log::error('Validation failed', ['errors' => $e->errors()]);
             return back()->withErrors($e->errors())->withInput();

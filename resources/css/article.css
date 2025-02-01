@@ -22,7 +22,6 @@ body {
     flex-grow: 1;
     width: auto;
     height: auto;
-    /* height: 400px; */
 }
 
 .history {
@@ -32,25 +31,23 @@ body {
 }
 
 .history .historyTitle {
-    padding: 0; /* パディングをリセット */
+    padding: 0;
 }
 
 .history .historyTitle-noData {
-    height: 83px; /* 固定の高さを設定 */
-    display: flex; /* フレックスボックスで中央揃え */
-    align-items: center; /* 縦方向の中央揃え */
-    justify-content: center; /* 横方向の中央揃え */
-    margin-bottom: 10px; /* 下に余白を追加 */
-    padding: 0; /* パディングをリセット */
+    height: 83px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    padding: 0;
 }
 
 .history .historyTitleText {
-    margin: 0; /* 余白をリセット */
-    padding: 0 10px; /* テキスト周囲に少し余白を追加 */
-    /* font-weight: bold; 太字にして目立たせる */
-    color: #333; /* 濃い灰色で視認性を高める */
-    font-size: 16px; /* 適度なフォントサイズ */
-    /* line-height: 1.5; 行の高さを調整 */
+    margin: 0;
+    padding: 0 10px;
+    color: #333;
+    font-size: 16px;
 }
 
 .history .historyList-noData {
@@ -60,31 +57,31 @@ body {
 .listItem  {
     display: flex;
     flex-direction: column;
-    background-color: #fdfd96; /* 付箋のような淡い黄色 */
-    border-radius: 5px; /* 角を丸めて付箋風に */
+    background-color: #fdfd96;
+    border-radius: 5px;
     padding: 10px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4); /* 立体感のための影 */
-    transition: transform 0.2s, box-shadow 0.2s; /* ホバー時のアニメーション */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
     position: relative;
 }
 
 .listItem:hover {
-    transform: translateY(-2px); /* ホバー時に少し浮かせる */
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5); /* ホバー時に影を強くする */
+    transform: translateY(-2px);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
 }
 
 .itemLink {
-    color: black;           /* リンクを黒色にする */
-    text-decoration: none;  /* 下線を消す */
+    color: black;
+    text-decoration: none;
 }
 
 .itemLink:hover {
-    color: black;           /* ホバー時も黒色を維持する */
-    text-decoration: underline;  /* ホバー時に下線を追加（オプション） */
+    color: black;
+    text-decoration: underline;
 }
 
 .listPrice {
-    text-align: right; /* 右詰にする */
+    text-align: right;
 }
 
 .switch-nav ul  {
@@ -95,7 +92,7 @@ body {
 }
 
 .switch-nav ul li {
-    text-align: center;      /* テキストを中央揃え */
+    text-align: center;
     position: relative;
     z-index: 1;
     border-top-left-radius: 10px;
@@ -151,7 +148,7 @@ body {
 
 .createBox {
     background-color: #fafafa;
-    height: auto; /* フォームに応じて自動で広がる */
+    height: auto;
     max-height: calc(100vh - 250px);
     overflow-y: auto; 
     border: 2px solid #000000;
@@ -161,7 +158,7 @@ body {
 }
 
 .form-item, .form-category, .form-price, .form-amount {
-    flex: 1; /* 各要素が同じ幅になる */
+    flex: 1;
 }
 
 #formListBlock .formList:first-of-type .remove-form {
@@ -249,7 +246,145 @@ body {
 }
 
 .today {
-    background-color: #ffeb3b !important; /* 明るい黄色の背景 */
+    background-color: #ffeb3b !important;
     color:#d32f2f !important;
     font-weight: bold;
+}
+
+.searchTable {
+    width: 750px;
+}
+
+.searchTable .searchLabel {
+    padding-right: 20px;
+}
+
+.keywordLabelList {
+    border-top: 1px solid #4ade80;
+    border-right: 1px solid #4ade80;
+    background-color: #4ade80;
+    padding: 10px;
+    color: #ffffff;
+}
+
+.itemLabel,.shopLabel,.memoLabel {
+    border-top: 1px solid #4ade80;
+    background-color: #4ade80;
+    padding: 10px;
+    color: #ffffff;
+}
+
+.priceLabel,.dateLabel,.categoryLabel {
+    border-top: 1px solid #FFFFFF;
+    background-color: #4ade80;
+    padding: 10px;
+    color: #ffffff;
+}
+
+.displayFormatLabel {
+    border-top: 1px solid #FFFFFF;
+    border-bottom: 1px solid #4ade80;
+    background-color: #4ade80;
+    padding: 10px;
+    color: #ffffff;
+}
+
+.itemKeywordInput,.priceInput,.dateInput,.categoryInput {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-top: 1px solid #22c55e;
+    border-right: 1px solid #22c55e;
+    padding: 10px;
+}
+
+.shopKeywordInput,.memoKeywordInput {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-right: 1px solid #22c55e;
+    padding: 10px;
+}
+
+.displayFormatInput {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-top: 1px solid #22c55e;
+    border-bottom: 1px solid #22c55e;
+    border-right: 1px solid #22c55e;
+    padding: 10px;
+}
+
+.logContainer {
+    max-height: calc(100vh - 150px);
+    overflow-y: auto; 
+}
+
+.searchTable .form-price,.form-date {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.searchTable #minPrice,#maxPrice {
+    width: 100%;
+    padding-left: 30px;
+    padding-right: 10px;
+    box-sizing: border-box;
+}
+
+.searchTable .from-to {
+    margin: 0 6px;
+}
+
+.searchTable .yen {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #666;
+}
+
+.searchResultDisplayFormat {
+    list-style: none;
+    margin: 0; 
+    padding: 0; 
+    gap: 20px;
+}
+
+.checkbox {
+    margin-right: 10px;
+}
+
+.selected-category {
+    display: inline-block;
+    margin: 5px;
+    padding: 5px 10px;
+    background-color: #e1feeb;
+    border: 1px solid #8ef8b5;
+    border-radius: 15px;
+} 
+
+.selected-category button {
+    border: none;
+    background: transparent;
+    color: #f44336;
+    margin-left: 5px;
+}
+
+.selected-categories-container {
+    overflow-y: auto;
+    max-height: 70px;
+}
+
+.searchForm.collapse {
+    top: 100%;
+    left: 0;
+    width: 100%;
+    z-index: 10; 
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.main-category {
+    font-weight: bold;
+}
+
+.ui-datepicker {
+    z-index: 1051 !important; /* Bootstrapのmodal(1050)より上にする */
 }

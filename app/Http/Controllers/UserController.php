@@ -67,7 +67,7 @@ class UserController extends Controller {
             session(['user_id' => auth()->id()]);
 
             // 登録後のリダイレクト
-            return redirect()->route('getHalfYearGroupsAndLeastItemsToRedirectMain');
+            return redirect()->route('main');
         } catch (ValidationException $e) {
             Log::error('Validation failed', ['errors' => $e->errors()]);
             return back()->withErrors($e->errors())->withInput();
