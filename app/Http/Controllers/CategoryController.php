@@ -19,18 +19,21 @@ class CategoryController extends Controller {
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function getCategoriesToSeeHistories() {
+    public function getOutcomeCategoriesToSeeHistories() {
         $this->getOutcomeCategoriesAndFormatData();
 
-        $userId = session('user_id'); 
-        return app(MainController::class)->show($userId);
+        return app(MainController::class)->show();
     }
 
-    public function getCategoriesToInsert() {
+    public function getOutcomeCategoriesToInsert() {
         $this->getOutcomeCategoriesAndFormatData();
         $this->getIncomeCategories();
 
         return app(MainController::class)->create();
+    }
+
+    public function getOutcomeCategories() {
+        return $this->getOutcomeCategoriesAndFormatData();
     }
 
     public function getIncomeCategories() {

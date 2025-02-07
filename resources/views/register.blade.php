@@ -81,5 +81,5 @@
             <button class="btn btn-lg btn-success w-100 mt-3 mb-2" type="submit">ユーザー登録</button>
         </form>
     </div>
-    <script src="{{ asset('js/register-form.js') }}"></script>
+    <script src="{{ asset('js/registerForm.js') }}"></script>
 @endsection

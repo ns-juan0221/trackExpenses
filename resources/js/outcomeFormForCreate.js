@@ -4,6 +4,22 @@ const inputShop = document.querySelector('#inputShop');
 let shopErrorJs = document.querySelector('.shopValidationErrorJs');
 let shopError = document.querySelector('.shopValidationError');
 
+inputShop.addEventListener('input', () => {
+    if(shopError && shopError.textContent !== ''){
+        shopError.textContent = '';
+    }
+
+    if (inputShop.value.trim() === '') {
+        inputShop.classList.remove('is-valid');
+        inputShop.classList.add('is-invalid');
+        shopErrorJs.textContent = '名前を入力してください';
+    } else {
+        inputShop.classList.remove('is-invalid');
+        inputShop.classList.add('is-valid');
+        shopErrorJs.textContent = '';
+    }
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     //最初のカテゴリ<select>にプレースホルダーを追加
     const initialCategorySelect = document.querySelector('.formList select');
@@ -74,21 +90,6 @@ document.addEventListener('DOMContentLoaded', function() {
         formCount++; // カウンターをインクリメント
     });
 
-    // ブロック全体のバリデーション
-    // const validateFormBlock = (formBlock) => {
-    //     const fields = formBlock.querySelectorAll('.item, .price, .amount, .category');
-    //     let isValid = true;
-
-    //     for (const field of fields) {
-    //         const fieldValid = validateField(field);
-    //         if (!fieldValid) {
-    //             isValid = false;
-    //             break; // 最初のエラーで停止
-    //         }
-    //     }
-    //     return isValid;
-    // };
-
     // 初期フォームの監視を設定
     document.querySelectorAll('.price, .amount').forEach(function (input) {
         input.addEventListener('input', updateTotalPrice);
@@ -101,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // フィールドのバリデーション関数
-    const validateField = (field) => {
+    function validateField(field) {
         const fieldValue = field.value.trim();
         const errorContainer = field.closest('.formList').querySelector('.validationError');
         let errorMessage = '';
@@ -157,21 +158,5 @@ document.addEventListener('DOMContentLoaded', function() {
             total += price * amount; // 金額 × 個数を合計
         });
         document.getElementById('totalPrice').value = total; // 合計値を表示
-    }
-});
-
-inputShop.addEventListener('input', () => {
-    if(shopError && shopError.textContent !== ''){
-        shopError.textContent = '';
-    }
-
-    if (inputShop.value.trim() === '') {
-        inputShop.classList.remove('is-valid');
-        inputShop.classList.add('is-invalid');
-        shopErrorJs.textContent = '名前を入力してください';
-    } else {
-        inputShop.classList.remove('is-invalid');
-        inputShop.classList.add('is-valid');
-        shopErrorJs.textContent = '';
     }
 });

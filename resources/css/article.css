@@ -157,6 +157,13 @@ body {
     z-index: 5;
 }
 
+.editBox {
+    background-color: rgba(255, 255, 255, 0.7);
+    height: auto;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto; 
+}
+
 .form-item, .form-category, .form-price, .form-amount {
     flex: 1;
 }
@@ -274,14 +281,14 @@ body {
     color: #ffffff;
 }
 
-.priceLabel,.dateLabel,.categoryLabel {
+.priceLabel,.dateLabel {
     border-top: 1px solid #FFFFFF;
     background-color: #4ade80;
     padding: 10px;
     color: #ffffff;
 }
 
-.displayFormatLabel {
+.categoryLabel {
     border-top: 1px solid #FFFFFF;
     border-bottom: 1px solid #4ade80;
     background-color: #4ade80;
@@ -289,7 +296,7 @@ body {
     color: #ffffff;
 }
 
-.itemKeywordInput,.priceInput,.dateInput,.categoryInput {
+.itemKeywordInput,.priceInput,.dateInput {
     background-color: rgba(255, 255, 255, 0.7);
     border-top: 1px solid #22c55e;
     border-right: 1px solid #22c55e;
@@ -302,7 +309,7 @@ body {
     padding: 10px;
 }
 
-.displayFormatInput {
+.categoryInput  {
     background-color: rgba(255, 255, 255, 0.7);
     border-top: 1px solid #22c55e;
     border-bottom: 1px solid #22c55e;
@@ -378,7 +385,6 @@ body {
     left: 0;
     width: 100%;
     z-index: 10; 
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .main-category {
@@ -387,4 +393,14 @@ body {
 
 .ui-datepicker {
     z-index: 1051 !important; /* Bootstrapのmodal(1050)より上にする */
+}
+
+.logBox {
+    background-color:  rgba(255, 255, 255, 0.7) !important;
+}
+
+.logDetailContainer {
+    max-height: calc(100vh - 150px);
+    overflow-y: auto; 
+    background-color: rgba(255, 255, 255, 0.7);
 }

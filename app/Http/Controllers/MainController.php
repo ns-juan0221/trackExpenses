@@ -13,16 +13,18 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class MainController extends Controller {
     protected $incomeController;
     protected $outcomeController;
+    protected $categoryController;
 
     /**
-     * ViewController constructor.
+     * MainController constructor.
      *
      * @param OutcomeController $outcomeController
      * @param IncomeController $incomeController
      */
-    public function __construct(OutcomeController $outcomeController, IncomeController $incomeController) {
+    public function __construct(OutcomeController $outcomeController, IncomeController $incomeController, CategoryController $categoryController) {
         $this->incomeController = $incomeController;
         $this->outcomeController = $outcomeController;
+        $this->categoryController = $categoryController;
     }
 
     /**
@@ -36,7 +38,7 @@ class MainController extends Controller {
         $currentYearValues = Session::get('currentYearValues');
         $items = Session::get('items');
 
-        if (is_null($labels) || is_null($lastYearValues) || is_null($currentYearValues)) {
+        if (is_null($labels) || is_null($lastYearValues) || is_null($currentYearValues) || is_null($items)) {
             return redirect()->route('login')->withErrors(['login_error' => 'ログインが必要です'])->withInput();
         }
 
@@ -49,7 +51,7 @@ class MainController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        $toggle = request('toggle');
+        $type = request('type');
         $groupedOutcomeCategories = Session::get('groupedOutcomeCategories');
         $incomeCategories = Session::get('incomeCategories');
 
@@ -57,7 +59,7 @@ class MainController extends Controller {
             return redirect()->route('login')->withErrors(['login_error' => 'ログインが必要です'])->withInput();
         }
 
-        return view('create', compact('groupedOutcomeCategories','incomeCategories','toggle'));
+        return view('create', compact('groupedOutcomeCategories','incomeCategories','type'));
     }
 
     /**
@@ -68,22 +70,17 @@ class MainController extends Controller {
      */
     public function store(Request $request) {
 
-        if ($request->input('toggle') === 'income') {
+        if ($request->input('type') === 'income') {
             return $this->incomeController->store($request);
         }
 
         return $this->outcomeController->store($request);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id) {
-        $incomes = collect($this->incomeController->getByUserId($id));
-        $outcomes = collect($this->outcomeController->getGroupsByUserId($id));
+    public function show() {
+        $userId = session('user_id');
+        $incomes = collect($this->incomeController->getByUserId($userId));
+        $outcomes = collect($this->outcomeController->getGroupsByUserId($userId));
         $totalBalances = $incomes->merge($outcomes)->sortByDesc('date');
 
         $currentPage = request()->input('page', 1);
@@ -98,8 +95,32 @@ class MainController extends Controller {
 
         $groupedOutcomeCategories = Session::get('groupedOutcomeCategories');
 
-        Log::info($totalBalances);
+        if (is_null($groupedOutcomeCategories)) {
+            return redirect()->route('login')->withErrors(['login_error' => 'ログインが必要です'])->withInput();
+        }
+
         return view('log', compact('totalBalances','groupedOutcomeCategories'));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showDetail(Request $request) {
+        $id = $request->input('id');
+        $type = $request->input('type');
+
+        if ($type === 'income') {
+            Log::info('incomeのshowdetailメソッドに入った');
+            $income = $this->incomeController->getById($id);
+            return view('logItemDetail', compact('income','type'));
+        }else {
+            $outcomeItems = $this->outcomeController->getItemsByGroupId($id);
+            $outcomeGroup = $this->outcomeController->getGroupByGroupId($id);
+            return view('logItemDetail', compact('outcomeItems', 'outcomeGroup', 'type'));
+        }
     }
 
     /**
@@ -108,8 +129,38 @@ class MainController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
-        //
+    public function edit($id, $type) {
+        if ($type === 'income') {
+            $this->categoryController->getIncomeCategories();
+            $incomeCategories = Session::get('incomeCategories');
+
+            if (is_null($incomeCategories)) {
+                return redirect()->route('login')->withErrors(['login_error' => 'ログインが必要です'])->withInput();
+            }
+
+            $income = $this->incomeController->getById($id);
+            return view('edit', compact('income','type','incomeCategories'));
+        }else {
+            $this->categoryController->getOutcomeCategories();
+            $groupedOutcomeCategories = Session::get('groupedOutcomeCategories');
+
+            if (is_null($groupedOutcomeCategories)) {
+                return redirect()->route('login')->withErrors(['login_error' => 'ログインが必要です'])->withInput();
+            }
+
+            $outcomeItems = $this->outcomeController->getItemsByGroupId($id);
+            $outcomeGroup = $this->outcomeController->getGroupByGroupId($id);
+
+            $formattedOutcomeGroup = [
+                'groupId' => $outcomeGroup->id, // 明示的に groupId を定義
+                'date' => $outcomeGroup->date,
+                'shop' => $outcomeGroup->shop,
+                'totalPrice' => $outcomeGroup->totalPrice,
+                'memo' => $outcomeGroup->memo
+            ];
+            
+            return view('edit', compact('outcomeItems','formattedOutcomeGroup','type','groupedOutcomeCategories'));
+        }
     }
 
     /**
@@ -119,8 +170,13 @@ class MainController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
-        //
+    public function update(Request $request) {
+        if ($request->input('type') === 'income') {
+            Log::info('incomeのupdateメソッドに入った');
+            Log::info($request);
+            return $this->incomeController->update($request);
+        }
+        return $this->outcomeController->update($request);
     }
 
     /**

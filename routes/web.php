@@ -8,10 +8,6 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OutcomeController;
-use App\Http\Controllers\IncomeController;
-use App\Http\Controllers\ViewController;
-use App\Http\Controllers\SearchController;
-use App\Repositories\CategoryRepository;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,7 +26,7 @@ Route::get('/', function () {
 });
 
 //ゲストページ
-Route::get('guest', [ViewController::class, 'getSampleHalfYearGroupsAndLeastItems'])
+Route::get('guest', [OutcomeController::class, 'getSampleHalfYearGroupsAndLeastItems'])
     ->name('guest');
 
 // ユーザー登録関連
@@ -46,21 +42,40 @@ Route::get('logout', [LoginController::class, 'logout'])
     ->name('logout');
 
 //メイン画面
-Route::get('main', [ViewController::class, 'getHalfYearGroupsAndLeastItemsToRedirectMain'])
+Route::get('main', [OutcomeController::class, 'getHalfYearGroupsAndLeastItemsToRedirectMain'])
     ->name('main')
     ->middleware('auth');
 
 //追加画面
-Route::get('new', [CategoryController::class, 'getCategoriesToInsert'])
+Route::get('new', [CategoryController::class, 'getOutcomeCategoriesToInsert'])
     ->name('new')
     ->middleware('auth');
 
 Route::post('store', [MainController::class, 'store'])
     ->name('store');
 
-//検索画面
-Route::get('histories', [CategoryController::class, 'getCategoriesToSeeHistories'])
+//履歴画面
+Route::get('histories', [CategoryController::class, 'getOutcomeCategoriesToSeeHistories'])
     ->name('histories')
+    ->middleware('auth');
+
+//詳細画面
+Route::post('detail', [MainController::class, 'showDetail'])
+    ->name('detail')
+    ->middleware('auth');
+
+//編集画面
+Route::get('edit/{id}/{type}', [MainController::class, 'edit'])
+    ->name('edit')
+    ->middleware('auth');
+
+Route::post('update', [MainController::class, 'update'])
+    ->name('update')
+    ->middleware('auth');
+
+//アイテム削除
+Route::delete('delete', [MainController::class, 'delete'])
+    ->name('delete')
     ->middleware('auth');
 
 // パスワードリセット関連

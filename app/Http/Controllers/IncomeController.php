@@ -27,8 +27,13 @@ class IncomeController extends Controller {
         $this->incomeRepository = $incomeRepository;
     }
 
-    public function getByUserId($id) {
-        return $this->incomeRepository->getByUserId($id);
+    public function getByUserId($userId) {
+        return $this->incomeRepository->getByUserId($userId);
+    }
+
+    public function getById($id) {
+        $userId = session('user_id');
+        return $this->incomeRepository->getById($id,$userId);
     }
 
         /**
@@ -46,6 +51,24 @@ class IncomeController extends Controller {
 
             // 登録後のリダイレクト
             return redirect()->route('new');
+        } catch (ValidationException $e) {
+            Log::error('Validation failed', ['errors' => $e->errors()]);
+            return back()->withErrors($e->errors())->withInput();
+        } catch (\Throwable $e) {
+            Log::error('Income creation failed', ['message' => $e->getMessage()]);
+            return back()->with('error', 'アイテムの作成に失敗しました。もう一度お試しください。');
+        }
+    }
+
+    public function update(Request $request) {
+        try {
+            $validator = $this->incomeService->validateIncome($request->all());
+            $validator->validate();
+
+            $this->incomeService->updateIncome($request->all());
+
+            // 登録後のリダイレクト
+            return redirect()->route('histories');
         } catch (ValidationException $e) {
             Log::error('Validation failed', ['errors' => $e->errors()]);
             return back()->withErrors($e->errors())->withInput();

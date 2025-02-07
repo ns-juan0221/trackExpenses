@@ -14,6 +14,10 @@ class IncomeService {
      * @return \Illuminate\Contracts\Validation\Validator
      */
     public function validateIncome(array $data) {
+        if (isset($data['totalPrice'])) {
+            $data['totalPrice'] = str_replace(',', '', $data['totalPrice']);
+        }
+
         return Validator::make($data, [
             'date' => 'required|date',
             'amount' => 'required|numeric',
@@ -35,7 +39,7 @@ class IncomeService {
         return DB::transaction(function () use ($incomeData) {
             $categoryId = intval(str_replace('category-', '', $incomeData['category']));
 
-            $incomeData = Income::create([
+            $newIncomeData = Income::create([
                 'user_id' => session('user_id'),
                 'date' => $incomeData['date'],
                 'amount' => $incomeData['amount'],
@@ -44,8 +48,29 @@ class IncomeService {
                 'del_flg' => false,
             ]);
 
-            return $incomeData;
+            return $newIncomeData;
         });
     }
 
+    /**
+     * Income のデータを更新する
+     *
+     * @param array $incomeData
+     * @return \App\Models\Income
+     */
+    public function updateIncome(array $updatedIncomeData):Income {
+        return DB::transaction(function () use ($updatedIncomeData) {
+            $categoryId = intval(str_replace('category-', '', $updatedIncomeData['category']));
+
+            $incomeData = Income::findOrFail($updatedIncomeData['id']);
+            $incomeData->update([
+                'date' => $updatedIncomeData['date'],
+                'amount' => $updatedIncomeData['amount'],
+                'category_id' => $categoryId,
+                'memo' => $updatedIncomeData['memo'] ?? '',
+            ]);
+
+            return $incomeData;
+        });
+    }
 }

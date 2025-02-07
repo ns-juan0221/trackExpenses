@@ -4,13 +4,13 @@
 @section('content')
     <div class="routeDisplay w-100 border-bottom border-2">
         <p class="ms-2 p-1">
-            <a href="{{ route('main') }}">ホーム</a>  ->  <a href="{{ route('new') }}">履歴</a>
+            <a href="{{ route('main') }}">ホーム</a>  ->  <a href="{{ route('histories') }}">履歴</a>
         </p>
     </div>
     <div class="logContainer container-fluid flex-gow-1">
         <div class="searchBox d-flex flex-column justify-content-center align-items-center w-100">
-            <div class="searchBtn d-flex justify-content-end w-100 pe-5 mt-2">
-                <button class="btn btn-primary toggleButton" id="toggleSearchButton" type="button" data-bs-toggle="collapse" data-bs-target="#searchForm" aria-expanded="false" aria-controls="searchForm">
+            <div class="searchBtn d-flex justify-content-end w-100 me-5 mt-3">
+                <button class="btn btn-primary toggleButton me-5" id="toggleSearchButton" type="button" data-bs-toggle="collapse" data-bs-target="#searchForm" aria-expanded="false" aria-controls="searchForm">
                     検索
                 </button>
             </div>
@@ -120,48 +120,17 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td class="displayFormatLabel col-4" colspan="2">
-                                        <div class="searchLabel">
-                                            <p>表示形式</p>
-                                        </div>
-                                    </td>
-                                    <td class="displayFormatInput col-8">
-                                        <div class="formUnit d-flex">
-                                            <ul class="searchResultDisplayFormat d-flex">
-                                                <li class="DisplayFormat-li d-flex align-items-center">
-                                                    <div class="checkbox">
-                                                        <label for="searchResultGroup"></label>
-                                                        <input id="searchResultGroup" name="displayFormat" value="group" type="radio" checked="checked">
-                                                    </div>
-                                                    <div class="DisplayFormatText">
-                                                        <label for="searchResultGroup">グループ毎</label>
-                                                    </div>
-                                                </li>
-                                                <li class="DisplayFormat-li d-flex align-items-center">
-                                                    <div class="checkbox">
-                                                        <label for="searchResultItem"></label>
-                                                        <input id="searchResultItem" name="displayFormat" value="item" type="radio">
-                                                    </div>
-                                                    <div class="DisplayFormatText">
-                                                        <label for="searchResultItem">アイテム毎</label>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
-                    <div class="formBtnGroup">
+                    <div class="formBtnGroup mt-2">
                         <button type="button" class="btn btn-light" id="resetBtn">指定した条件をクリア</button>
                         <button type="submit" class="btn btn-success">この条件で絞り込む</button>
                     </div>
                 </form>
             </div>
         </div>
-        <div class="logBox mt-3">
-            <table class="logTable w-100 text-center">
+        <div class="logBox mt-2 p-3">
+            <table class="logTable text-center">
                 <thead class="logTitle border border-3">
                     <tr>
                         <th class="col-1">日付</th>
@@ -174,10 +143,10 @@
                         <th class="col-1">削除</th>
                     </tr>
                 </thead>
-                <tbody class="logItem w-100">
+                <tbody class="logItem w-100 m-2">
                     @foreach($totalBalances as $totalBalance)
                         <tr class="itemData">
-                            <td>{{ $totalBalance->date }}</td>
+                            <td>{{ \Carbon\Carbon::parse($totalBalance->date)->format('Y/m/d') }}</td>
                             <td>{{ $totalBalance->type === 'income' ? '収入' : '支出' }}</td>
                             <td>{{ $totalBalance->name }}</td>
                             <td>{{ $totalBalance->shop }}</td>
@@ -190,42 +159,51 @@
                             </td>
                             <td>{{ Str::limit($totalBalance->memo, 10, '...') }}</td>
                             <td>
-                                <a class="action-btn" href="{{ route('new', $totalBalance->id) }}">
-                                    <button class="btn editBtn px-3 mx-4"><img src="{{ asset('images/editBtn2.png') }}" width="30"></button>
-                                </a>
+                                <form method="POST" action="{{ route('detail') }}" style="display:inline;">
+                                    @csrf
+                                    <input type="hidden" name="id" value="{{ $totalBalance->id }}">
+                                    <input type="hidden" name="type" value="{{ $totalBalance->type }}">
+                                    <button type="submit" class="btn editBtn px-3 mx-4">
+                                        <img src="{{ asset('images/detailBtn.png') }}" width="30">
+                                    </button>
+                                </form>
                             </td>
                             <td>
-                                <form method="POST" action="{{ route('new', [$totalBalance->type, $totalBalance->id]) }}" style="display:inline;">
+                                <form method="POST" action="{{ route('delete', [$totalBalance->type, $totalBalance->id]) }}" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn deleteBtn px-3 mx-4"><img src="{{ asset('images/deleteBtn2.png') }}" width="30"></button>
+                                    <input type="hidden" name="id" value="{{ $totalBalance->id }}">
+                                    <input type="hidden" name="type" value="{{ $totalBalance->type }}">
+                                    <button type="submit" class="btn deleteBtn px-3 mx-4">
+                                        <img src="{{ asset('images/deleteBtn2.png') }}" width="30">
+                                    </button>
                                 </form>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-            @if ($totalBalances->hasPages())
-                <div class="paginationArea d-flex justify-content-center align-items-center mt-3">
-                    {{-- 前のページがある場合のみ表示 --}}
-                    @if (!$totalBalances->onFirstPage())
-                        <a href="{{ $totalBalances->previousPageUrl() }}" class="page-link">
-                            &lt; {{ $totalBalances->currentPage() - 1 }}
-                        </a>
-                    @endif
-
-                    {{-- 現在のページ --}}
-                    <span class="current-page mx-3">{{ $totalBalances->currentPage() }}</span>
-
-                    {{-- 次のページがある場合のみ表示 --}}
-                    @if ($totalBalances->hasMorePages())
-                        <a href="{{ $totalBalances->nextPageUrl() }}" class="page-link">
-                            {{ $totalBalances->currentPage() + 1 }} &gt;
-                        </a>
-                    @endif
-                </div>
-            @endif
         </div>
+        @if ($totalBalances->hasPages())
+            <div class="paginationArea d-flex justify-content-center align-items-center my-3">
+                {{-- 前のページがある場合のみ表示 --}}
+                @if (!$totalBalances->onFirstPage())
+                    <a href="{{ $totalBalances->previousPageUrl() }}" class="page-link">
+                        &lt; {{ $totalBalances->currentPage() - 1 }}
+                    </a>
+                @endif
+
+                {{-- 現在のページ --}}
+                <span class="current-page mx-3">{{ $totalBalances->currentPage() }}</span>
+
+                {{-- 次のページがある場合のみ表示 --}}
+                @if ($totalBalances->hasMorePages())
+                    <a href="{{ $totalBalances->nextPageUrl() }}" class="page-link">
+                        {{ $totalBalances->currentPage() + 1 }} &gt;
+                    </a>
+                @endif
+            </div>
+        @endif
     </div>
     <!-- モーダル -->
     <div class="modal fade" id="categoryModal">

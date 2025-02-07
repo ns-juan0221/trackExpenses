@@ -16,6 +16,32 @@ class OutcomeRepository {
         ", ['userId' => $userId]);
     }
 
+    public function getItemsByGroupId(int $userId, int $groupId) {
+        return DB::select("
+            SELECT
+                oi.id,oi.group_id,oi.date,oi.item,oi.price,oi.amount,(oi.price * oi.amount) AS totalPrice,oi.m_category_id,oi.s_category_id,mcat.name AS m_category_name,scat.name AS s_category_name
+            FROM
+                outcome_items AS oi
+            LEFT JOIN
+                outcome_main_categories AS mcat ON oi.m_category_id = mcat.id
+            LEFT JOIN
+                outcome_sub_categories AS scat ON oi.s_category_id = scat.id
+            WHERE
+                oi.user_id = :userId AND oi.group_id = :groupId AND oi.del_flg = 0
+        ", ['userId' => $userId, 'groupId' => $groupId]);
+    }
+
+    public function getGroupByGroupId(int $userId, int $groupId) {
+        return DB::selectOne("
+            SELECT
+                og.id,og.date,og.shop,og.totalPrice,og.memo
+            FROM
+                outcome_groups AS og
+            WHERE
+                og.user_id = :userId AND og.id = :groupId AND og.del_flg = 0
+        ", ['userId' => $userId, 'groupId' => $groupId]);
+    }
+
     /**
      * 指定したユーザーの過去6ヶ月分の月ごとの合計を取得
      *
@@ -58,7 +84,7 @@ class OutcomeRepository {
                 ON
                     oi.group_id = og.id
                 WHERE
-                    oi.user_id = :user_id AND oi.del_flg = 0 AND og.del_flg = 0
+                    oi.user_id = :userId AND oi.del_flg = 0 AND og.del_flg = 0
             )
             SELECT
                 li.group_id,li.date,li.item,li.price,li.shop,li.totalPrice,li.m_category_id,mcat.name AS m_category_name,li.s_category_id,scat.name AS s_category_name
@@ -73,6 +99,6 @@ class OutcomeRepository {
             ORDER BY
                 li.date DESC
             LIMIT 6
-        ", ['user_id' => $userId]);
+        ", ['userId' => $userId]);
     }
 }
