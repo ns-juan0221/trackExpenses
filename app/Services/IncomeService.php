@@ -48,7 +48,7 @@ class IncomeService {
                 'del_flg' => false,
             ]);
 
-            return $newIncomeData;
+            return redirect()->route('new')->with('success', 'データを作成しました。');
         });
     }
 
@@ -58,7 +58,7 @@ class IncomeService {
      * @param array $incomeData
      * @return \App\Models\Income
      */
-    public function updateIncome(array $updatedIncomeData):Income {
+    public function updateIncome(array $updatedIncomeData) {
         return DB::transaction(function () use ($updatedIncomeData) {
             $categoryId = intval(str_replace('category-', '', $updatedIncomeData['category']));
 
@@ -70,7 +70,14 @@ class IncomeService {
                 'memo' => $updatedIncomeData['memo'] ?? '',
             ]);
 
-            return $incomeData;
+            return redirect()->route('histories')->with('success', 'データを更新しました。');
         });
+    }
+
+    public function destroyIncome($id) {
+        $record = Income::findOrFail($id);
+        $record->update(['del_flg' => 1]);
+
+        return redirect()->route('histories')->with('success', 'データを削除しました。');
     }
 }

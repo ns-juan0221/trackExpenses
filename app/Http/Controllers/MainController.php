@@ -172,8 +172,6 @@ class MainController extends Controller {
      */
     public function update(Request $request) {
         if ($request->input('type') === 'income') {
-            Log::info('incomeのupdateメソッドに入った');
-            Log::info($request);
             return $this->incomeController->update($request);
         }
         return $this->outcomeController->update($request);
@@ -185,7 +183,13 @@ class MainController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
-        //
+    public function destroy(Request $request) {
+        if ($request->type === 'income') {
+            return $this->incomeController->destroy($request->id);
+        } elseif ($request->type === 'outcome') {
+            return $this->outcomeController->destroy($request->id);
+        } else {
+            return redirect()->route('histories')->with('error', '不正な削除リクエストです。');
+        }
     }
 }

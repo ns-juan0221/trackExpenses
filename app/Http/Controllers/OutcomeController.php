@@ -65,7 +65,7 @@ class OutcomeController extends Controller {
             $this->outcomeService->createOutcome($groupData, $itemsData);
 
             // 登録後のリダイレクト
-            return redirect()->route('new');
+            return redirect()->route('new')->with('success', 'データを作成しました。');
         } catch (ValidationException $e) {
             Log::error('Validation failed', ['errors' => $e->errors()]);
             return back()->withErrors($e->errors())->withInput();
@@ -85,7 +85,6 @@ class OutcomeController extends Controller {
         try {
             $validator = $this->outcomeService->validateOutcome($request->all());
             $validator->validate();
-            Log::info('validate passed');
 
             $groupData = [
                 'id' => $request['groupId'],
@@ -95,12 +94,11 @@ class OutcomeController extends Controller {
                 'memo' => $request['memo'],
             ];
 
-            $itemsData = $this->outcomeService->prepareItemsData($request->all());
-            Log::info('prepareItemsData() passed');
+            $itemsData = $this->outcomeService->prepareUpdatedItemsData($request->all());
             $this->outcomeService->updateOutcome($groupData, $itemsData);
 
             // 登録後のリダイレクト
-            return redirect()->route('histories');
+            return redirect()->route('histories')->with('success', 'データを更新しました。');;
         } catch (ValidationException $e) {
             Log::error('Validation failed', ['errors' => $e->errors()]);
 
@@ -114,6 +112,10 @@ class OutcomeController extends Controller {
             ->withInput()
             ->with('error', 'アイテムの更新に失敗しました。もう一度お試しください。');
         }
+    }
+
+    public function destroy($id) {
+        return $this->outcomeService->destroyOutcome($id);
     }
 
     public function getHalfYearGroupsAndLeastItemsToRedirectMain() {

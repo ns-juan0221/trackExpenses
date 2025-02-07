@@ -74,7 +74,7 @@ Route::post('update', [MainController::class, 'update'])
     ->middleware('auth');
 
 //アイテム削除
-Route::delete('delete', [MainController::class, 'delete'])
+Route::delete('delete', [MainController::class, 'destroy'])
     ->name('delete')
     ->middleware('auth');
 

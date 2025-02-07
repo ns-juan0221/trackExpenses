@@ -50,6 +50,34 @@ class OutcomeService {
             $subCategoryId = intval(str_replace('outcome-sub-', '', $categoryParts[1]));
 
             $itemsData[] = [
+                'date' => $validatedData['date'],
+                'item' => $itemName,
+                'm_category_id' => $mainCategoryId,
+                's_category_id' => $subCategoryId,
+                'price' => $validatedData['price'][$index],
+                'amount' => $validatedData['amount'][$index],
+            ];
+        }
+        Log::info('itemsDataは以下のようになってます');
+        Log::info($itemsData);
+        return $itemsData;
+    }   
+    
+    /**
+     * OutcomeItemのデータを整える
+     *
+     * @param array $validatedData
+     * @return array $itemsData
+     */
+    public function prepareUpdatedItemsData(array $validatedData):array {
+        $itemsData = [];
+
+        foreach ($validatedData['item'] as $index => $itemName) {
+            $categoryParts = explode('|', $validatedData['category'][$index]);
+            $mainCategoryId = intval(str_replace('outcome-main-', '', $categoryParts[0]));
+            $subCategoryId = intval(str_replace('outcome-sub-', '', $categoryParts[1]));
+
+            $itemsData[] = [
                 'id' => $validatedData['id'][$index],
                 'date' => $validatedData['date'],
                 'item' => $itemName,
@@ -160,5 +188,14 @@ class OutcomeService {
 
             return $outcomeGroupData;
         });
+    }
+
+    public function destroyOutcome($id) {
+        $record = OutcomeGroup::findOrFail($id);
+        $record->update(['del_flg' => 1]);
+
+        OutcomeItem::where('group_id', $id)->update(['del_flg' => 1]);
+
+        return redirect()->route('histories')->with('success', 'データを削除しました。');
     }
 }

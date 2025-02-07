@@ -2,6 +2,19 @@
 @section('title', 'マネーログ')
 
 @section('content')
+    @if (session('success') || session('error'))
+    <script>
+        window.onload = function() {
+            @if (session('success'))
+                alert("{{ session('success') }}");
+            @endif
+
+            @if (session('error'))
+                alert("{{ session('error') }}");
+            @endif
+        };
+    </script>
+    @endif
     <div class="routeDisplay w-100 border-bottom border-2">
         <p class="ms-2 p-1">
             <a href="{{ route('main') }}">ホーム</a>  ->  <a href="{{ route('new') }}">入力</a>

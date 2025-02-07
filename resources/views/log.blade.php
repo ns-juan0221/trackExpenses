@@ -2,6 +2,20 @@
 @section('title', 'マネーログ')
 
 @section('content')
+    @if (session('success') || session('error'))
+    <script>
+        window.onload = function() {
+            @if (session('success'))
+                alert("{{ session('success') }}");
+            @endif
+
+            @if (session('error'))
+                alert("{{ session('error') }}");
+            @endif
+        };
+    </script>
+    @endif
+
     <div class="routeDisplay w-100 border-bottom border-2">
         <p class="ms-2 p-1">
             <a href="{{ route('main') }}">ホーム</a>  ->  <a href="{{ route('histories') }}">履歴</a>
@@ -169,7 +183,7 @@
                                 </form>
                             </td>
                             <td>
-                                <form method="POST" action="{{ route('delete', [$totalBalance->type, $totalBalance->id]) }}" style="display:inline;">
+                                <form method="POST" action="{{ route('delete') }}" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <input type="hidden" name="id" value="{{ $totalBalance->id }}">
