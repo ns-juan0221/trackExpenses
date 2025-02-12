@@ -9,7 +9,7 @@
             </div>
         @endif
 
-        <form action="/register" class="formContainer needs-validation border p-2 align-items-center" method="post">
+        <form action="{{ route('new') }}" class="formContainer needs-validation border p-2 align-items-center" method="post">
             @csrf
             <h1 class="h3 mb-3">新規登録</h1>
             <div class="formGroupBlock">

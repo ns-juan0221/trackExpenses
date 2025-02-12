@@ -4,6 +4,7 @@ $(function(){
         showButtonPanel:true,
         dateFormat: 'yy/mm/dd',
         onSelect: function() {
+            $(this).datepicker('hide');
             // カレンダーから選択された場合もバリデーションを実行
             validateDate();
         }

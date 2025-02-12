@@ -17,7 +17,7 @@
     @endif
     <div class="routeDisplay w-100 border-bottom border-2">
         <p class="ms-2 p-1">
-            <a href="{{ route('main') }}">ホーム</a>  ->  <a href="{{ route('new') }}">入力</a>
+            <a href="{{ route('main') }}">ホーム</a>  ->  <a href="{{ route('register') }}">入力</a>
         </p>
     </div>
     <div class="container-fluid flex-grow-1">
@@ -25,8 +25,8 @@
             <div class="createForm col-8 mt-4 me-1">
                 <div class="switch-nav">
                     <ul class="d-flex">
-                        <li class="col-4 outcome {{ !$type || $type === 'outcome' ? 'active' : '' }} me-2"><a href="{{ route('new', ['type' => 'outcome']) }}">支出</a></li>
-                        <li class="col-4 income {{ $type === 'income' ? 'active' : '' }}"><a href="{{ route('new', ['type' => 'income']) }}">収入</a></li>
+                        <li class="col-4 outcome {{ !$type || $type === 'outcome' ? 'active' : '' }} me-2"><a href="{{ route('register', ['type' => 'outcome']) }}">支出</a></li>
+                        <li class="col-4 income {{ $type === 'income' ? 'active' : '' }}"><a href="{{ route('register', ['type' => 'income']) }}">収入</a></li>
                     </ul>
                 </div>
 

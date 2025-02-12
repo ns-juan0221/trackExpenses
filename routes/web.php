@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OutcomeController;
+use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,13 +27,13 @@ Route::get('/', function () {
 });
 
 //ゲストページ
-Route::get('guest', [OutcomeController::class, 'getSampleHalfYearGroupsAndLeastItems'])
+Route::get('guest', [MainController::class, 'guestIndex'])
     ->name('guest');
 
 // ユーザー登録関連
-Route::get('register', [UserController::class, 'create'])
-    ->name('register');
-Route::post('register', [UserController::class, 'store']);
+Route::get('new', [UserController::class, 'create'])
+    ->name('new');
+Route::post('new', [UserController::class, 'store']);
 
 // ログイン関連
 Route::get('login', [LoginController::class, 'index'])
@@ -42,21 +43,25 @@ Route::get('logout', [LoginController::class, 'logout'])
     ->name('logout');
 
 //メイン画面
-Route::get('main', [OutcomeController::class, 'getHalfYearGroupsAndLeastItemsToRedirectMain'])
+Route::get('main', [MainController::class, 'index'])
     ->name('main')
     ->middleware('auth');
 
 //追加画面
-Route::get('new', [CategoryController::class, 'getOutcomeCategoriesToInsert'])
-    ->name('new')
+Route::get('register', [MainController::class, 'create'])
+    ->name('register')
     ->middleware('auth');
 
 Route::post('store', [MainController::class, 'store'])
     ->name('store');
 
 //履歴画面
-Route::get('histories', [CategoryController::class, 'getOutcomeCategoriesToSeeHistories'])
+Route::get('histories', [MainController::class, 'show'])
     ->name('histories')
+    ->middleware('auth');
+
+Route::post('histories', [MainController::class, 'search'])
+    ->name('histories.post')
     ->middleware('auth');
 
 //詳細画面

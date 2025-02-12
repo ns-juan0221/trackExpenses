@@ -25,4 +25,15 @@ class IncomeRepository {
             WHERE i.del_flg = 0 AND i.id = :id AND user_id = :userId
         ", ['id' => $id, 'userId' => $userId]);
     }
+
+    public function getRepresentativeItemsByUserId(int $userId) {
+        return DB::select("
+            SELECT 
+                i.id, i.date, i.amount, ic.name AS m_category_name, '-' AS s_category_name,
+            'income' AS type
+            FROM incomes i
+            LEFT JOIN income_categories ic ON i.category_id = ic.id
+            WHERE i.del_flg = 0 AND user_id = :userId
+        ", ['userId' => $userId]);
+    }
 }

@@ -65,7 +65,7 @@ class OutcomeController extends Controller {
             $this->outcomeService->createOutcome($groupData, $itemsData);
 
             // 登録後のリダイレクト
-            return redirect()->route('new')->with('success', 'データを作成しました。');
+            return redirect()->route('register')->with('success', 'データを作成しました。');
         } catch (ValidationException $e) {
             Log::error('Validation failed', ['errors' => $e->errors()]);
             return back()->withErrors($e->errors())->withInput();
@@ -118,15 +118,13 @@ class OutcomeController extends Controller {
         return $this->outcomeService->destroyOutcome($id);
     }
 
-    public function getHalfYearGroupsAndLeastItemsToRedirectMain() {
+    public function getHalfYearGroupsAndLeastItems() {
         $userId = session('user_id');
 
         // sessionに$labels,$lastYearValues,$currentYearValues
         $this->getHalfYearGroups($userId);
         // sessionに$items
         $this->getLeastItems($userId);
-
-        return app(MainController::class)->index();
     }
 
     public function getSampleHalfYearGroupsAndLeastItems() {
@@ -136,13 +134,6 @@ class OutcomeController extends Controller {
         $this->getHalfYearGroups($userId);
         // sessionに$items
         $this->getLeastItems($userId);
-
-        $labels = Session::get('labels');
-        $lastYearValues = Session::get('lastYearValues');
-        $currentYearValues = Session::get('currentYearValues');
-        $items = Session::get('items');
-
-        return view('guest',compact('labels', 'lastYearValues', 'currentYearValues','items'));
     }
 
     public function getHalfYearGroups($userId) {
@@ -253,8 +244,8 @@ class OutcomeController extends Controller {
     }
 
     public function getLeastItems($userId) {
-        $items = $this->outcomeRepository->getSixItems($userId);
+        $outcomes = $this->outcomeRepository->getRepresentativeItemsByUserId($userId);
 
-        Session::put('items', $items);
+        Session::put('outcomes', $outcomes);
     }
 }

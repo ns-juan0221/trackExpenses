@@ -56,9 +56,7 @@ class OutcomeRepository {
             FROM 
                 outcome_groups
             WHERE 
-                user_id = :userId
-                AND del_flg = 0
-                AND (
+                user_id = :userId AND del_flg = 0 AND (
                     (date BETWEEN DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 5 MONTH), '%Y-%m-01') 
                             AND LAST_DAY(CURDATE()))
                     OR
@@ -72,11 +70,11 @@ class OutcomeRepository {
         ", ['userId' => $userId]);
     }
 
-    public function getSixItems(int $userId) {
+    public function getRepresentativeItemsByUserId(int $userId) {
         return DB::select("
             WITH latest_items AS (
                 SELECT
-                    oi.group_id,oi.date,oi.item,oi.price,oi.m_category_id,oi.s_category_id,og.shop,og.totalPrice,ROW_NUMBER() OVER (PARTITION BY oi.group_id ORDER BY oi.date DESC) AS rn
+                    og.id,oi.date,oi.item,oi.price,oi.m_category_id,oi.s_category_id,og.shop,og.totalPrice,ROW_NUMBER() OVER (PARTITION BY oi.group_id ORDER BY oi.date DESC) AS rn
                 FROM
                     outcome_items AS oi
                 JOIN
@@ -87,7 +85,8 @@ class OutcomeRepository {
                     oi.user_id = :userId AND oi.del_flg = 0 AND og.del_flg = 0
             )
             SELECT
-                li.group_id,li.date,li.item,li.price,li.shop,li.totalPrice,li.m_category_id,mcat.name AS m_category_name,li.s_category_id,scat.name AS s_category_name
+                li.id,li.date,li.totalPrice AS amount,mcat.name AS m_category_name,scat.name AS s_category_name,
+                'outcome' as type
             FROM
                 latest_items AS li
             LEFT JOIN
@@ -98,7 +97,6 @@ class OutcomeRepository {
                 li.rn = 1
             ORDER BY
                 li.date DESC
-            LIMIT 6
         ", ['userId' => $userId]);
     }
 }

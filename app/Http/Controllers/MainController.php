@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\OutcomeRepository;
-use App\Repositories\IncomeRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
@@ -14,6 +12,7 @@ class MainController extends Controller {
     protected $incomeController;
     protected $outcomeController;
     protected $categoryController;
+    protected $searchController;
 
     /**
      * MainController constructor.
@@ -21,10 +20,11 @@ class MainController extends Controller {
      * @param OutcomeController $outcomeController
      * @param IncomeController $incomeController
      */
-    public function __construct(OutcomeController $outcomeController, IncomeController $incomeController, CategoryController $categoryController) {
+    public function __construct(OutcomeController $outcomeController, IncomeController $incomeController, CategoryController $categoryController, SearchController $searchController) {
         $this->incomeController = $incomeController;
         $this->outcomeController = $outcomeController;
         $this->categoryController = $categoryController;
+        $this->searchController = $searchController;
     }
 
     /**
@@ -32,7 +32,8 @@ class MainController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function guestIndex() {
+        $this->outcomeController->getSampleHalfYearGroupsAndLeastItems();
         $labels = Session::get('labels');
         $lastYearValues = Session::get('lastYearValues');
         $currentYearValues = Session::get('currentYearValues');
@@ -42,42 +43,37 @@ class MainController extends Controller {
             return redirect()->route('login')->withErrors(['login_error' => 'ログインが必要です'])->withInput();
         }
 
-        return view('main',compact('labels', 'lastYearValues', 'currentYearValues','items'));
+        return view('guest',compact('labels', 'lastYearValues', 'currentYearValues','items'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
-        $type = request('type');
-        $groupedOutcomeCategories = Session::get('groupedOutcomeCategories');
-        $incomeCategories = Session::get('incomeCategories');
+    public function index() {
+        $this->outcomeController->getHalfYearGroupsAndLeastItems();
+        $labels = Session::get('labels');
+        $lastYearValues = Session::get('lastYearValues');
+        $currentYearValues = Session::get('currentYearValues');
+        $incomes = collect($this->incomeController->getLeastItems());
+        $outcomes = collect(Session::get('outcomes'));
+        $totalBalances = $incomes->merge($outcomes)->sortByDesc('date')->take(6);
 
-        if (is_null($groupedOutcomeCategories) || is_null($incomeCategories)) {
+        if (is_null($labels) || is_null($lastYearValues) || is_null($currentYearValues) || is_null($totalBalances)) {
             return redirect()->route('login')->withErrors(['login_error' => 'ログインが必要です'])->withInput();
         }
 
-        return view('create', compact('groupedOutcomeCategories','incomeCategories','type'));
+        return view('main',compact('labels', 'lastYearValues', 'currentYearValues','totalBalances'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-
-        if ($request->input('type') === 'income') {
-            return $this->incomeController->store($request);
-        }
-
-        return $this->outcomeController->store($request);
-    }
-
     public function show() {
+        $this->categoryController->getCategories();
         $userId = session('user_id');
         $incomes = collect($this->incomeController->getByUserId($userId));
         $outcomes = collect($this->outcomeController->getGroupsByUserId($userId));
@@ -94,12 +90,65 @@ class MainController extends Controller {
         );
 
         $groupedOutcomeCategories = Session::get('groupedOutcomeCategories');
+        $incomeCategories = Session::get('incomeCategories');
 
-        if (is_null($groupedOutcomeCategories)) {
+        // dd($totalBalances);
+        if (is_null($groupedOutcomeCategories) || is_null($incomeCategories)) {
             return redirect()->route('login')->withErrors(['login_error' => 'ログインが必要です'])->withInput();
         }
 
-        return view('log', compact('totalBalances','groupedOutcomeCategories'));
+        return view('log', compact('totalBalances','groupedOutcomeCategories','incomeCategories'));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request) {
+        $this->categoryController->getCategories();
+        $groupedOutcomeCategories = Session::get('groupedOutcomeCategories');
+        $incomeCategories = Session::get('incomeCategories');
+
+        if (is_null($groupedOutcomeCategories) || is_null($incomeCategories)) {
+            return redirect()->route('login')->withErrors(['login_error' => 'ログインが必要です'])->withInput();
+        }
+
+        $totalBalances = $this->searchController->search($request);
+        // dd($totalBalances);
+        return view('log', compact('totalBalances','groupedOutcomeCategories','incomeCategories'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create() {
+        $type = request('type');
+        $this->categoryController->getCategories();
+        $groupedOutcomeCategories = Session::get('groupedOutcomeCategories');
+        $incomeCategories = Session::get('incomeCategories');
+
+        if (is_null($groupedOutcomeCategories) || is_null($incomeCategories)) {
+            return redirect()->route('login')->withErrors(['login_error' => 'ログインが必要です'])->withInput();
+        }
+
+        return view('registerItem', compact('groupedOutcomeCategories','incomeCategories','type'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request) {
+        if ($request->input('type') === 'income') {
+            return $this->incomeController->store($request);
+        }
+
+        return $this->outcomeController->store($request);
     }
 
     /**
@@ -113,7 +162,6 @@ class MainController extends Controller {
         $type = $request->input('type');
 
         if ($type === 'income') {
-            Log::info('incomeのshowdetailメソッドに入った');
             $income = $this->incomeController->getById($id);
             return view('logItemDetail', compact('income','type'));
         }else {
@@ -174,6 +222,7 @@ class MainController extends Controller {
         if ($request->input('type') === 'income') {
             return $this->incomeController->update($request);
         }
+
         return $this->outcomeController->update($request);
     }
 

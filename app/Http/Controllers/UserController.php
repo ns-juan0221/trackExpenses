@@ -39,7 +39,7 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        return view('register');
+        return view('newUser');
     }
 
     /**

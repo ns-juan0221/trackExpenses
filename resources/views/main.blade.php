@@ -27,36 +27,75 @@
                 </div>
             </div>
             <div class="history d-flex flex-column col-4 mt-4 ms-1">
-                @if (!empty($items))
+                @if (!empty($totalBalances))
                     <div class="historyTitle d-flex justify-content-center align-items-center flex-grow-1 mt-3">
                         <p class="historyTitleText fs-5">直近の入出金履歴</p>
                     </div>
-                    <div class="historyList px-2 flex-grow-1 overflow-auto mt-1">
-                        @foreach($items as $item)
+                    <div class="historyList px-2 flex-grow-1 mt-1">
+                        @foreach($totalBalances as $item)
                             <div class="listItem mb-2">
-                                {{-- {{ url('/edit/' . $item->id) }} --}}
-                                <a href="#" class="itemLink">
+                                <a href="#" class="itemLink" onclick="event.preventDefault(); document.getElementById('detailForm').submit();">
+                                    <form id="detailForm" method="POST" action="{{ route('detail') }}" style="display: none;">
+                                        @csrf
+                                        <input type="hidden" name="id" value="{{ $item->id }}">
+                                        <input type="hidden" name="type" value="outcome">
+                                    </form>
+
                                     <div class="d-flex justify-content-between">
-                                        <div class="listDate w-50 ps-2">
+                                        <div class="listDate w-50 px-2">
                                             {{ \Carbon\Carbon::parse($item->date)->format('Y/m/d') }}
                                         </div>
                                         <div class="listPrice w-50 pe-3">
-                                            -{{ number_format($item->totalPrice) }}円
+                                            @if ($item->type === 'income')
+                                                +{{ number_format($item->amount) }}円
+                                            @else
+                                                -{{ number_format($item->amount) }}円
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="listCategory ps-2">
-                                        {{ $item->m_category_name }}　->　{{ $item->s_category_name }}
+                                        @if ($item->type === 'income')
+                                            {{ $item->m_category_name }}
+                                        @else
+                                            {{ $item->m_category_name }}　->　{{ $item->s_category_name }}
+                                        @endif
                                     </div>
                                 </a>
                             </div>
                         @endforeach
                     </div>
                 @else
-                    <div class="historyTitle-noData">
+                    <div class="historyTitle-noData  d-flex justify-content-center align-items-center flex-grow-1 mt-3">
                         <p class="historyTitleText fs-5">直近の入出金履歴</p>
                     </div>
-                    <div class="historyList-noData d-flex justify-content-center align-items-center flex-grow-1 mt-3">
-                        <p class="historyTitleText-noData fs-5">履歴はありません</p>
+                    <div class="historyList-noData flex-grow-1 mt-3">
+                        <div class="listItem mb-2">
+                            <a href="#" class="itemLink">
+                                <div class="d-flex justify-content-between">
+                                    <div class="listDate w-100 ps-2">
+                                        まだ履歴はありません
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="listItem mb-2">
+                            <a href="#" class="itemLink">
+                                <div class="d-flex justify-content-between">
+                                    <div class="listDate w-100 ps-2">
+                                        早速、登録してみよう
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="listItem mb-2">
+                            <a href="#" class="itemLink">
+                                <div class="d-flex justify-content-between">
+                                    <div class="listDate w-100 ps-2">
+                                        上の「入力」をクリック☝️
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 @endif
             </div>

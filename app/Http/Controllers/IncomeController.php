@@ -27,13 +27,18 @@ class IncomeController extends Controller {
         $this->incomeRepository = $incomeRepository;
     }
 
-    public function getByUserId($userId) {
+    public function getByUserId(int $userId) {
         return $this->incomeRepository->getByUserId($userId);
     }
 
-    public function getById($id) {
+    public function getById(int $id) {
         $userId = session('user_id');
         return $this->incomeRepository->getById($id,$userId);
+    }
+
+    public function getLeastItems() {
+        $userId = session('user_id');
+        return $this->incomeRepository->getRepresentativeItemsByUserId($userId);
     }
 
         /**
@@ -47,7 +52,8 @@ class IncomeController extends Controller {
             $validator = $this->incomeService->validateIncome($request->all());
             $validator->validate();
 
-            return $this->incomeService->createIncome($request->all());
+            $this->incomeService->createIncome($request->all());
+            return redirect()->route('register')->with('success', 'データを作成しました。');
         } catch (ValidationException $e) {
             Log::error('Validation failed', ['errors' => $e->errors()]);
             return back()->withErrors($e->errors())->withInput();

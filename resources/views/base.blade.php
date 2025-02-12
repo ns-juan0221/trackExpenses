@@ -15,7 +15,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.1/remodal-default-theme.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('css/commons.css') }}">
-    @if (Request::is('login') || Request::is('register'))
+    @if (Request::is('login') || Request::is('new'))
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
     @else
     <link rel="stylesheet" href="{{ asset('css/article.css') }}">
@@ -31,7 +31,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.1/remodal.min.js"></script>
 
-    @if (Request::is('login') || Request::is('register') || Request::is('guest'))
+    @if (Request::is('login') || Request::is('new') || Request::is('guest'))
     <header id="header" class="header d-flex w-100 align-items-center border-bottom border-2 py-2">
         <a href="{{ route('main') }}" class="header-logo">
             <img src="{{ asset('images/header_icon.png') }}" alt="マネーログ" height="50" width="150">
@@ -39,7 +39,7 @@
         <nav id="nav">
             <ul class="nav-btn">
                 <li>
-                    <a href="{{ route('register') }}" class="btn btn-success text-center">新規登録</a>
+                    <a href="{{ route('new') }}" class="btn btn-success text-center">新規登録</a>
                 </li>
                 <li>
                     <a href="{{ route('login')}}" class="btn btn-light text-center">ログイン</a>
@@ -57,7 +57,7 @@
         <nav id="nav">
             <ul class="nav-btn">
                 <li>
-                    <a href="{{ route('new') }}" class="btn btn-success text-center">入力</a>
+                    <a href="{{ route('register') }}" class="btn btn-success text-center">入力</a>
                 </li>
                 <li>
                     <a href="{{ route('histories') }}" class="btn btn-light text-center">入出金履歴</a>

@@ -19,30 +19,20 @@ class CategoryController extends Controller {
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function getOutcomeCategoriesToSeeHistories() {
-        $this->getOutcomeCategoriesAndFormatData();
-
-        return app(MainController::class)->show();
-    }
-
-    public function getOutcomeCategoriesToInsert() {
-        $this->getOutcomeCategoriesAndFormatData();
+    public function getCategories() {
+        $this->getOutcomeCategories();
         $this->getIncomeCategories();
-
-        return app(MainController::class)->create();
     }
 
     public function getOutcomeCategories() {
-        return $this->getOutcomeCategoriesAndFormatData();
+        return $this->getOutcomeCategoriesFromRepositoryAndFormatData();
     }
 
     public function getIncomeCategories() {
-        $incomeCategories = $this->categoryRepository->getIncomeCategories();
-
-        Session::put('incomeCategories', $incomeCategories);
+        return $this->getIncomeCategoriesFromRepository();
     }
 
-    public function getOutcomeCategoriesAndFormatData() {
+    public function getOutcomeCategoriesFromRepositoryAndFormatData() {
         $categories = $this->categoryRepository->getOutcomeCategories();
 
         $groupedOutcomeCategories = [];
@@ -57,5 +47,11 @@ class CategoryController extends Controller {
         }
 
         Session::put('groupedOutcomeCategories', $groupedOutcomeCategories);
+    }
+
+    public function getIncomeCategoriesFromRepository() {
+        $incomeCategories = $this->categoryRepository->getIncomeCategories();
+
+        Session::put('incomeCategories', $incomeCategories);
     }
 }

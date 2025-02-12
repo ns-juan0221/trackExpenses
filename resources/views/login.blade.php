@@ -41,7 +41,7 @@
         </form>
         <div class="additionalLinks">
             <a class="m-2" href="#">パスワードを忘れた方</a>
-            <a class="m-2" href="{{ route('register') }}">新規作成</a>
+            <a class="m-2" href="{{ route('new') }}">新規作成</a>
             {{-- <a href="#">サインインできませんか？ここをクリック</a> --}}
         </div>
     </div>

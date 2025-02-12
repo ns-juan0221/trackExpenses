@@ -35,7 +35,7 @@ class IncomeService {
      * @param array $incomeData
      * @return \App\Models\Income
      */
-    public function createIncome(array $incomeData):Income {
+    public function createIncome(array $incomeData) {
         return DB::transaction(function () use ($incomeData) {
             $categoryId = intval(str_replace('category-', '', $incomeData['category']));
 

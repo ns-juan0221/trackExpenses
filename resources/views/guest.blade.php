@@ -26,38 +26,29 @@
                 </div>
             </div>
             <div class="history d-flex flex-column col-4 mt-4 ms-1">
-                @if (!empty($items))
-                    <div class="historyTitle d-flex justify-content-center align-items-center flex-grow-1 mt-3">
-                        <p class="historyTitleText fs-5">直近の入出金履歴</p>
-                    </div>
-                    <div class="historyList px-2 flex-grow-1 overflow-auto mt-1">
-                        @foreach($items as $item)
-                            <div class="listItem mb-2">
-                                {{-- {{ url('/edit/' . $item->id) }} --}}
-                                <a href="#" class="itemLink">
-                                    <div class="d-flex justify-content-between">
-                                        <div class="listDate w-50 ps-2">
-                                            {{ \Carbon\Carbon::parse($item->date)->format('Y/m/d') }}
-                                        </div>
-                                        <div class="listPrice w-50 pe-3">
-                                            -{{ number_format($item->totalPrice) }}円
-                                        </div>
+                <div class="historyTitle d-flex justify-content-center align-items-center flex-grow-1 mt-3">
+                    <p class="historyTitleText fs-5">直近の入出金履歴</p>
+                </div>
+                <div class="historyList px-2 flex-grow-1 mt-1">
+                    @foreach($items as $item)
+                        <div class="listItem mb-2">
+                            {{-- {{ url('/edit/' . $item->id) }} --}}
+                            <a href="#" class="itemLink">
+                                <div class="d-flex justify-content-between">
+                                    <div class="listDate w-50 ps-2">
+                                        {{ \Carbon\Carbon::parse($item->date)->format('Y/m/d') }}
                                     </div>
-                                    <div class="listCategory ps-2">
-                                        {{ $item->m_category_name }}　->　{{ $item->s_category_name }}
+                                    <div class="listPrice w-50 pe-3">
+                                        -{{ number_format($item->totalPrice) }}円
                                     </div>
-                                </a>
-                            </div>
-                        @endforeach
-                    </div>
-                @else
-                    <div class="historyTitle-noData">
-                        <p class="historyTitleText fs-5">直近の入出金履歴</p>
-                    </div>
-                    <div class="historyList-noData d-flex justify-content-center align-items-center flex-grow-1 mt-3">
-                        <p class="historyTitleText-noData fs-5">履歴はありません</p>
-                    </div>
-                @endif
+                                </div>
+                                <div class="listCategory ps-2">
+                                    {{ $item->m_category_name }}　->　{{ $item->s_category_name }}
+                                </div>
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>
