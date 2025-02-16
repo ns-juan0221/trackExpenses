@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@100;400;700&display=swap');
-
 /* #22c55e rgba(34, 197, 94, 1) */
 /* #34ce6c rgba(52, 206, 108, 1) */
 /* #4ade80 rgba(74, 222, 128, 1) */
@@ -7,7 +5,7 @@
 /* #bbf7d0 rgba(187, 247, 208, 1) */
 
 body {
-    background-image: url('../images/bg.png');
+    background-image: url('/img/bg.png');
 }
 
 .BarGraph {
@@ -168,14 +166,15 @@ body {
 .calendarTable {
     width: 100%;
     max-width: 600px;
-    margin: 20px auto;
+    height: 100%;
+    margin: 18px auto;
     border-collapse: collapse;
 }
 
 .calendarTable th, .calendarTable td {
     border: 1px solid #ccc;
     width: 14.28%;
-    height: 70px;
+    height: 95px;
     vertical-align: top;
     position: relative;
 }
@@ -189,7 +188,7 @@ body {
 }
 
 .calendarTable td {
-    background-color: #fff;
+    background-color: #ffffff;
     padding: 5px;
 }
 

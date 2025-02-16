@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 
 class OutcomeService {
     /**
-     * Outcomeデータのバリデーション
+     * 支出データのバリデーションを行う
      *
      * @param array $data
      * @return \Illuminate\Contracts\Validation\Validator
@@ -36,19 +36,18 @@ class OutcomeService {
     }
 
     /**
-     * OutcomeItemのデータを整える
+     * バリデーション済みのデータから支出アイテムデータを準備する
      *
      * @param array $validatedData
-     * @return array $itemsData
+     * @return array
      */
-    public function prepareItemsData(array $validatedData):array {
+    public function prepareItemsData(array $validatedData) {
         $itemsData = [];
 
         foreach ($validatedData['item'] as $index => $itemName) {
             $categoryParts = explode('|', $validatedData['category'][$index]);
             $mainCategoryId = intval(str_replace('outcome-main-', '', $categoryParts[0]));
             $subCategoryId = intval(str_replace('outcome-sub-', '', $categoryParts[1]));
-
             $itemsData[] = [
                 'date' => $validatedData['date'],
                 'item' => $itemName,
@@ -58,8 +57,7 @@ class OutcomeService {
                 'amount' => $validatedData['amount'][$index],
             ];
         }
-        Log::info('itemsDataは以下のようになってます');
-        Log::info($itemsData);
+
         return $itemsData;
     }   
     
@@ -69,14 +67,13 @@ class OutcomeService {
      * @param array $validatedData
      * @return array $itemsData
      */
-    public function prepareUpdatedItemsData(array $validatedData):array {
+    public function prepareUpdatedItemsData(array $validatedData) {
         $itemsData = [];
 
         foreach ($validatedData['item'] as $index => $itemName) {
             $categoryParts = explode('|', $validatedData['category'][$index]);
             $mainCategoryId = intval(str_replace('outcome-main-', '', $categoryParts[0]));
             $subCategoryId = intval(str_replace('outcome-sub-', '', $categoryParts[1]));
-
             $itemsData[] = [
                 'id' => $validatedData['id'][$index],
                 'date' => $validatedData['date'],
@@ -87,21 +84,19 @@ class OutcomeService {
                 'amount' => $validatedData['amount'][$index],
             ];
         }
-        Log::info('itemsDataは以下のようになってます');
-        Log::info($itemsData);
+
         return $itemsData;
     }   
 
     /**
-     * OutcomeGroup と OutcomeItem のデータをまとめて作成する
+     * 支出データを作成する
      *
-     * @param array $groupData
-     * @param array $itemsData
-     * @return \App\Models\OutcomeGroup
+     * @param array $outcomeGroupData
+     * @param array $outcomeItemsData
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function createOutcome(array $outcomeGroupData, array $outcomeItemsData): OutcomeGroup {
+    public function createOutcome(array $outcomeGroupData, array $outcomeItemsData) {
         return DB::transaction(function () use ($outcomeGroupData, $outcomeItemsData) {
-            // OutcomeGroup を作成
             $newOutcomeGroupData = OutcomeGroup::create([
                 'user_id' => $outcomeGroupData['user_id'],
                 'date' => $outcomeGroupData['date'],
@@ -112,7 +107,6 @@ class OutcomeService {
             ]);
 
             $newOutcomeItemsData = [];
-            // OutcomeGroup ID を利用して OutcomeItem を作成
             foreach ($outcomeItemsData as $outcomeItemData) {
                 $newOutcomeItemsData[] = array_merge($outcomeItemData, [
                     'user_id' => session('user_id'),
@@ -120,24 +114,22 @@ class OutcomeService {
                     'del_flg' => false,
                 ]);
             }
+
             OutcomeItem::insert($newOutcomeItemsData);
 
-            return $newOutcomeGroupData;
+            return redirect()->route('register')->with('success', 'データを作成しました。');
         });
     }
 
     /**
-     * OutcomeGroup と OutcomeItem のデータをまとめて更新する
+     * 支出データを更新する
      *
-     * @param array $groupData
-     * @param array $itemsData
-     * @return \App\Models\OutcomeGroup
+     * @param array $updatedOutcomeGroupData
+     * @param array $updatedOutcomeItemsData
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateOutcome(array $updatedOutcomeGroupData, array $updatedOutcomeItemsData): OutcomeGroup {
-        Log::info('updateOutcomeメソッドに入った');
-        Log::info($updatedOutcomeItemsData);
+    public function updateOutcome(array $updatedOutcomeGroupData, array $updatedOutcomeItemsData) {
         return DB::transaction(function () use ($updatedOutcomeGroupData, $updatedOutcomeItemsData) {
-            // OutcomeGroup を作成
             $outcomeGroupData = OutcomeGroup::findOrFail($updatedOutcomeGroupData['id']);
             $outcomeGroupData->update([
                 'date' => $updatedOutcomeGroupData['date'],
@@ -151,8 +143,6 @@ class OutcomeService {
 
             foreach ($updatedOutcomeItemsData as $updatedOutcomeItemData) {
                 if (!empty($updatedOutcomeItemData['id'])) {
-                    // 既存アイテムを更新
-                    Log::info('IDは'.$updatedOutcomeItemData['id'].'です');
                     $item = OutcomeItem::findOrFail($updatedOutcomeItemData['id']);
                     $item->update([
                         'date' => $updatedOutcomeItemData['date'],
@@ -162,10 +152,9 @@ class OutcomeService {
                         'price' => $updatedOutcomeItemData['price'],
                         'amount' => $updatedOutcomeItemData['amount'],
                     ]);
+
                     $newItemIds[] = $updatedOutcomeItemData['id'];
                 } else {
-                    Log::info($updatedOutcomeItemData);
-                    // 新規アイテムを作成
                     $newItem = OutcomeItem::create([
                         'user_id' => session('user_id'),
                         'group_id' => $updatedOutcomeGroupData['id'],
@@ -177,20 +166,28 @@ class OutcomeService {
                         'amount' => $updatedOutcomeItemData['amount'],
                         'del_flg' => false,
                     ]);
+
                     $newItemIds[] = $newItem->id;
                 }
             }
 
             $itemsToDelete = array_diff($existingItemIds, $newItemIds);
+
             if (!empty($itemsToDelete)) {
                 OutcomeItem::whereIn('id', $itemsToDelete)->update(['del_flg' => true]);
             }
 
-            return $outcomeGroupData;
+            return redirect()->route('histories')->with('success', 'データを更新しました。');
         });
     }
 
-    public function destroyOutcome($id) {
+    /**
+     * 指定したIDの支出データを削除する
+     *
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroyOutcome(int $id) {
         $record = OutcomeGroup::findOrFail($id);
         $record->update(['del_flg' => 1]);
 

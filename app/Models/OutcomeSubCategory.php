@@ -16,7 +16,7 @@ class OutcomeSubCategory extends Model
      */
     protected $table = 'outcome_sub_categories';
 
-    public $timestamps = false; // Laravelの自動タイムスタンプ管理を無効化
+    public $timestamps = false;
 
     /**
      * 複数代入可能な属性
@@ -39,8 +39,7 @@ class OutcomeSubCategory extends Model
     ];
 
     /**
-     * リレーション - 支出中カテゴリ
-     * 各SubCategoryは1つのMainCategoryに属する
+     * リレーション - 支出メインカテゴリ
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -51,11 +50,10 @@ class OutcomeSubCategory extends Model
 
     /**
      * リレーション - 支出アイテム
-     * 各SubCategoryは複数のExpenseItemを持つ
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function OutcomeItems()
+    public function outcomeItems()
     {
         return $this->hasMany(OutcomeItem::class);
     }

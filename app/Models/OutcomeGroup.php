@@ -15,7 +15,7 @@ class OutcomeGroup extends Model {
      */
     protected $table = 'outcome_groups';
 
-    public $timestamps = false; // Laravelの自動タイムスタンプ管理を無効化
+    public $timestamps = false;
 
     /**
      * 複数代入可能な属性

@@ -15,7 +15,7 @@ class OutcomeItem extends Model {
      */
     protected $table = 'outcome_items';
 
-    public $timestamps = false; // Laravelの自動タイムスタンプ管理を無効化
+    public $timestamps = false;
 
     /**
      * 複数代入可能な属性
@@ -65,7 +65,7 @@ class OutcomeItem extends Model {
     }
 
     /**
-     * リレーション - 支出中カテゴリ
+     * リレーション - 支出メインカテゴリ
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -75,7 +75,7 @@ class OutcomeItem extends Model {
     }
 
     /**
-     * リレーション - 支出小カテゴリ
+     * リレーション - 支出サブカテゴリ
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

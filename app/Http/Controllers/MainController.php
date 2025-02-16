@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-
 class MainController extends Controller {
     protected $incomeController;
     protected $outcomeController;
@@ -15,10 +14,12 @@ class MainController extends Controller {
     protected $searchController;
 
     /**
-     * MainController constructor.
-     *
+     * コンストラクタ
+     * 
      * @param OutcomeController $outcomeController
      * @param IncomeController $incomeController
+     * @param CategoryController $categoryController
+     * @param SearchController $searchController
      */
     public function __construct(OutcomeController $outcomeController, IncomeController $incomeController, CategoryController $categoryController, SearchController $searchController) {
         $this->incomeController = $incomeController;
@@ -28,36 +29,38 @@ class MainController extends Controller {
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * ゲストユーザー用のダッシュボードを表示する
+     * 
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function guestIndex() {
         $this->outcomeController->getSampleHalfYearGroupsAndLeastItems();
         $labels = Session::get('labels');
         $lastYearValues = Session::get('lastYearValues');
         $currentYearValues = Session::get('currentYearValues');
-        $items = Session::get('items');
+        $outcomes = collect(Session::get('outcomes'));
+        $incomes = collect($this->incomeController->getSampleLeastItems());
+        $totalBalances = $incomes->merge($outcomes)->sortByDesc('date')->take(6);
 
-        if (is_null($labels) || is_null($lastYearValues) || is_null($currentYearValues) || is_null($items)) {
+        if (is_null($labels) || is_null($lastYearValues) || is_null($currentYearValues) || is_null($totalBalances)) {
             return redirect()->route('login')->withErrors(['login_error' => 'ログインが必要です'])->withInput();
         }
 
-        return view('guest',compact('labels', 'lastYearValues', 'currentYearValues','items'));
+        return view('guest',compact('labels', 'lastYearValues', 'currentYearValues','totalBalances'));
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * ユーザーダッシュボードを表示する
+     * 
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function index() {
         $this->outcomeController->getHalfYearGroupsAndLeastItems();
         $labels = Session::get('labels');
         $lastYearValues = Session::get('lastYearValues');
         $currentYearValues = Session::get('currentYearValues');
-        $incomes = collect($this->incomeController->getLeastItems());
         $outcomes = collect(Session::get('outcomes'));
+        $incomes = collect($this->incomeController->getLeastItems());
         $totalBalances = $incomes->merge($outcomes)->sortByDesc('date')->take(6);
 
         if (is_null($labels) || is_null($lastYearValues) || is_null($currentYearValues) || is_null($totalBalances)) {
@@ -68,9 +71,9 @@ class MainController extends Controller {
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * 収支履歴を表示する
+     * 
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function show() {
         $this->categoryController->getCategories();
@@ -92,7 +95,6 @@ class MainController extends Controller {
         $groupedOutcomeCategories = Session::get('groupedOutcomeCategories');
         $incomeCategories = Session::get('incomeCategories');
 
-        // dd($totalBalances);
         if (is_null($groupedOutcomeCategories) || is_null($incomeCategories)) {
             return redirect()->route('login')->withErrors(['login_error' => 'ログインが必要です'])->withInput();
         }
@@ -101,9 +103,10 @@ class MainController extends Controller {
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * 収支履歴を検索する
+     * 
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function search(Request $request) {
         $this->categoryController->getCategories();
@@ -115,14 +118,14 @@ class MainController extends Controller {
         }
 
         $totalBalances = $this->searchController->search($request);
-        // dd($totalBalances);
+
         return view('log', compact('totalBalances','groupedOutcomeCategories','incomeCategories'));
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * 収支項目の作成ページを表示する
+     * 
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function create() {
         $type = request('type');
@@ -138,10 +141,10 @@ class MainController extends Controller {
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * 収支データを保存する
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request) {
         if ($request->input('type') === 'income') {
@@ -152,10 +155,10 @@ class MainController extends Controller {
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * 収支詳細を表示する
+     * 
+     * @param Request $request
+     * @return \Illuminate\View\View
      */
     public function showDetail(Request $request) {
         $id = $request->input('id');
@@ -163,21 +166,24 @@ class MainController extends Controller {
 
         if ($type === 'income') {
             $income = $this->incomeController->getById($id);
+
             return view('logItemDetail', compact('income','type'));
         }else {
             $outcomeItems = $this->outcomeController->getItemsByGroupId($id);
             $outcomeGroup = $this->outcomeController->getGroupByGroupId($id);
+
             return view('logItemDetail', compact('outcomeItems', 'outcomeGroup', 'type'));
         }
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * 収支情報を編集するページを表示
+     * 
+     * @param int $id
+     * @param string $type
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
-    public function edit($id, $type) {
+    public function edit(int $id, string $type) {
         if ($type === 'income') {
             $this->categoryController->getIncomeCategories();
             $incomeCategories = Session::get('incomeCategories');
@@ -212,11 +218,10 @@ class MainController extends Controller {
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * 収支情報を更新する
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request) {
         if ($request->input('type') === 'income') {
@@ -227,10 +232,10 @@ class MainController extends Controller {
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * 収支情報を削除する
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request) {
         if ($request->type === 'income') {

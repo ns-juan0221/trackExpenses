@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 //選択したカテゴリを保存するset
 let selectedCategories = new Set();
 

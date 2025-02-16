@@ -16,7 +16,7 @@ class IncomeCategory extends Model
      */
     protected $table = 'income_categories';
 
-    public $timestamps = false; // Laravelの自動タイムスタンプ管理を無効化
+    public $timestamps = false;
 
     /**
      * 複数代入可能な属性
@@ -42,7 +42,7 @@ class IncomeCategory extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function income() {
+    public function incomes() {
         return $this->hasMany(Income::class);
     }
 }

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@100;400;700&display=swap" rel="stylesheet">
     <!-- Font Awesome (CDN) -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <!-- Bootstrap CSS (CDN) -->
@@ -16,7 +17,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/commons.css') }}">
     @if (Request::is('login') || Request::is('new'))
-    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/login.css')}}">
     @else
     <link rel="stylesheet" href="{{ asset('css/article.css') }}">
     @endif
@@ -34,14 +35,14 @@
     @if (Request::is('login') || Request::is('new') || Request::is('guest'))
     <header id="header" class="header d-flex w-100 align-items-center border-bottom border-2 py-2">
         <a href="{{ route('main') }}" class="header-logo">
-            <img src="{{ asset('images/header_icon.png') }}" alt="マネーログ" height="50" width="150">
+            <img src="{{ asset('img/header_icon.png') }}" alt="マネーログ" height="47" width="141">
         </a>
         <nav id="nav">
             <ul class="nav-btn">
                 <li>
                     <a href="{{ route('new') }}" class="btn btn-success text-center">新規登録</a>
                 </li>
-                <li>
+                <li class="ms-2">
                     <a href="{{ route('login')}}" class="btn btn-light text-center">ログイン</a>
                 </li>
             </ul>
@@ -49,22 +50,21 @@
     </header>
     @else
     <header id="header" class="header d-flex w-100 align-items-center border-bottom border-2 py-2">
-        {{--  　　　　　　　　　追加機能　　　　　　　　　　 --}}
-        {{-- 認証されていない箇所ではhrefをなくすか、mainに飛ばないようにする --}}
         <a href="{{ route('main') }}" class="header-logo">
-            <img src="{{ asset('images/header_icon.png') }}" alt="マネーログ" height="50" width="150">
+            <img src="{{ asset('img/header_icon.png') }}" alt="マネーログ" height="47" width="141">
         </a>
         <nav id="nav">
             <ul class="nav-btn">
                 <li>
-                    <a href="{{ route('register') }}" class="btn btn-success text-center">入力</a>
+                    <a href="{{ route('register') }}" class="btn btn-light text-center">入力</a>
                 </li>
                 <li>
-                    <a href="{{ route('histories') }}" class="btn btn-light text-center">入出金履歴</a>
+                    <a href="{{ route('histories') }}" class="btn btn-success text-center">入出金履歴</a>
                 </li>
-                <li>
+                {{-- 追加機能 --}}
+                {{-- <li>
                     <a href="#" class="btn btn-success text-center">設定</a>
-                </li>
+                </li> --}}
                 <li>
                     <a href="{{ route('logout') }}" class="btn btn-light text-center">ログアウト</a>
                 </li>
@@ -81,12 +81,12 @@
         <div class="container d-flex justify-content-center align-items-center">
             <p class="me-3 mb-0">Follow us on</p>
             <div class="social-links">
-                <a href="https://line.me/your_line_account" class="me-3" target="_blank">
+                <a href="https://line.me/ti/p/FjiuKoGo-y" class="me-3" target="_blank">
                     <i class="fab fa-line fa-2x"></i>
-                    <a href="https://www.instagram.com/your_instagram_account" class="me-3" target="_blank">
+                    <a href="https://www.instagram.com/sorutomusubi?igsh=MWg3OXo3eXNzOTV0bg%3D%3D&utm_source=qr" class="me-3" target="_blank">
                         <i class="fab fa-instagram fa-2x"></i>
                     </a>
-                    <a href="https://twitter.com/your_twitter_account" class="" target="_blank">
+                    <a href="https://x.com/i_nks2?s=21&t=zKyWjvr4jSyPZbkF7Yny9g" class="" target="_blank">
                         <i class="fab fa-twitter fa-2x"></i>
                     </a>
                 </a>

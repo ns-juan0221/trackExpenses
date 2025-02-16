@@ -8,20 +8,21 @@ use App\Models\OutcomeItem;
 use App\Models\OutcomeGroup;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB;
 
 class SearchController extends Controller
 {
+    /**
+     * 収支データを検索する
+     * 
+     * @param Request $request
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     */
     public function search(Request $request) {
-        Log::info($request);
-
-        // クエリビルダーの初期化
         $outcomeQuery = null;
         $incomeQuery = null;
-        $shouldSearchOutcome = false;
-        $shouldSearchIncome = false;
+        $SearchOutcomeFlg = false;
+        $SearchIncomeFlg = false;
 
         // メモ検索 (OutcomeGroup & Income)
         if ($request->filled('memo-keyword')) {
@@ -29,15 +30,17 @@ class SearchController extends Controller
             if (!$outcomeQuery) {
                 $outcomeQuery = OutcomeGroup::query();
             }
+
             $outcomeQuery->where('memo', 'like', "%{$memoKeyword}%");
-            $shouldSearchOutcome = true;
+            $SearchOutcomeFlg = true;
 
             if($incomeQuery) {
                 if (!$incomeQuery) {
                     $incomeQuery = Income::query();
                 }
-            $incomeQuery->where('memo', 'like', "%{$memoKeyword}%");
-            $shouldSearchIncome = true;
+
+                $incomeQuery->where('memo', 'like', "%{$memoKeyword}%");
+                $SearchIncomeFlg = true;
             }
         }
 
@@ -46,6 +49,7 @@ class SearchController extends Controller
             if (!$outcomeQuery) {
                 $outcomeQuery = OutcomeGroup::query();
             }
+
             if (!$incomeQuery) {
                 $incomeQuery = Income::query();
             }
@@ -62,8 +66,8 @@ class SearchController extends Controller
                 $incomeQuery->where('amount', '<=', $maxPrice);
             }
 
-            $shouldSearchOutcome = true;
-            $shouldSearchIncome = true;
+            $SearchOutcomeFlg = true;
+            $SearchIncomeFlg = true;
         }
 
         // 日付検索 (OutcomeGroup & Income)
@@ -88,16 +92,13 @@ class SearchController extends Controller
                 $incomeQuery->where('date', '<=', $maxDate);
             }
 
-            $shouldSearchOutcome = true;
-            $shouldSearchIncome = true;
+            $SearchOutcomeFlg = true;
+            $SearchIncomeFlg = true;
         }
 
         // カテゴリ検索 (OutcomeItem & Income)
         if ($request->filled('selectedCategories')) {
             $selectedCategories = explode(',', $request->input('selectedCategories', ''));
-
-            Log::info($selectedCategories);
-
             $subCategoryIds = [];
             $incomeCategoryIds = [];
 
@@ -115,7 +116,6 @@ class SearchController extends Controller
             }
 
             if (!empty($subCategoryIds)) {
-                // main_category_id と category_id の両方がマッチするデータを取得
                 $groupIds = OutcomeItem::whereIn('s_category_id', $subCategoryIds)
                     ->pluck('group_id')
                     ->unique()
@@ -124,17 +124,18 @@ class SearchController extends Controller
                 if (!$outcomeQuery) {
                     $outcomeQuery = OutcomeGroup::query();
                 }
+
                 $outcomeQuery->whereIn('id', $groupIds);
-                $shouldSearchOutcome = true;
+                $SearchOutcomeFlg = true;
             }
 
-            // 収入カテゴリの検索
             if (!empty($incomeCategoryIds)) {
                 if (!$incomeQuery) {
                     $incomeQuery = Income::query();
                 }
+
                 $incomeQuery->whereIn('category_id', $incomeCategoryIds);
-                $shouldSearchIncome = true;
+                $SearchIncomeFlg = true;
             }
         }
 
@@ -145,27 +146,28 @@ class SearchController extends Controller
                 ->distinct()
                 ->pluck('group_id')
                 ->toArray();
-
             $outcomeQuery = OutcomeGroup::query();
             $outcomeQuery->whereIn('id', $groupIds);
-            $shouldSearchOutcome = true;
-            $shouldSearchIncome = false;
+            $SearchOutcomeFlg = true;
+            $SearchIncomeFlg = false;
         }
 
         // お店検索 (OutcomeGroup)
         if ($request->filled('shop-keyword')) {
             $shopKeyword = $request->input('shop-keyword');
+
             if (!$outcomeQuery) {
                 $outcomeQuery = OutcomeGroup::query();
             }
+
             $outcomeQuery->where('shop', 'like', "%{$shopKeyword}%");
-            $shouldSearchOutcome = true;
-            $shouldSearchIncome = false;
+            $SearchOutcomeFlg = true;
+            $SearchIncomeFlg = false;
         }
 
         // OutcomeGroup の検索結果を取得
         $outcomes = collect();
-        if ($shouldSearchOutcome && $outcomeQuery) {
+        if ($SearchOutcomeFlg && $outcomeQuery) {
             $outcomes = collect($outcomeQuery->select(
                 'id',
                 'date',
@@ -192,7 +194,7 @@ class SearchController extends Controller
 
         // Income の検索結果を取得
         $incomes = collect();
-        if ($shouldSearchIncome && $incomeQuery) {
+        if ($SearchIncomeFlg && $incomeQuery) {
             $incomes = $incomeQuery->join('income_categories', 'incomes.category_id', '=', 'income_categories.id')->select(
                 'incomes.id',
                 'incomes.date',

@@ -5,6 +5,12 @@ namespace App\Repositories;
 use Illuminate\Support\Facades\DB;
 
 class IncomeRepository {
+    /**
+     * ユーザーIDから収入データを取得する
+     *
+     * @param int $userId
+     * @return array
+     */
     public function getByUserId(int $userId) {
         return DB::select("
             SELECT 
@@ -16,6 +22,13 @@ class IncomeRepository {
         ", ['userId' => $userId]);
     }
 
+    /**
+     * IDから収入データを取得する
+     *
+     * @param int $id
+     * @param int $userId
+     * @return object|null
+     */
     public function getById(int $id, int $userId) {
         return DB::selectOne("
             SELECT 
@@ -26,6 +39,12 @@ class IncomeRepository {
         ", ['id' => $id, 'userId' => $userId]);
     }
 
+    /**
+     * ユーザーIDから最近のアイテムを取得する
+     *
+     * @param int $userId
+     * @return array
+     */
     public function getRepresentativeItemsByUserId(int $userId) {
         return DB::select("
             SELECT 

@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\OutcomeItem;
-use App\Services\OutcomeService;
 use App\Repositories\OutcomeRepository;
+use App\Services\OutcomeService;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class OutcomeController extends Controller {
@@ -19,34 +17,20 @@ class OutcomeController extends Controller {
 
     /**
      * コンストラクタ
-     *
-     * @param \App\Services\OutcomeService $outcomeService
-     * @param \App\Repositories\OutcomeRepository $outcomeRepository
+     * 
+     * @param OutcomeService $outcomeService
+     * @param OutcomeRepository $outcomeRepository
      */
     public function __construct(OutcomeService $outcomeService, OutcomeRepository $outcomeRepository) {
         $this->outcomeService = $outcomeService;
         $this->outcomeRepository = $outcomeRepository;
     }
 
-    public function getGroupsByUserId($userId) {
-        return $this->outcomeRepository->getGroupsByUserId($userId);
-    }
-
-    public function getItemsByGroupId($groupId) {
-        $userId = session('user_id');
-        return $this->outcomeRepository->getItemsByGroupId($userId,$groupId);
-    }
-    
-    public function getGroupByGroupId($groupId) {
-        $userId = session('user_id');
-        return $this->outcomeRepository->getGroupByGroupId($userId,$groupId);
-    }
-
     /**
-     * Store a newly created resource in storage.
+     * 支出データを保存する
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request) {
         try {
@@ -62,10 +46,8 @@ class OutcomeController extends Controller {
             ];
 
             $itemsData = $this->outcomeService->prepareItemsData($request->all());
-            $this->outcomeService->createOutcome($groupData, $itemsData);
-
-            // 登録後のリダイレクト
-            return redirect()->route('register')->with('success', 'データを作成しました。');
+            
+            return $this->outcomeService->createOutcome($groupData, $itemsData);
         } catch (ValidationException $e) {
             Log::error('Validation failed', ['errors' => $e->errors()]);
             return back()->withErrors($e->errors())->withInput();
@@ -76,10 +58,10 @@ class OutcomeController extends Controller {
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 支出データを更新する
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request) {
         try {
@@ -95,10 +77,8 @@ class OutcomeController extends Controller {
             ];
 
             $itemsData = $this->outcomeService->prepareUpdatedItemsData($request->all());
-            $this->outcomeService->updateOutcome($groupData, $itemsData);
-
-            // 登録後のリダイレクト
-            return redirect()->route('histories')->with('success', 'データを更新しました。');;
+            
+            return $this->outcomeService->updateOutcome($groupData, $itemsData);
         } catch (ValidationException $e) {
             Log::error('Validation failed', ['errors' => $e->errors()]);
 
@@ -114,56 +94,107 @@ class OutcomeController extends Controller {
         }
     }
 
-    public function destroy($id) {
+    /**
+     * 支出データを削除する
+     *
+     * @param int $id
+     * @return mixed
+     */
+    public function destroy(int $id) {
         return $this->outcomeService->destroyOutcome($id);
     }
 
+    /**
+     * ユーザーIDから支出グループデータを取得する
+     *
+     * @param int $userId
+     * @return mixed
+     */
+    public function getGroupsByUserId(int $userId) {
+        return $this->outcomeRepository->getGroupsByUserId($userId);
+    }
+
+    /**
+     * 支出グループIDから支出アイテムデータを取得する
+     *
+     * @param int $groupId
+     * @return mixed
+     */
+    public function getItemsByGroupId(int $groupId) {
+        $userId = session('user_id');
+        return $this->outcomeRepository->getItemsByGroupId($userId,$groupId);
+    }
+
+    /**
+     * 支出グループIDから支出グループデータを取得する
+     *
+     * @param int $groupId
+     * @return mixed
+     */
+    public function getGroupByGroupId(int $groupId) {
+        $userId = session('user_id');
+        return $this->outcomeRepository->getGroupByGroupId($userId,$groupId);
+    }
+
+    /**
+     * 過去半年間の支出グループデータと最近の支出アイテムデータを取得する
+     *
+     * @return void
+     */
     public function getHalfYearGroupsAndLeastItems() {
         $userId = session('user_id');
 
-        // sessionに$labels,$lastYearValues,$currentYearValues
         $this->getHalfYearGroups($userId);
-        // sessionに$items
         $this->getLeastItems($userId);
     }
 
+    /**
+     * サンプルユーザー（ID:1）で過去半年間の支出グループデータと最近の支出アイテムデータを取得する
+     *
+     * @return void
+     */
     public function getSampleHalfYearGroupsAndLeastItems() {
         $userId = 1;
 
-        // sessionに$labels,$lastYearValues,$currentYearValues
         $this->getHalfYearGroups($userId);
-        // sessionに$items
         $this->getLeastItems($userId);
     }
 
-    public function getHalfYearGroups($userId) {
+    /**
+     * 過去半年間の支出グループデータを取得し、フォーマットする
+     *
+     * @param int $userId
+     * @return void
+     */
+    public function getHalfYearGroups(int $userId) {
         $monthlyTotals = $this->outcomeRepository->getMonthlyHalfYear($userId);
 
         if (empty($monthlyTotals) || count($monthlyTotals) === 0) {
-
             $this->getEmptyHalfYearGroupsAndFormatData();
         }else {
-
             $this->getHalfYearGroupsAndFormatData($monthlyTotals);
         }
     }
 
+    /**
+     * 過去半年間のデータをフォーマットする
+     *
+     * @param array $monthlyTotals
+     * @return void
+     */
     public function getHalfYearGroupsAndFormatData($monthlyTotals) {
         $labels = [];
         $lastYearValues = [];
         $currentYearValues = [];
 
-        // 対象月の範囲を決定
         $startMonth = Carbon::now()->subMonths(5)->startOfMonth();  
         $endMonth = Carbon::now()->startOfMonth();
 
-        // 月ごとにループ
         while ($startMonth <= $endMonth) {
             $isLastLoop = $startMonth->eq($endMonth);
             $lastYearLabel = $startMonth->copy()->subYear()->format('Y年m月');
             $currentYearLabel = $startMonth->format('Y年m月');
 
-            // ラベル追加
             $labels[] = $lastYearLabel;
             $labels[] = $currentYearLabel;
 
@@ -197,11 +228,15 @@ class OutcomeController extends Controller {
         Session::put('currentYearValues', $currentYearValues);
     }
 
+    /**
+     * 過去半年間の空のデータをフォーマットする
+     *
+     * @return void
+     */
     public function getEmptyHalfYearGroupsAndFormatData() {
         $lastYearData = [];
         $currentYearData = [];
 
-        // 最新6か月分
         for ($i = 5; $i >= 0; $i--) {
             $monthDate = (new DateTime())->modify("-$i month");
             $currentYearData[] = [
@@ -210,7 +245,6 @@ class OutcomeController extends Controller {
             ];
         }
 
-        // 前年の同じ月
         for ($i = 5; $i >= 0; $i--) {
             $monthDate = (new DateTime())->modify("-$i month")->modify('-1 year');
             $lastYearData[] = [
@@ -219,7 +253,6 @@ class OutcomeController extends Controller {
             ];
         }
 
-        // JavaScriptで使いやすい形式に整形
         $labels = [];
         $currentYearValues = [];
         $lastYearValues = [];
@@ -227,7 +260,7 @@ class OutcomeController extends Controller {
         for ($i = 0; $i < 6; $i++) {
             $labels[] = $lastYearData[$i]['month'];
             $labels[] = $currentYearData[$i]['month'];
-            $labels[] = '';  // 空のラベルを追加
+            $labels[] = '';
 
             $lastYearValues[] = $lastYearData[$i]['total_sum'];
             $lastYearValues[] = null;
@@ -243,7 +276,13 @@ class OutcomeController extends Controller {
         Session::put('currentYearValues', $currentYearValues);
     }
 
-    public function getLeastItems($userId) {
+    /**
+     * ユーザーIDから最近の支出アイテムデータを取得する
+     *
+     * @param int $userId
+     * @return void
+     */
+    public function getLeastItems(int $userId) {
         $outcomes = $this->outcomeRepository->getRepresentativeItemsByUserId($userId);
 
         Session::put('outcomes', $outcomes);

@@ -5,6 +5,11 @@ namespace App\Repositories;
 use Illuminate\Support\Facades\DB;
 
 class CategoryRepository {
+    /**
+     * 支出カテゴリーを取得する
+     *
+     * @return array
+     */
     public function getOutcomeCategories() {
         return DB::select("
             SELECT 
@@ -20,6 +25,11 @@ class CategoryRepository {
         ");
     }
 
+    /**
+     * 収入カテゴリーを取得する
+     *
+     * @return array
+     */
     public function getIncomeCategories() {
         return DB::select("
             SELECT 

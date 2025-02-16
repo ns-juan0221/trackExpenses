@@ -11,7 +11,7 @@
 
         <form action="/login" class="formContainer needs-validation border p-2" method="post">
             @csrf
-            <img src="{{ asset('images/icon.png') }}" alt="logo" class="logo" height="100" width="100">
+            <img src="{{ asset('img/icon.png') }}" alt="logo" class="logo" height="100" width="100">
             <h1 class="h3 mb-3"></h1>
             <div class="form-group">
                 <div class="formUnit d-flex flex-row align-items-center">
@@ -39,10 +39,10 @@
                 </label>
             </div> --}}
         </form>
-        <div class="additionalLinks">
+        {{-- 追加機能 --}}
+        {{-- <div class="additionalLinks">
             <a class="m-2" href="#">パスワードを忘れた方</a>
             <a class="m-2" href="{{ route('new') }}">新規作成</a>
-            {{-- <a href="#">サインインできませんか？ここをクリック</a> --}}
-        </div>
+        </div> --}}
     </div>
 @endsection

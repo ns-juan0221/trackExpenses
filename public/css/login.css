@@ -1,17 +1,17 @@
 main {
-    display: flex; /* フレックスボックスで中央揃え */
+    display: flex;
     justify-content: center;
     align-items: center;
     width: 450px;
 }
 
 body {
-    background-image: url('../images/login_bg.png');
-    height: 100vh; /* 高さを100%に設定 */
-    display: flex; /* フレックスボックスを有効化 */
-    justify-content: center; /* 横方向に中央揃え */
-    align-items: center; /* 縦方向に中央揃え */
-    margin: 0; /* 余白をリセット */
+    background-image: url('../img/login_bg.png');
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
 }
 
 img.logo {
@@ -60,4 +60,8 @@ input[type="checkbox"] {
     align-items: center;
     cursor: pointer;
     font-size: 16px;
+}
+
+.additionalLinks {
+    background-color: rgba(232, 232, 232);
 }

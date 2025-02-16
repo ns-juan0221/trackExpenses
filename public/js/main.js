@@ -1,3 +1,5 @@
+// import $ from 'jquery';
+
 //カレンダー
 $(function(){
     $('#inputDate, #minDate, #maxDate').datepicker({

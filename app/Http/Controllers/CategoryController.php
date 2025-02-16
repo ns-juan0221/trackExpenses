@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\CategoryRepository;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
@@ -11,27 +10,48 @@ class CategoryController extends Controller {
     protected $categoryRepository;
 
     /**
-     * CategoryController constructor.
-     *
+     * コンストラクタ
+     * 
      * @param CategoryRepository $categoryRepository
      */
     public function __construct(CategoryRepository $categoryRepository) {
         $this->categoryRepository = $categoryRepository;
     }
 
+    /**
+     * 収支カテゴリを取得する
+     * 
+     * @return void
+     */
     public function getCategories() {
         $this->getOutcomeCategories();
         $this->getIncomeCategories();
     }
 
+    /**
+     * 支出カテゴリを取得する
+     * 
+     * @return array
+     */
     public function getOutcomeCategories() {
         return $this->getOutcomeCategoriesFromRepositoryAndFormatData();
     }
 
+    /**
+     * 収入カテゴリを取得する
+     * 
+     * @return array
+     */
     public function getIncomeCategories() {
         return $this->getIncomeCategoriesFromRepository();
     }
 
+
+    /**
+     * リポジトリから支出カテゴリを取得し、データを整形する
+     * 
+     * @return void
+     */
     public function getOutcomeCategoriesFromRepositoryAndFormatData() {
         $categories = $this->categoryRepository->getOutcomeCategories();
 
@@ -49,6 +69,11 @@ class CategoryController extends Controller {
         Session::put('groupedOutcomeCategories', $groupedOutcomeCategories);
     }
 
+    /**
+     * リポジトリから収入カテゴリを取得する
+     * 
+     * @return void
+     */
     public function getIncomeCategoriesFromRepository() {
         $incomeCategories = $this->categoryRepository->getIncomeCategories();
 

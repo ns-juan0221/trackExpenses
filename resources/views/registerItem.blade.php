@@ -145,9 +145,9 @@
             </div>
             <div class="calendar col-4 mt-4 ms-1">
                 <div class="calendarTitle text-center">
-                    <button onclick="prevMonth()"><img src="{{ asset('images/left.png') }}" height="20" width="20"></button>
+                    <button onclick="prevMonth()"><img src="{{ asset('img/left.png') }}" height="20" width="20"></button>
                     <span id="currentMonthYear"></span>
-                    <button onclick="nextMonth()"><img src="{{ asset('images/right.png') }}" height="20" width="20"></button>
+                    <button onclick="nextMonth()"><img src="{{ asset('img/right.png') }}" height="20" width="20"></button>
                 </div>
                 <div class="calendarContainer">
                     <table class="calendarTable">
@@ -163,7 +163,6 @@
                             </tr>
                         </thead>
                         <tbody id="calendarBody">
-                            <!-- 1ヶ月目のカレンダーがJSで生成されます -->
                         </tbody>
                     </table>
                 </div>

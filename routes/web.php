@@ -1,14 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\OutcomeController;
-use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -82,21 +76,3 @@ Route::post('update', [MainController::class, 'update'])
 Route::delete('delete', [MainController::class, 'destroy'])
     ->name('delete')
     ->middleware('auth');
-
-// パスワードリセット関連
-// Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])
-// ->name('password.request');
-// Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])
-// ->name('password.email');
-// Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])
-// ->name('password.reset');
-// Route::post('/password/reset', [ResetPasswordController::class, 'reset'])
-// ->name('password.update');
-
-// Route::get('setting', function() {
-//     return view('setting');
-// })->name('setting');
-
-// Route::get('reset-password', function() {
-//     return view('reset-password');
-// })->name('reset-password');

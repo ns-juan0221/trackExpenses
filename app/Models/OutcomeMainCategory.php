@@ -16,7 +16,7 @@ class OutcomeMainCategory extends Model
      */
     protected $table = 'outcome_main_categories';
 
-    public $timestamps = false; // Laravelの自動タイムスタンプ管理を無効化
+    public $timestamps = false;
 
     /**
      * 複数代入可能な属性
@@ -38,7 +38,7 @@ class OutcomeMainCategory extends Model
     ];
 
     /**
-     * リレーション - 支出小カテゴリ
+     * リレーション - 支出サブカテゴリ
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -49,11 +49,10 @@ class OutcomeMainCategory extends Model
 
     /**
      * リレーション - 支出アイテム
-     * 各MainCategoryは複数のExpenseItemを持つ
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function expenseItems()
+    public function outcomeItems()
     {
         return $this->hasMany(OutcomeItem::class);
     }

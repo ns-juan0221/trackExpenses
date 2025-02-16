@@ -9,7 +9,6 @@
     </div>
     <div class="container-fluid flex-grow-1">
         <div class="mainArticle d-flex justify-content-center">
-            {{-- 今後、ドーナツチャートに変更できるようにする --}}
             <div class="BarGraph d-flex flex-column col-8 mt-4 me-1">
                 <div class="graphTitle d-flex justify-content-center align-items-center mt-3">
                     <p class="graphTitleText fs-3">半年間の支出遷移</p>
@@ -30,20 +29,27 @@
                     <p class="historyTitleText fs-5">直近の入出金履歴</p>
                 </div>
                 <div class="historyList px-2 flex-grow-1 mt-1">
-                    @foreach($items as $item)
+                    @foreach($totalBalances as $item)
                         <div class="listItem mb-2">
-                            {{-- {{ url('/edit/' . $item->id) }} --}}
-                            <a href="#" class="itemLink">
+                            <a href="{{ route('guest') }}" class="itemLink">
                                 <div class="d-flex justify-content-between">
                                     <div class="listDate w-50 ps-2">
                                         {{ \Carbon\Carbon::parse($item->date)->format('Y/m/d') }}
                                     </div>
                                     <div class="listPrice w-50 pe-3">
-                                        -{{ number_format($item->totalPrice) }}円
+                                        @if ($item->type === 'income')
+                                            +{{ number_format($item->amount) }}円
+                                        @else
+                                            -{{ number_format($item->amount) }}円
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="listCategory ps-2">
-                                    {{ $item->m_category_name }}　->　{{ $item->s_category_name }}
+                                    @if ($item->type === 'income')
+                                        {{ $item->m_category_name }}
+                                    @else
+                                        {{ $item->m_category_name }}　->　{{ $item->s_category_name }}
+                                    @endif
                                 </div>
                             </a>
                         </div>
