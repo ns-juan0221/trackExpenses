@@ -5,7 +5,7 @@ volumes:
 services:
   # Nginx Webサーバー
   nginx:
-    container_name: trackExpenses-web
+    container_name: trackExpenses-web-${ENV_TYPE}
     image: nginx:1.20.0-alpine
     ports:
       - "8080:80"
@@ -22,13 +22,13 @@ services:
   # Node.js サーバー (フロントエンド用)
   node:
     image: node:18-alpine
-    container_name: trackExpenses-node
+    container_name: trackExpenses-node-${ENV_TYPE}
     working_dir: /var/www/html
     tty: true
     volumes:
       - .:/var/www/html
     ports:
-      - "3000:3000"
+      - "3001:3000"
     environment:
       NODE_ENV: development
     networks:
@@ -36,7 +36,7 @@ services:
 
   # PHP-FPMアプリケーションサーバー
   php-fpm:
-    container_name: trackExpenses-app
+    container_name: trackExpenses-app-${ENV_TYPE}
     build:
       context: ./docker/php
       dockerfile: Dockerfile
@@ -55,7 +55,7 @@ services:
 
   # MySQLデータベースサーバー
   mysql:
-    container_name: trackExpenses-db
+    container_name: trackExpenses-db-${ENV_TYPE}
     image: mysql:8.0
     environment:
       MYSQL_ROOT_HOST: '%'
@@ -73,7 +73,7 @@ services:
 
   # Redisサーバー
   redis:
-    container_name: trackExpenses-redis
+    container_name: trackExpenses-redis-${ENV_TYPE}
     image: redis:alpine
     ports:
       - "6379:6379"
@@ -82,7 +82,7 @@ services:
 
   # Mailhog (開発用メール確認ツール)
   mailhog:
-    container_name: trackExpenses-mailhog
+    container_name: trackExpenses-mailhog-${ENV_TYPE}
     image: mailhog/mailhog
     platform: linux/amd64
     ports:

@@ -4,24 +4,20 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
-{
+class DatabaseSeeder extends Seeder {
     /**
      * Seed the application's database.
      *
      * @return void
      */
-    public function run()
-    {
-        // 各シーダーを実行
+    public function run() {
         $this->call([
             IncomeCategorySeeder::class,
             OutcomeMainCategorySeeder::class,
             OutcomeSubCategorySeeder::class,
             UserSeeder::class,
             IncomeSeeder::class,
-            OutcomeGroupSeeder::class,
-            OutcomeItemSeeder::class,
+            OutcomeSeeder::class,
         ]);
     }
 }

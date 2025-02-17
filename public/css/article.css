@@ -394,3 +394,11 @@ body {
     overflow-y: auto; 
     background-color: rgba(255, 255, 255, 0.7);
 }
+
+.text-income {
+    color: blue; 
+}
+
+.text-outcome {
+    color: red; 
+}

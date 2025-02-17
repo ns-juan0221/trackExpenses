@@ -5,10 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\OutcomeMainCategory;
 
-class OutcomeMainCategorySeeder extends Seeder
-{
-    public function run()
-    {
+class OutcomeMainCategorySeeder extends Seeder {
+    public function run() {
         OutcomeMainCategory::create(['name' => '食費', 'del_flg' => 0]); //1
         OutcomeMainCategory::create(['name' => '日用品', 'del_flg' => 0]); //2
         OutcomeMainCategory::create(['name' => '交通費', 'del_flg' => 0]); //3
