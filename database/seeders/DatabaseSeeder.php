@@ -20,8 +20,7 @@ class DatabaseSeeder extends Seeder
             OutcomeSubCategorySeeder::class,
             UserSeeder::class,
             IncomeSeeder::class,
-            OutcomeGroupSeeder::class,
-            OutcomeItemSeeder::class,
+            OutcomeSeeder::class,
         ]);
     }
 }

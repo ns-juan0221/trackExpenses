@@ -37,7 +37,7 @@
                             <td>{{ number_format($income->amount, 0, ',', ',') }}円</td>
                             <td>
                                 <a href="{{ route('edit', ['id' => $income->id, 'type' => $type]) }}">
-                                    <img src="{{ asset('images/editBtn2.png') }}" alt="" width="30">
+                                    <img src="{{ asset('img/editBtn.png') }}" alt="" width="30">
                                 </a>
                             </td>
                             <td>
@@ -47,7 +47,7 @@
                                     <input type="hidden" name="id" value="{{ $income->id }}">
                                         <input type="hidden" name="type" value="{{ $type }}">
                                         <button type="submit" class="btn deleteBtn px-3 mx-4">
-                                            <img src="{{ asset('images/deleteBtn2.png') }}" width="30">
+                                            <img src="{{ asset('img/deleteBtn.png') }}" width="30">
                                         </button>
                                 </form>
                             </td>
@@ -80,7 +80,7 @@
                             <td>{{ number_format($outcomeGroup->totalPrice, 0, ',', ',') }}円</td>
                             <td>
                                 <a href="{{ route('edit', ['id' => $outcomeGroup->id, 'type' => $type]) }}">
-                                    <img src="{{ asset('images/editBtn2.png') }}" alt="" width="30">
+                                    <img src="{{ asset('img/editBtn.png') }}" alt="" width="30">
                                 </a>
                             </td>
                             <td>
@@ -90,7 +90,7 @@
                                     <input type="hidden" name="id" value="{{ $outcomeGroup->id }}">
                                         <input type="hidden" name="type" value="{{ $type }}">
                                         <button type="submit" class="btn deleteBtn px-3 mx-4">
-                                            <img src="{{ asset('images/deleteBtn2.png') }}" width="30">
+                                            <img src="{{ asset('img/deleteBtn.png') }}" width="30">
                                         </button>
                                 </form>
                             </td>

@@ -168,6 +168,7 @@ class OutcomeController extends Controller {
      */
     public function getHalfYearGroups(int $userId) {
         $monthlyTotals = $this->outcomeRepository->getMonthlyHalfYear($userId);
+        Log::info($monthlyTotals);
 
         if (empty($monthlyTotals) || count($monthlyTotals) === 0) {
             $this->getEmptyHalfYearGroupsAndFormatData();
@@ -186,47 +187,48 @@ class OutcomeController extends Controller {
         $labels = [];
         $lastYearValues = [];
         $currentYearValues = [];
-
+    
         $startMonth = Carbon::now()->subMonths(5)->startOfMonth();  
         $endMonth = Carbon::now()->startOfMonth();
-
+    
+        $totalsMap = [];
+        foreach ($monthlyTotals as $group) {
+            $totalsMap[$group->month] = $group->total_sum;
+        }
+    
         while ($startMonth <= $endMonth) {
             $isLastLoop = $startMonth->eq($endMonth);
             $lastYearLabel = $startMonth->copy()->subYear()->format('Y年m月');
             $currentYearLabel = $startMonth->format('Y年m月');
-
+    
             $labels[] = $lastYearLabel;
             $labels[] = $currentYearLabel;
-
+    
             if (!$isLastLoop) {
                 $labels[] = "";
             }
+    
+            $lastYearValues[] = $totalsMap[$lastYearLabel] ?? null;
+            $lastYearValues[] = null;
 
-            foreach ($monthlyTotals as $group) {
-                if ($group->month === $lastYearLabel) {
-                    $lastYearValues[] = $group->total_sum;
-                    $lastYearValues[] = null;
-
-                    if (!$isLastLoop) {
-                        $lastYearValues[] = null;
-                    }
-                }
-                if ($group->month === $currentYearLabel) {
-                    $currentYearValues[] = null;
-                    $currentYearValues[]  = $group->total_sum;
-                    
-                    if (!$isLastLoop) {
-                        $currentYearValues[] = null;
-                    }
-                }
+            if (!$isLastLoop) {
+                $lastYearValues[] = null;
             }
+    
+            $currentYearValues[] = null;
+            $currentYearValues[] = $totalsMap[$currentYearLabel] ?? null;
+
+            if (!$isLastLoop) {
+                $currentYearValues[] = null;
+            }
+    
             $startMonth->addMonth();
         }
 
         Session::put('labels', $labels);
         Session::put('lastYearValues', $lastYearValues);
         Session::put('currentYearValues', $currentYearValues);
-    }
+    }    
 
     /**
      * 過去半年間の空のデータをフォーマットする

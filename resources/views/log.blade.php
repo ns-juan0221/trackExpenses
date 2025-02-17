@@ -24,7 +24,7 @@
     <div class="logContainer container-fluid flex-gow-1">
         <div class="searchBox d-flex flex-column justify-content-center align-items-center w-100">
             <div class="searchBtn d-flex justify-content-end w-100 me-5 mt-3">
-                <button class="btn btn-primary toggleButton me-5" id="toggleSearchButton" type="button" data-bs-toggle="collapse" data-bs-target="#searchForm" aria-expanded="false" aria-controls="searchForm">
+                <button class="btn btn-success toggleButton me-5" id="toggleSearchButton" type="button" data-bs-toggle="collapse" data-bs-target="#searchForm" aria-expanded="false" aria-controls="searchForm">
                     検索
                 </button>
             </div>
@@ -168,7 +168,7 @@
                                 <td>{{ $totalBalance->type === 'income' ? '収入' : '支出' }}</td>
                                 <td>{{ $totalBalance->name }}</td>
                                 <td>{{ $totalBalance->shop }}</td>
-                                <td>
+                                <td class="{{ $totalBalance->type === 'income' ? 'text-income' : 'text-outcome' }}">
                                     @if($totalBalance->type === 'income')
                                         +{{ number_format($totalBalance->amount, 0, ',', ',') }}円
                                     @else
@@ -182,7 +182,7 @@
                                         <input type="hidden" name="id" value="{{ $totalBalance->id }}">
                                         <input type="hidden" name="type" value="{{ $totalBalance->type }}">
                                         <button type="submit" class="btn editBtn px-3 mx-4">
-                                            <img src="{{ asset('images/detailBtn.png') }}" width="30">
+                                            <img src="{{ asset('img/detailBtn.png') }}" width="30">
                                         </button>
                                     </form>
                                 </td>
@@ -193,7 +193,7 @@
                                         <input type="hidden" name="id" value="{{ $totalBalance->id }}">
                                         <input type="hidden" name="type" value="{{ $totalBalance->type }}">
                                         <button type="submit" class="btn deleteBtn px-3 mx-4">
-                                            <img src="{{ asset('images/deleteBtn2.png') }}" width="30">
+                                            <img src="{{ asset('img/deleteBtn.png') }}" width="30">
                                         </button>
                                     </form>
                                 </td>
