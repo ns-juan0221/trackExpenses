@@ -168,7 +168,6 @@ class OutcomeController extends Controller {
      */
     public function getHalfYearGroups(int $userId) {
         $monthlyTotals = $this->outcomeRepository->getMonthlyHalfYear($userId);
-        Log::info($monthlyTotals);
 
         if (empty($monthlyTotals) || count($monthlyTotals) === 0) {
             $this->getEmptyHalfYearGroupsAndFormatData();

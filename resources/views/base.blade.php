@@ -32,7 +32,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.1/remodal.min.js"></script>
 
-    @if (Request::is('login') || Request::is('new') || Request::is('guest'))
+    @if (Request::is('login') || Request::is('new') || Request::is('/'))
     <header id="header" class="header d-flex w-100 align-items-center border-bottom border-2 py-2">
         <a href="{{ route('main') }}" class="header-logo">
             <img src="{{ asset('img/header_icon.png') }}" alt="マネーログ" height="47" width="141">

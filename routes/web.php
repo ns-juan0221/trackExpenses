@@ -16,12 +16,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 //ゲストページ
-Route::get('guest', [MainController::class, 'guestIndex'])
+Route::get('/', [MainController::class, 'guestIndex'])
     ->name('guest');
 
 // ユーザー登録関連
