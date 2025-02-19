@@ -1,5 +1,3 @@
-// import $ from 'jquery';
-
 //カレンダー
 $(function(){
     $('#inputDate, #minDate, #maxDate').datepicker({
@@ -70,13 +68,12 @@ function togglePassword() {
     }
 }
 
-// モーダルを開く
 function openModal() {
     $('#categoryModal').modal('show');
 }
 
 $('#resetBtn').click(function() {
-    $('.formContainer')[0].reset(); // フォーム全体をリセット
+    $('.formContainer')[0].reset();
     clearSelection();
 });
 
@@ -84,11 +81,8 @@ document.getElementById('toggleSearchButton').addEventListener('click', function
     const button = document.getElementById('toggleSearchButton');
     // 折りたたみの状態を取得
     const isCollapsed = document.getElementById('searchForm').classList.contains('show');
+});
 
-    // 折りたたみ状態に応じてクラスを切り替え
-    if (!isCollapsed) {
-        button.classList.add('moveToTopRight');
-    } else {
-        button.classList.remove('moveToTopRight');
-    }
+document.getElementById('loginForm').addEventListener('submit', function() {
+    document.getElementById('loginBtn').disabled = true;
 });

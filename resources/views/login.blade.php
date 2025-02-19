@@ -9,7 +9,7 @@
             </div>
         @endif
 
-        <form action="/login" class="formContainer needs-validation border p-2" method="post">
+        <form action="/login" class="formContainer needs-validation border p-2" id="loginForm" method="post">
             @csrf
             <img src="{{ asset('img/icon.png') }}" alt="logo" class="logo" height="100" width="100">
             <h1 class="h3 mb-3"></h1>
@@ -30,8 +30,8 @@
                     </label>
                 </div>
             </div>
-            <button class="btn btn-lg btn-success w-100 mb-2 mt-3" type="submit">Login</button>
-            {{-- 　　　　　　　　　　　　　　追加機能　　　　　　　　　　　　　　　　 --}}
+            <button class="btn btn-lg btn-success w-100 mb-2 mt-3" id="loginBtn" type="submit">Login</button>
+            {{-- 追加機能 --}}
             {{-- $_SESSIONで解決できる？ --}}
             {{-- <div class="checkbox p-2">
                 <label>
@@ -42,7 +42,7 @@
         {{-- 追加機能 --}}
         {{-- <div class="additionalLinks">
             <a class="m-2" href="#">パスワードを忘れた方</a>
-            <a class="m-2" href="{{ route('new') }}">新規作成</a>
+            <a class="m-2" href="{{ route('createUser') }}">新規作成</a>
         </div> --}}
     </div>
 @endsection

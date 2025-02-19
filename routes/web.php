@@ -16,18 +16,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 //ゲストページ
-Route::get('guest', [MainController::class, 'guestIndex'])
+Route::get('/', [MainController::class, 'guestIndex'])
     ->name('guest');
 
 // ユーザー登録関連
-Route::get('new', [UserController::class, 'create'])
-    ->name('new');
-Route::post('new', [UserController::class, 'store']);
+Route::get('createUser', [UserController::class, 'create'])
+    ->name('createUser');
+Route::post('createUser', [UserController::class, 'store']);
 
 // ログイン関連
 Route::get('login', [LoginController::class, 'index'])

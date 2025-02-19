@@ -35,10 +35,33 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
+        // 419エラー (CSRFトークン不一致) のログ出力
+        $this->reportable(function (TokenMismatchException $e) {
+            Log::warning('CSRF Token mismatch detected!', [
+                'url' => request()->fullUrl(),
+                'ip' => request()->ip(),
+                'user-agent' => request()->header('User-Agent'),
+                'session' => session()->all(),
+                'exception' => $e->getMessage(),
+            ]);
+        });
+
+        // 他のすべてのエラーをログに記録
         $this->reportable(function (Throwable $e) {
-            Log::error($e->getMessage(), ['exception' => $e]);
+            Log::error($e->getMessage(), [
+                'exception' => $e,
+                'url' => request()->fullUrl(),
+                'ip' => request()->ip(),
+                'user-agent' => request()->header('User-Agent'),
+            ]);
         });
     }
+    // public function register()
+    // {
+    //     $this->reportable(function (Throwable $e) {
+    //         Log::error($e->getMessage(), ['exception' => $e]);
+    //     });
+    // }
     // public function report(Throwable $exception)
     // {
     //     Log::error($exception->getMessage(), ['exception' => $exception]);
