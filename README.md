@@ -1,64 +1,42 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# マネーログ
+#### 品目やお店で検索ができるから、どこが安かったかなどの比較ができる家計簿アプリです。
+#### URL:https://money-log.net   
+#### 上記URLはゲストページへ飛びます
+![ログイン画面](https://github.com/user-attachments/assets/9b781b30-a5ec-42ed-a34f-aeaef981909b)
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 画面遷移図について
+<img width="700" alt="Image" src="https://github.com/user-attachments/assets/c2e03f8e-7a16-45ea-b2d5-792e69b1a858" />
 
-## About Laravel
+## ER図について
+<img width="700" alt="Image" src="https://github.com/user-attachments/assets/c6da832c-c09f-4967-a2be-a826db3df8ea" />
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 開発環境について
+### 使用技術
+#### 【フロントエンド】
+- #### HTML
+- #### CSS
+- #### Bootstrap 5.3.0
+- #### JavaScript
+- #### Node.js 18
+#### 【バックエンド】
+- #### php:8.2-fpm
+- #### Laravel 9.52.18
+#### 【本番環境】
+- #### Docker 27.3.1 / Docker Compose v2.29.7
+- #### AWS：EC2,VPC, Route 53, ALB, ACM<br/>EC2:(nginx, php-fpm,mysql 8.0.40)
+### 使用ツール
+- #### バージョン管理： Git / GitHub
+- #### IDE： Visual Studio Code
+- #### DBクライアント：DBeaver
+- #### ER図, 画面遷移図：draw.io
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 機能一覧
+### 認証機能
+- #### ユーザー登録機能：名前・メールアドレス・ユーザーネーム・パスワード登録
+- #### ログイン機能：メールアドレス・パスワード認証
+- #### ログアウト機能：ログイン前画面に遷移
+### メイン機能
+- #### 収支登録機能：収入・支出それぞれに合った項目の登録
+- #### 収支編集機能：収入・支出それぞれの項目の変更
+- #### 収支削除機能：収入・支出の項目の削除
+- #### 検索機能：品目(like検索)、お店(like検索)、メモ(like検索)、日付、金額、カテゴリ、いずれかの項目
