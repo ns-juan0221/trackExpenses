@@ -24,7 +24,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.1/remodal-default-theme.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('css/commons.css') }}">
-    @if (Request::is('login') || Request::is('createUser'))
+    @if (Request::is('/') || Request::is('createUser'))
     <link rel="stylesheet" href="{{ asset('css/login.css')}}">
     @else
     <link rel="stylesheet" href="{{ asset('css/article.css') }}">
@@ -32,7 +32,7 @@
     <title>@yield('title')</title>
 </head>
 <body  class="d-flex flex-column min-vh-100">
-    @if (Request::is('login') || Request::is('createUser'))
+    @if (Request::is('/') || Request::is('createUser'))
     <header id="header" class="header d-flex w-100 align-items-center border-bottom border-2 py-2">
         <a href="{{ route('main') }}" class="header-logo">
             <img src="{{ asset('img/header_icon.png') }}" alt="マネーログ" height="47" width="141">
