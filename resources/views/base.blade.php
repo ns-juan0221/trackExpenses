@@ -40,13 +40,13 @@
         <nav id="nav">
             <ul class="nav-btn">
                 <li>
-                    <a href="{{ route('createUser') }}" class="btn btn-success text-center">新規登録</a>
+                    <a href="{{ route('createUser') }}" class="btn btn-light text-center">新規登録</a>
                 </li>
                 <li class="ms-2">
-                    <a href="{{ route('login')}}" class="btn btn-light text-center">ログイン</a>
+                    <a href="{{ route('login')}}" class="btn btn-success text-center">ログイン</a>
                 </li>
                 <li class="ms-2">
-                    <a href="{{ route('guestLogin')}}" class="btn btn-light text-center">ゲストログイン</a>
+                    <a href="{{ route('guestLogin') }}" class="btn btn-light text-center">ゲストログイン</a>
                 </li>
             </ul>
         </nav>
