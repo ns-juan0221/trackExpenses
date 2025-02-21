@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//ゲストページ
-Route::get('/', [MainController::class, 'guestIndex'])
-    ->name('guest');
+//ゲストログイン
+Route::get('guestLogin', [LoginController::class, 'guestLogin'])
+    ->name('guest.login');
 
 // ユーザー登録関連
 Route::get('createUser', [UserController::class, 'create'])
@@ -29,6 +29,7 @@ Route::post('createUser', [UserController::class, 'store']);
 Route::get('login', [LoginController::class, 'index'])
     ->name('login'); 
 Route::post('login', [LoginController::class, 'login']); 
+
 Route::get('logout', [LoginController::class, 'logout'])
     ->name('logout');
 

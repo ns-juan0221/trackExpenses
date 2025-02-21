@@ -32,7 +32,7 @@
     <title>@yield('title')</title>
 </head>
 <body  class="d-flex flex-column min-vh-100">
-    @if (Request::is('login') || Request::is('createUser') || Request::is('/'))
+    @if (Request::is('login') || Request::is('createUser'))
     <header id="header" class="header d-flex w-100 align-items-center border-bottom border-2 py-2">
         <a href="{{ route('main') }}" class="header-logo">
             <img src="{{ asset('img/header_icon.png') }}" alt="マネーログ" height="47" width="141">
@@ -40,10 +40,13 @@
         <nav id="nav">
             <ul class="nav-btn">
                 <li>
-                    <a href="{{ route('createUser') }}" class="btn btn-success text-center">新規登録</a>
+                    <a href="{{ route('createUser') }}" class="btn btn-light text-center">新規登録</a>
                 </li>
                 <li class="ms-2">
-                    <a href="{{ route('login')}}" class="btn btn-light text-center">ログイン</a>
+                    <a href="{{ route('login')}}" class="btn btn-success text-center">ログイン</a>
+                </li>
+                <li class="ms-2">
+                    <a href="{{ route('guest.login')}}" class="btn btn-light text-center">ゲストログイン</a>
                 </li>
             </ul>
         </nav>
@@ -53,6 +56,7 @@
         <a href="{{ route('main') }}" class="header-logo">
             <img src="{{ asset('img/header_icon.png') }}" alt="マネーログ" height="47" width="141">
         </a>
+        <!-- PC用ハンバーガーメニュー(デフォルト) -->
         <nav id="nav">
             <ul class="nav-btn">
                 <li>
@@ -95,7 +99,6 @@
     </footer>
     <!-- jQuery UI (最新版1.14.0) -->
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> -->
     <!-- 日本語化ファイル (最新バージョンの適合するファイルを使用) -->
     <script src="{{ asset('js/datepicker-ja.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
