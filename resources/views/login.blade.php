@@ -9,7 +9,7 @@
             </div>
         @endif
 
-        <form action="/login" class="formContainer needs-validation border p-2" id="loginForm" method="post">
+        <form action="login" class="formContainer needs-validation border p-2" id="loginForm" method="POST">
             @csrf
             <img src="{{ asset('img/icon.png') }}" alt="logo" class="logo" height="100" width="100">
             <h1 class="h3 mb-3"></h1>

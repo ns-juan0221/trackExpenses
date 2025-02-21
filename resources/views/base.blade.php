@@ -32,7 +32,7 @@
     <title>@yield('title')</title>
 </head>
 <body  class="d-flex flex-column min-vh-100">
-    @if (Request::is('login') || Request::is('createUser') || Request::is('/'))
+    @if (Request::is('login') || Request::is('createUser'))
     <header id="header" class="header d-flex w-100 align-items-center border-bottom border-2 py-2">
         <a href="{{ route('main') }}" class="header-logo">
             <img src="{{ asset('img/header_icon.png') }}" alt="マネーログ" height="47" width="141">
@@ -44,6 +44,9 @@
                 </li>
                 <li class="ms-2">
                     <a href="{{ route('login')}}" class="btn btn-light text-center">ログイン</a>
+                </li>
+                <li class="ms-2">
+                    <a href="{{ route('guest.login')}}" class="btn btn-light text-center">ゲストログイン</a>
                 </li>
             </ul>
         </nav>
