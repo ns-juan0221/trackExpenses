@@ -46,7 +46,7 @@
                     <a href="{{ route('login')}}" class="btn btn-light text-center">ログイン</a>
                 </li>
                 <li class="ms-2">
-                    <a href="{{ route('guest.login')}}" class="btn btn-light text-center">ゲストログイン</a>
+                    <a href="{{ route('guestLogin')}}" class="btn btn-light text-center">ゲストログイン</a>
                 </li>
             </ul>
         </nav>
