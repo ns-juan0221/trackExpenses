@@ -16,7 +16,7 @@
                 <div class="form-group d-flex flex-column">
                     <div class="formUnit d-flex flex-row align-items-center">
                         <label for="inputName" class="form-label">名前：</label>
-                        <input type="text" name="name" id="inputName" class="form-control" placeholder="ウェカピポ太郎" value="{{ $errors->has('name') ? '' : old('name') }}" required autocomplete="off">
+                        <input type="text" name="name" id="inputName" class="form-control" placeholder="マネーログ太郎" value="{{ $errors->has('name') ? '' : old('name') }}" required autocomplete="off">
                     </div>
                     <div class="text-danger nameValidationErrorJs"></div>
                     @error('name')
@@ -26,7 +26,7 @@
                 <div class="form-group d-flex flex-column">
                     <div class="formUnit d-flex flex-row align-items-center mt-2">
                         <label for="inputKanaName" class="form-label">カナ：</label>
-                        <input type="text" name="name_kana" id="inputKanaName" class="form-control" placeholder="ウェカピポタロウ" value="{{ $errors->has('name_kana') ? '' : old('name_kana')  }}" required autocomplete="off">
+                        <input type="text" name="name_kana" id="inputKanaName" class="form-control" placeholder="マネーログタロウ" value="{{ $errors->has('name_kana') ? '' : old('name_kana')  }}" required autocomplete="off">
                     </div>
                     <div class="text-danger kanaNameValidationErrorJs"></div>
                     @error('name_kana')
@@ -36,7 +36,7 @@
                 <div class="form-group d-flex flex-column">
                     <div class="formUnit d-flex flex-row align-items-center mt-2">
                         <label for="inputUsername" class="form-label">ユーザーネーム：</label>
-                        <input type="text" name="username" id="inputUsername" class="form-control" placeholder="ピポ" value="{{ $errors->has('username') ? '' : old('username') }}" required autocomplete="off">
+                        <input type="text" name="username" id="inputUsername" class="form-control" placeholder="タロ" value="{{ $errors->has('username') ? '' : old('username') }}" required autocomplete="off">
                     </div>
                     <div class="text-danger usernameValidationErrorJs"></div>
                     @error('username')
@@ -74,7 +74,7 @@
             <div class="form-group d-flex flex-column">
                 <div class="formUnit d-flex flex-row align-items-center mt-2">
                     <label for="inputPasswordConfirm" class="form-label">パスワード確認：</label>
-                    <input type="password" name="password_confirmation" id="inputPasswordConfirm" class="form-control" placeholder="******" required>
+                    <input type="password" name="password_confirmation" id="inputPasswordConfirm" class="form-control" placeholder="********" required>
                 </div>
                 <div class="text-danger passwordConfirmValidationErrorJs"></div>
             </div>

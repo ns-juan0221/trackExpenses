@@ -22,6 +22,15 @@ class LoginController extends Controller {
     }
 
     /**
+     * ユーザ登録画面を表示する
+     * 
+     * @return \Illuminate\View\View
+     */
+    public function create() {
+        return view('newUser');
+    }
+
+    /**
      * ゲストユーザーのログイン処理をする
      * 
      * @return \Illuminate\Http\RedirectResponse

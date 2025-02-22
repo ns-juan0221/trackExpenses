@@ -41,7 +41,7 @@
                                     </td>
                                     <td class="keywordLabel itemLabel col-2">
                                         <div class="searchLabel">
-                                            <p>品目</p>
+                                            <p>商品名</p>
                                         </div>
                                     </td>
                                     <td class="itemKeywordInput col-8">
