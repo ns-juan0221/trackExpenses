@@ -49,12 +49,10 @@ img.logo {
     border-color: inherit;
 }
 
-/* 標準のチェックボックス */
 input[type="checkbox"] {
     margin-right: 10px;
 }
 
-/* フォームラベルのスタイル */
 .custom-label {
     display: inline-flex;
     align-items: center;

@@ -75,6 +75,34 @@
                     </li>
                 </ul>
             </nav>
+            <!-- スマホ用ハンバーガーメニュー（768px以下で表示） -->
+            {{-- <nav id="mobile-nav"  class="navbar navbar-success">
+                <div class="container-fluid"> --}}
+                    <!-- ハンバーガーボタン -->
+                    {{-- <button class="navbar-toggler" type="button" id="menuToggle">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+            </nav>
+
+            <div id="sideMenu" class="side-menu">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a href="{{ route('register') }}" class="btn btn-light text-center w-100">入力</a>
+                    </li>
+                    <li class="nav-item mt-2">
+                        <a href="{{ route('histories') }}" class="btn btn-success text-center w-100">入出金履歴</a>
+                    </li>
+                    <li class="nav-item mt-2">
+                        <a href="{{ route('logout') }}" class="btn btn-light text-center w-100">ログアウト</a>
+                    </li>
+                </ul>
+            </div> --}}
+
+            <!-- オーバーレイ (メニュー開いたときの背景) -->
+            {{-- <div id="overlay"></div>
+
+        <script src="{{ asset('js/toggleContent.js') }}"></script> --}}
         </header>
         @endif
 
@@ -103,3 +131,15 @@
         <script src="{{ asset('js/main.js') }}"></script>
     </body>
 </html>
+
+
+        <!-- modified:   app/Http/Controllers/Auth/LoginController.php
+        modified:   public/css/login.css
+        modified:   public/js/categoriesSelect.js
+        modified:   resources/views/base.blade.php
+        deleted:    resources/views/guest.blade.php
+        modified:   resources/views/log.blade.php
+        modified:   resources/views/login.blade.php
+        modified:   resources/views/newUser.blade.php
+        deleted:    resources/views/welcome.blade.php
+        modified:   routes/web.php -->
