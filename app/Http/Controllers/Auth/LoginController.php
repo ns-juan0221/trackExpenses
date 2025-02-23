@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +19,40 @@ class LoginController extends Controller {
      */
     public function index() {
         return view('login');
+    }
+
+    /**
+     * ユーザ登録画面を表示する
+     * 
+     * @return \Illuminate\View\View
+     */
+    public function create() {
+        return view('newUser');
+    }
+
+    /**
+     * ゲストユーザーのログイン処理をする
+     * 
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function guestLogin() {
+        try{
+            // ID=1のユーザーでログイン
+            $user = User::find(1);
+
+            if ($user) {
+                Auth::login($user);
+                session()->regenerate();
+        
+                session(['user_id' => Auth::id()]);
+        
+                return redirect()->route('main');
+            } else {
+                return back()->withErrors(['login_error' => 'ゲストユーザにログインできませんでした']) ;
+            }
+        }catch (\Exception $e) {
+            return back()->withErrors(['login_error' => '予期しないエラーが発生しました'])->withInput();
+        }
     }
 
     /**

@@ -29,7 +29,7 @@
                 </button>
             </div>
             <div class="searchForm collapse mt-2" id="searchForm">
-                <form action="{{ route('histories.post') }}" class="formContainer align-items-center d-flex flex-column" method="post">
+                <form action="{{ route('histories.post') }}" class="formContainer align-items-center d-flex flex-column" method="POST">
                     @csrf
                         <table class="searchTable">
                             <tbody>
@@ -41,7 +41,7 @@
                                     </td>
                                     <td class="keywordLabel itemLabel col-2">
                                         <div class="searchLabel">
-                                            <p>品目</p>
+                                            <p>商品名</p>
                                         </div>
                                     </td>
                                     <td class="itemKeywordInput col-8">
