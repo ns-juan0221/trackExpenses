@@ -131,15 +131,3 @@
         <script src="{{ asset('js/main.js') }}"></script>
     </body>
 </html>
-
-
-        <!-- modified:   app/Http/Controllers/Auth/LoginController.php
-        modified:   public/css/login.css
-        modified:   public/js/categoriesSelect.js
-        modified:   resources/views/base.blade.php
-        deleted:    resources/views/guest.blade.php
-        modified:   resources/views/log.blade.php
-        modified:   resources/views/login.blade.php
-        modified:   resources/views/newUser.blade.php
-        deleted:    resources/views/welcome.blade.php
-        modified:   routes/web.php -->
