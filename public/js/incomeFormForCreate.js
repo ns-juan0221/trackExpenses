@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const amountErrorJs = document.querySelector('.amountValidationErrorJs');
     const amountError = document.querySelector('.amountValidationError');
     const inputCategory = document.querySelector('#inputCategory');
-    const categoryErrorJs = document.querySelector('.categoryValidationErrorJs');
+    const categoryErrorJs = document.querySelector('.categoryValidationErrorJS');
 
     inputAmount.addEventListener('input', () => {
         const inputValue = inputAmount.value.trim();
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (isNaN(inputValue) || inputValue <= 0) {
             inputAmount.classList.remove('is-valid');
             inputAmount.classList.add('is-invalid');
-            amountErrorJs = '金額は1以上の半角数字で入力してください';
+            amountErrorJs.textContent = '金額は1以上の半角数字で入力してください';
         } else {
             inputAmount.classList.remove('is-invalid');
             inputAmount.classList.add('is-valid');
