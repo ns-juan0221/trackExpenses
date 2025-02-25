@@ -16,7 +16,7 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.1/remodal-default-theme.min.css" rel="stylesheet">
 
         <link rel="stylesheet" href="{{ asset('css/commons.css') }}">
-        @if (Request::is('login') || Request::is('createUser'))
+        @if (Request::is('/') || Request::is('createUser'))
         <link rel="stylesheet" href="{{ asset('css/login.css')}}">
         @else
         <link rel="stylesheet" href="{{ asset('css/article.css') }}">
@@ -29,6 +29,7 @@
         <!-- Remodal (CDN) -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.1/remodal.min.js"></script>
+        <script src="{{ asset('js/main.js') }}"></script>
     </head>
     <body  class="d-flex flex-column min-vh-100">
         @if (Request::is('/') || Request::is('createUser'))
@@ -39,10 +40,10 @@
             <nav id="nav">
                 <ul class="nav-btn">
                     <li>
-                        <a href="{{ route('createUser') }}" class="btn btn-success text-center">新規登録</a>
+                        <a href="{{ route('createUser') }}" class="btn btn-light text-center">新規登録</a>
                     </li>
                     <li class="ms-2">
-                        <a href="{{ route('login')}}" class="btn btn-light text-center">ログイン</a>
+                        <a href="{{ route('login')}}" class="btn btn-success text-center">ログイン</a>
                     </li>
                     <li class="ms-2">
                         <a href="{{ route('guestLogin') }}" class="btn btn-light text-center">ゲストログイン</a>
@@ -60,18 +61,47 @@
                     <li>
                         <a href="{{ route('register') }}" class="btn btn-light text-center">入力</a>
                     </li>
-                    <li>
+                    <li class="ms-2">
                         <a href="{{ route('histories') }}" class="btn btn-success text-center">入出金履歴</a>
                     </li>
                     {{-- 追加機能 --}}
                     {{-- <li>
                         <a href="#" class="btn btn-success text-center">設定</a>
                     </li> --}}
-                    <li>
+                    <li class="ms-2">
                         <a href="{{ route('logout') }}" class="btn btn-light text-center">ログアウト</a>
                     </li>
                 </ul>
             </nav>
+            <!-- スマホ用ハンバーガーメニュー（768px以下で表示） -->
+            <nav id="mobile-nav"  class="navbar navbar-success">
+                <div class="container-fluid">
+                    <!-- ハンバーガーボタン -->
+                    <button class="navbar-toggler" type="button" id="menuToggle">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+            </nav>
+
+            <div id="sideMenu" class="side-menu">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a href="{{ route('register') }}" class="btn btn-light text-center w-100">入力</a>
+                    </li>
+                    <li class="nav-item mt-2">
+                        <a href="{{ route('histories') }}" class="btn btn-success text-center w-100">入出金履歴</a>
+                    </li>
+                    {{-- 追加機能 --}}
+                    {{-- <li>
+                        <a href="#" class="btn btn-success text-center">設定</a>
+                    </li> --}}
+                    <li class="nav-item mt-2">
+                        <a href="{{ route('logout') }}" class="btn btn-light text-center w-100">ログアウト</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- オーバーレイ (メニュー開いたときの背景) -->
+            <div id="overlay"></div>
         </header>
         @endif
 
@@ -97,6 +127,6 @@
         </footer>
         <!-- 日本語化ファイル (最新バージョンの適合するファイルを使用) -->
         <script src="{{ asset('js/datepicker-ja.js') }}"></script>
-        <script src="{{ asset('js/main.js') }}"></script>
+        <script src="{{ asset('js/toggleContent.js') }}"></script>
     </body>
 </html>

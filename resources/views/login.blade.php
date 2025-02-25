@@ -20,7 +20,7 @@
                 </div>
                 <div class="formUnit d-flex flex-row align-items-center mt-2">
                     <label for="inputPassword" class="form-label visually-hidden">パスワード</label>
-                    <input name="password" type="password" id="inputPassword" class="form-control" placeholder="パスワード" required autofocus autocomplete="current-password">
+                    <input name="password" type="password" id="inputPassword" class="form-control" placeholder="パスワード" required autofocus autocomplete="current-password" >
                 </div>
                 <!-- パスワード表示用のチェックボックス -->
                 <div class="formUnit d-flex justify-content-end mt-2">

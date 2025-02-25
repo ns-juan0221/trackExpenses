@@ -1,33 +1,20 @@
-let formCount = 1;
-
-const inputShop = document.querySelector('#inputShop');
-let shopErrorJs = document.querySelector('.shopValidationErrorJs');
-let shopError = document.querySelector('.shopValidationError');
-
-inputShop.addEventListener('input', () => {
-    if(shopError && shopError.textContent !== ''){
-        shopError.textContent = '';
-    }
-
-    if (inputShop.value.trim() === '') {
-        inputShop.classList.remove('is-valid');
-        inputShop.classList.add('is-invalid');
-        shopErrorJs.textContent = '名前を入力してください';
-    } else {
-        inputShop.classList.remove('is-invalid');
-        inputShop.classList.add('is-valid');
-        shopErrorJs.textContent = '';
-    }
-});
-
 document.addEventListener('DOMContentLoaded', function() {
-    //最初のカテゴリ<select>にプレースホルダーを追加
     const initialCategorySelect = document.querySelector('.formList select');
-    let formCount = document.querySelectorAll('.formList').length;
+    const initialForm = document.querySelector('.formList');
+    const inputShop = document.querySelector('#inputShop');
+    const shopErrorJs = document.querySelector('.shopValidationErrorJs');
+    const shopError = document.querySelector('.shopValidationError');
+    const form = document.querySelector(".needs-validation");
     const formListBlock = document.querySelector('#formListBlock');
+    let formCount = 0;
+    let errorMessages = {};
+
+    if (initialForm) {
+        initializeForm(initialForm, formCount);
+    }
 
     if (initialCategorySelect) {
-        var placeholderOption = document.createElement('option');
+        let placeholderOption = document.createElement('option');
         placeholderOption.value = '';
         placeholderOption.textContent = 'カテゴリ';
         placeholderOption.setAttribute('selected', 'selected');
@@ -35,23 +22,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     document.getElementById('add-form').addEventListener('click', function() {
-        // 現在のフォームグループを取得して複製
-        var formList = document.querySelector('.formList').cloneNode(true);
+        formCount++;
+        const formList = document.querySelector('.formList').cloneNode(true);
 
-        formList.querySelectorAll('input').forEach(function(input) {
-            if(input.id) {
+        formList.querySelectorAll('input, select').forEach(input => {
+            if (input.id) {
                 input.id = input.id.split('-')[0] + '-' + formCount;
             }
             input.value = ''; 
             input.classList.remove('is-valid', 'is-invalid');
-        });
-
-        formList.querySelectorAll('select').forEach(function(select) {
-            if(select.id) {
-                select.id = select.id.split('-')[0] + '-' + formCount;
-            }
-            select.selectedIndex = 0;
-            select.classList.remove('is-valid', 'is-invalid');
         });
 
         const errorElementJs = formList.querySelector('.formListValidationErrorJs');
@@ -64,30 +43,14 @@ document.addEventListener('DOMContentLoaded', function() {
             errorElement.textContent = '';
         }
 
-        const removeButton = formList.querySelector('.remove-form');
-        if(removeButton) {
-            removeButton.addEventListener('click', function() {
-                let formCount = document.querySelectorAll('.formList').length;
-        
-                if (formCount > 1) {
-                    this.closest('.formList').remove();
-                    formCount--;
-                    updateTotalPrice(); 
-                } else {
-                    alert('これ以上削除できません！');
-                }
-            });
-        }
+        // 新しいフォームグループをフォームコンテナに追加
+        document.getElementById('formListBlock').appendChild(formList);
+        initializeForm(formList, formCount);
 
         // 入力フィールドの変更を監視
         formList.querySelectorAll('.price, .amount').forEach(function (input) {
             input.addEventListener('input', updateTotalPrice);
         });
-
-        // 新しいフォームグループをフォームコンテナに追加
-        document.getElementById('formListBlock').appendChild(formList);
-        
-        formCount++; // カウンターをインクリメント
     });
 
     // 初期フォームの監視を設定
@@ -96,67 +59,169 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     formListBlock.addEventListener('input', (e) => {
-        if (e.target.matches('.item, .price, .amount, .category')) {
-            validateField(e.target);
+        if (e.target.matches('.item, .category, .price, .amount')) {
+            const formGroup = e.target.closest('.formList');
+            const index = formGroup ? formGroup.getAttribute('data-index') : null;
+            if (index !== null) {
+                validateField(e.target, index);
+            }
         }
     });
 
-    // フィールドのバリデーション関数
-    function validateField(field) {
-        const fieldValue = field.value.trim();
-        const errorContainer = field.closest('.formList').querySelector('.validationError');
-        let errorMessage = '';
+    formListBlock.addEventListener('change', (e) => {
+        if (e.target.matches('.item, .category, .price, .amount')) {
+            const formGroup = e.target.closest('.formList');
+            const index = formGroup ? formGroup.getAttribute('data-index') : null;
+            if (index !== null) {
+                validateField(e.target, index);
+            }
+        }
+    });
 
-        // フィールドごとのバリデーション
+    function validateField(field, index) {
+        const fieldValue = field.value.trim();
+        const formGroup = field.closest('.formList');
+        const errorContainer = formGroup.querySelector('.formListValidationErrorJs');
+
+        if (!errorMessages[index]) {
+            errorMessages[index] = { item: '', category: '', price: '', amount: '' };
+        }
+
         if (field.classList.contains('item')) {
             if (!fieldValue) {
-                errorMessage = '品目を入力してください';
+                errorMessages[index].item = '品目を入力してください';
+                field.classList.add('is-invalid');
+                field.classList.remove('is-valid');
+            } else {
+                errorMessages[index].item = '';
+                field.classList.remove('is-invalid');
+                field.classList.add('is-valid');
             }
         } else if (field.classList.contains('category')) {
             if (!fieldValue || fieldValue === 'default') {
-                errorMessage = 'カテゴリを選択してください';
+                errorMessages[index].category = 'カテゴリを選択してください';
+                field.classList.add('is-invalid');
+                field.classList.remove('is-valid');
+            } else {
+                errorMessages[index].category = '';
+                field.classList.remove('is-invalid');
+                field.classList.add('is-valid');
             }
         } else if (field.classList.contains('price')) {
             if (!fieldValue) {
-                errorMessage = '金額を入力してください';
+                errorMessages[index].price = '金額を入力してください';
+                field.classList.add('is-invalid');
+                field.classList.remove('is-valid');
             } else if (isNaN(fieldValue) || fieldValue <= 0) {
-                errorMessage = '正しい金額を入力してください';
+                errorMessages[index].price = '金額は1以上の半角数字で入力してください';
+                field.classList.add('is-invalid');
+                field.classList.remove('is-valid');
+            } else {
+                errorMessages[index].price = '';
+                field.classList.remove('is-invalid');
+                field.classList.add('is-valid');
             }
         } else if (field.classList.contains('amount')) {
             if (!fieldValue) {
-                errorMessage = '個数を入力してください';
+                errorMessages[index].amount = '個数を入力してください';
+                field.classList.add('is-invalid');
+                field.classList.remove('is-valid');
             } else if (isNaN(fieldValue) || fieldValue <= 0) {
-                errorMessage = '個数は1以上の数字で入力してください';
+                errorMessages[index].amount = '個数は1以上の半角数字で入力してください';
+                field.classList.add('is-invalid');
+                field.classList.remove('is-valid');
+            } else {
+                errorMessages[index].amount = '';
+                field.classList.remove('is-invalid');
+                field.classList.add('is-valid');
             }
         }
+        // });
 
-        // エラーの表示・クリア
-        if (errorMessage) {
-            field.classList.add('is-invalid');
-            field.classList.remove('is-valid');
-            if (errorContainer) {
-                errorContainer.textContent = errorMessage;
-            }
-        } else {
-            field.classList.remove('is-invalid');
-            field.classList.add('is-valid');
-            if (errorContainer) {
-                errorContainer.textContent = '';
-            }
+        const priorityOrder = ['item', 'category', 'price', 'amount'];
+
+        const firstErrorMessage = priorityOrder.map(key => errorMessages[index][key]).find(msg => msg);
+        if (errorContainer) {
+            errorContainer.textContent = firstErrorMessage || '';
         }
-        return !errorMessage; // エラーがなければtrue
     };
 
-    // 合計金額を計算する関数
     function updateTotalPrice() {
-        var total = 0;
+        let total = 0;
         
-        // すべてのフォームグループをループ
-        document.querySelectorAll('.formList').forEach(function(group) {
-            var price = parseFloat(group.querySelector('.price').value) || 0; // 金額を取得
-            var amount = parseFloat(group.querySelector('.amount').value) || 1; // 個数を取得 (デフォルト1)
-            total += price * amount; // 金額 × 個数を合計
+        document.querySelectorAll('.formList').forEach(group => {
+            let price = parseFloat(group.querySelector('.price').value) || 0;
+            let amount = parseFloat(group.querySelector('.amount').value) || 1;
+            total += price * amount;
         });
-        document.getElementById('totalPrice').value = total; // 合計値を表示
+
+        document.getElementById('totalPrice').value = total;
     }
+
+    function initializeForm(formElement, index) {
+        formElement.setAttribute('data-index', index);
+        errorMessages[index] = { item: '', category: '', price: '', amount: '' };
+
+        formElement.querySelectorAll('.price, .amount').forEach(input => {
+            input.addEventListener('input', updateTotalPrice);
+        });
+
+        formElement.querySelectorAll('.item, .category, .price, .amount').forEach(input => {
+            input.addEventListener('input', () => validateField(input, index));
+            input.addEventListener('change', () => validateField(input, index));
+        });
+
+        const removeButton = formElement.querySelector('.remove-form');
+        if (removeButton) {
+            removeButton.addEventListener('click', function() {
+                if (document.querySelectorAll('.formList').length > 1) {
+                    const index = formElement.getAttribute('data-index');
+                    delete errorMessages[index];
+                    formElement.remove();
+                    updateTotalPrice();
+                } else {
+                    alert('これ以上削除できません！');
+                }
+            });
+        }
+    }
+
+    form.addEventListener("submit", function (event) {
+        // inputs = form.querySelectorAll(".form-control");
+        let isValid = true;
+    
+        // inputs.forEach(input => {
+        //     if (input.classList.contains("is-invalid")) {
+        //         isValid = false;
+        //     }
+        // });
+        document.querySelectorAll(".formList").forEach(formGroup => {
+            const index = formGroup.getAttribute('data-index');
+            Object.values(errorMessages[index] || {}).forEach(msg => {
+                if (msg) isValid = false;
+            });
+        });
+    
+        if (!isValid) {
+            event.preventDefault();
+            event.stopPropagation();
+            alert("入力内容にエラーがあります。修正してください。");
+        }
+    });
+
+    inputShop.addEventListener('input', () => {
+        if(shopError && shopError.textContent !== ''){
+            shopError.textContent = '';
+        }
+    
+        if (inputShop.value.trim() === '') {
+            inputShop.classList.remove('is-valid');
+            inputShop.classList.add('is-invalid');
+            shopErrorJs.textContent = '名前を入力してください';
+        } else {
+            inputShop.classList.remove('is-invalid');
+            inputShop.classList.add('is-valid');
+            shopErrorJs.textContent = '';
+        }
+    });
 });

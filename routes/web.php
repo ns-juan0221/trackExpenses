@@ -30,9 +30,10 @@ Route::get('createUser', [UserController::class, 'create'])
 Route::post('createUser', [UserController::class, 'store']);
 
 // ログイン関連
-Route::get('login', [LoginController::class, 'index'])
+Route::get('/', [LoginController::class, 'index'])
     ->name('login'); 
-Route::post('login', [LoginController::class, 'login']); 
+Route::post('login', [LoginController::class, 'login']);
+
 Route::get('logout', [LoginController::class, 'logout'])
     ->name('logout');
 

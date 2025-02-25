@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // フィールドごとのバリデーション
         if (field.classList.contains('item')) {
             if (!fieldValue) {
-                errorMessage = '品目を入力してください';
+                errorMessage = '商品名を入力してください';
             }
         } else if (field.classList.contains('category')) {
             if (!fieldValue || fieldValue === 'default') {
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!fieldValue) {
                 errorMessage = '金額を入力してください';
             } else if (isNaN(fieldValue) || fieldValue <= 0) {
-                errorMessage = '正しい金額を入力してください';
+                errorMessage = '金額は1以上の数字で入力してください';
             }
         } else if (field.classList.contains('amount')) {
             if (!fieldValue) {

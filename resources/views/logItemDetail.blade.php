@@ -8,7 +8,7 @@
             <a href="{{ route('histories') }}">履歴</a>  ->  
             <a href="#" onclick="event.preventDefault(); document.getElementById('detailForm').submit();">履歴詳細</a>
 
-            <form id="detailForm" method="POST" action="{{ route('detail') }}" style="display: none;">
+            <form id="detailForm" action="{{ route('detail') }}" style="display: none;" method="POST">
                 @csrf
                 <input type="hidden" name="id" value="{{ $type === 'income' ? $income->id : $outcomeGroup->id }}">
                 <input type="hidden" name="type" value="{{ $type }}">
@@ -101,7 +101,7 @@
                     <table class="col-10">
                         <thead class="logItemTitle border border-3">
                             <tr>
-                                <th class="col-1">品目</th>
+                                <th class="col-1">商品名</th>
                                 <th class="col-1">メインカテゴリ</th>
                                 <th class="col-1">サブカテゴリ</th>
                                 <th class="col-1">金額</th>

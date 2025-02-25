@@ -26,7 +26,7 @@
                 <div class="form-group d-flex flex-column">
                     <div class="formUnit d-flex flex-row align-items-center mt-2">
                         <label for="inputKanaName" class="form-label">カナ：</label>
-                        <input type="text" name="name_kana" id="inputKanaName" class="form-control" placeholder="マネーログタロウ" value="{{ $errors->has('name_kana') ? '' : old('name_kana')  }}" required autocomplete="off">
+                        <input type="text" name="name_kana" id="inputKanaName" class="form-control" placeholder="マネーログタロウ" value="{{ $errors->has('name_kana') ? '' : old('name_kana') }}" required autocomplete="off">
                     </div>
                     <div class="text-danger kanaNameValidationErrorJs"></div>
                     @error('name_kana')
@@ -56,7 +56,7 @@
                 <div class="form-group d-flex flex-column">
                     <div class="formUnit d-flex flex-row align-items-center mt-2">
                         <label for="inputPassword" class="form-label">パスワード：</label>
-                        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="英数字8文字以上" required>
+                        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="英数字8文字以上" required autocomplete="current-password" pattern="^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$">
                     </div>
                     <div class="text-danger passwordValidationErrorJs"></div>
                     @error('password')

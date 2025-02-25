@@ -250,4 +250,5 @@
         </div>
     </div>
     <script src="{{ asset('js/categoriesSelect.js') }}"></script>
+    <script src="{{ asset('js/searchForm.js') }}"></script>
 @endsection

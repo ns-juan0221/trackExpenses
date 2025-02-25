@@ -139,7 +139,7 @@ class SearchController extends Controller
             }
         }
 
-        // 品目検索 (OutcomeItem)
+        // 商品名検索 (OutcomeItem)
         if ($request->filled('item-keyword')) {
             $itemKeyword = $request->input('item-keyword');
             $groupIds = OutcomeItem::where('item', 'like', "%{$itemKeyword}%")
