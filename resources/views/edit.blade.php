@@ -86,7 +86,7 @@
                                     @enderror
                                 </div>
                                 <div class="labelList d-flex flex-row mt-2">
-                                    <label class="form-label col-3">品目</label>
+                                    <label class="form-label col-3">商品名</label>
                                     <label class="form-label col-3">カテゴリ</label>
                                     <label class="form-label col-3">金額</label>
                                     <label class="form-label col-3">個数</label>
@@ -97,7 +97,7 @@
                                         <div class="formList d-flex flex-column">
                                             <div class="inputList mb-2 d-flex flex-row">
                                                 <div class="form-group form-item col-3 me-1">
-                                                    <label class="form-label visually-hidden" for="item-{{ $index }}">品目</label>
+                                                    <label class="form-label visually-hidden" for="item-{{ $index }}">商品名</label>
                                                     <input type="text" name="item[]" id="item-{{ $index }}" class="form-control item" value="{{ old('item.' . $index, $item->item) }}" required autocomplete="off">
                                                 </div>
                                                 <div class="form-group form-category col-3 me-1">
@@ -125,8 +125,8 @@
                                                 </div>
                                             </div>
                                             <div class="errorList">
-                                                <div class="formListValidationErrorJs"></div>
-                                                <div class="validationError formListValidationError"></div>
+                                                <div class="formListValidationErrorJs text-danger"></div>
+                                                <div class="validationError formListValidationError text-danger"></div>
                                             </div>
                                         </div>
                                     @endforeach

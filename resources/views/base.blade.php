@@ -76,10 +76,10 @@
                 </ul>
             </nav>
             <!-- スマホ用ハンバーガーメニュー（768px以下で表示） -->
-            {{-- <nav id="mobile-nav"  class="navbar navbar-success">
-                <div class="container-fluid"> --}}
+            <nav id="mobile-nav"  class="navbar navbar-success">
+                <div class="container-fluid">
                     <!-- ハンバーガーボタン -->
-                    {{-- <button class="navbar-toggler" type="button" id="menuToggle">
+                    <button class="navbar-toggler" type="button" id="menuToggle">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                 </div>
@@ -97,17 +97,16 @@
                         <a href="{{ route('logout') }}" class="btn btn-light text-center w-100">ログアウト</a>
                     </li>
                 </ul>
-            </div> --}}
+            </div>
 
             <!-- オーバーレイ (メニュー開いたときの背景) -->
-            {{-- <div id="overlay"></div>
-
-        <script src="{{ asset('js/toggleContent.js') }}"></script> --}}
+            <div id="overlay"></div>
+            
         </header>
         @endif
 
         <main class="flex-grow-1">
-            @yield('content')
+        @yield('content')
 
         </main>
         <footer class="text-center p-2">

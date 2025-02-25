@@ -125,7 +125,7 @@ return [
     'starts_with' => ':attributeは次のいずれかで始まる必要があります::values',
     'string' => ':attributeは文字列でなければなりません',
     'timezone' => ':attributeは有効なタイムゾーンでなければなりません',
-    'unique' => 'その:attributeはすでに使用されています',
+    'unique' => ':attributeは既に使用されています',
     'uploaded' => ':attributeのアップロードに失敗しました',
     'url' => ':attributeは有効なURLでなければなりません',
     'uuid' => ':attributeは有効なUUIDでなければなりません',

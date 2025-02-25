@@ -43,16 +43,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // フィールドのバリデーション関数
     function validateField(field) {
         const fieldValue = field.value.trim();
         const errorContainer = field.closest('.formList').querySelector('.validationError');
         let errorMessage = '';
 
-        // フィールドごとのバリデーション
         if (field.classList.contains('item')) {
             if (!fieldValue) {
-                errorMessage = '品目を入力してください';
+                errorMessage = '商品名を入力してください';
             }
         } else if (field.classList.contains('category')) {
             if (!fieldValue || fieldValue === 'default') {
@@ -62,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!fieldValue) {
                 errorMessage = '金額を入力してください';
             } else if (isNaN(fieldValue) || fieldValue <= 0) {
-                errorMessage = '正しい金額を入力してください';
+                errorMessage = '金額は1以上の数字で入力してください';
             }
         } else if (field.classList.contains('amount')) {
             if (!fieldValue) {
@@ -72,7 +70,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        // エラーの表示・クリア
         if (errorMessage) {
             field.classList.add('is-invalid');
             field.classList.remove('is-valid');
@@ -86,19 +83,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 errorContainer.textContent = '';
             }
         }
-        return !errorMessage; // エラーがなければtrue
+        return !errorMessage;
     };
 
-    // 合計金額を計算する関数
     function updateTotalPrice() {
         var total = 0;
         
-        // すべてのフォームグループをループ
         document.querySelectorAll('.formList').forEach(function(group) {
-            var price = parseFloat(group.querySelector('.price').value) || 0; // 金額を取得
-            var amount = parseFloat(group.querySelector('.amount').value) || 1; // 個数を取得 (デフォルト1)
-            total += price * amount; // 金額 × 個数を合計
+            var price = parseFloat(group.querySelector('.price').value) || 0;
+            var amount = parseFloat(group.querySelector('.amount').value) || 1;
+            total += price * amount;
         });
-        document.getElementById('totalPrice').value = total; // 合計値を表示
+        document.getElementById('totalPrice').value = total;
     }
 });

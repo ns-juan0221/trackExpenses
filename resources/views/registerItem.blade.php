@@ -43,7 +43,7 @@
                             <div class="form-group">
                                 <label class="form-label" for="inputDate">日付</label>
                                 <input type="text" name="date" id="inputDate" class="form-control" placeholder="日付を入力してください" value="{{ $errors->has('date') ? '' : old('date') }}" required autocomplete="off">
-                                <div class="text-danger dateValidationErrorJs"></div>
+                                <div class="dateValidationErrorJs text-danger"></div>
                                 @error('date')
                                     <div class="validationError dateValidationError text-danger">{{ $message }}</div>
                                 @enderror
@@ -51,25 +51,23 @@
                             @if($type === 'income')
                                 <div class="form-group mt-2">
                                     <label class="form-label" for="inputAmount">金額</label>
-                                    <input type="text" name="amount" id="inputAmount" class="form-control" placeholder="金額を入力してください" value="{{ $errors->has('amount') ? '' : old('amount') }}" required autocomplete="off">
-                                    <div class="text-danger amountValidationErrorJs"></div>
+                                    <input type="text" name="amount" id="inputAmount" class="form-control mb-2" placeholder="半角英数字で入力" value="{{ $errors->has('amount') ? '' : old('amount') }}" required autocomplete="off">
+                                    <div class="amountValidationErrorJs text-danger"></div>
                                     @error('date')
                                         <div class="validationError amountValidationError text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group mt-2">
                                     <label class="form-label" for="inputCategory">カテゴリ</label>
-                                    <select name="category" class="form-control" id="inputCategory" required>
-                                        <option value="default" selected>カテゴリを選択してください</option>
+                                    <select name="category" class="form-control mb-2" id="inputCategory" required>
+                                        <option value="default" selected>ここをクリック</option>
                                         @foreach ($incomeCategories as $incomeCategory)
                                             <option value="category-{{ $incomeCategory->id }}" {{ old('category') == "category-$incomeCategory->id" ? 'selected' : ''}}>
                                                 {{ $incomeCategory->name }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('category')
-                                        <div class="validationError categoryValidationError text-danger">{{ $message }}</div>
-                                    @enderror
+                                    <div class="categoryValidationErrorJS text-danger"></div>
                                 </div>
                                 <div class="form-group mt-2">
                                     <label class="form-label" for="inputMemo">メモ</label>
@@ -79,7 +77,7 @@
                                 <div class="form-group mt-2">
                                     <label class="form-label" for="inputShop">お店</label>
                                     <input type="text" name="shop" id="inputShop" class="form-control" placeholder="お店の名前を入力してください" value="{{ $errors->has('shop') ? '' : old('shop') }}" required autocomplete="off">
-                                    <div class="text-danger shopValidationErrorJs"></div>
+                                    <div class="shopValidationErrorJs text-danger"></div>
                                     @error('shop')
                                         <div class="validationError shopValidationError text-danger">{{ $message }}</div>
                                     @enderror
@@ -89,7 +87,7 @@
                                         <div class="formList d-flex flex-column">
                                             <div class="inputList mb-2 d-flex flex-row">
                                                 <div class="form-group form-item col-md-3 me-1">
-                                                    <label class="form-label visually-hidden" for="item-{{ $index }}">品目</label>
+                                                    <label class="form-label visually-hidden" for="item-{{ $index }}">商品名</label>
                                                     <input type="text" name="item[]" id="item-{{ $index }}" class="form-control item" placeholder="商品名" value="{{ $oldItem }}" required autocomplete="off">
                                                 </div>
                                                 <div class="form-group form-category col-md-3 me-1">
@@ -119,8 +117,8 @@
                                                 <button type="button" class="btn btn-danger remove-form">削除</button>
                                             </div>
                                             <div class="errorList">
-                                                <div class="formListValidationErrorJs"></div>
-                                                <div class="validationError formListValidationError"></div>
+                                                <div class="formListValidationErrorJs text-danger"></div>
+                                                <div class="validationError formListValidationError text-danger"></div>
                                             </div>
                                         </div>
                                     @endforeach

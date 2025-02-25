@@ -42,6 +42,7 @@ img.logo {
     box-sizing: border-box;
     height: auto;
     font-size: 16px;
+    max-width: 290px;
 }
 
 .form-control:focus {

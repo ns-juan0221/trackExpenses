@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector(".needs-validation");
     const inputName = document.querySelector('#inputName');
     const nameErrorJs = document.querySelector('.nameValidationErrorJs');
     const nameError = document.querySelector('.nameValidationError');
@@ -16,8 +17,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const passwordError = document.querySelector('.passwordValidationError');
     const inputPasswordConfirm = document.querySelector('#inputPasswordConfirm');
     const passwordConfirmErrorJs = document.querySelector('.passwordConfirmValidationErrorJs');
+    const inputsToValidate = [inputName, inputKanaName, inputUsername, inputEmail];
+    const formUnits = inputsToValidate.map(input => input.closest(".formUnit"));
+
+    let inputs = form.querySelectorAll(".form-control");
+
+    if (document.querySelector('.validationError')) {
+        formUnits.forEach(formUnit => {
+            formUnit.classList.add("was-validated");
+        });
+    }
 
     inputName.addEventListener('input', () => {
+        const formUnit = inputName.closest(".formUnit");
+
+        if (inputName.value !== inputName.getAttribute("value")) {
+            inputName.setAttribute("value", inputName.value);
+        }
+
+        formUnit.classList.remove("was-validated");
+
         if(nameError && nameError.textContent !== ''){
             nameError.textContent = '';
         }
@@ -34,6 +53,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     inputKanaName.addEventListener('input', () => {
+        const formUnit = inputKanaName.closest(".formUnit");
+
+        if (inputKanaName.value !== inputKanaName.getAttribute("value")) {
+            inputKanaName.setAttribute("value", inputKanaName.value);
+        }
+
+        formUnit.classList.remove("was-validated");
+
         if(kanaNameError && kanaNameError.textContent !== ''){
             kanaNameError.textContent = '';
         }
@@ -50,6 +77,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     inputUsername.addEventListener('input', () => {
+        const formUnit = inputUsername.closest(".formUnit");
+
+        if (inputUsername.value !== inputUsername.getAttribute("value")) {
+            inputUsername.setAttribute("value", inputUsername.value);
+        }
+
+        formUnit.classList.remove("was-validated");
+
         if(usernameError && usernameError.textContent !== ''){
             usernameError.textContent = '';
         }
@@ -67,6 +102,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     inputEmail.addEventListener('input', () => {
         const emailPattern = /^(?=.{1,64}@)(?=.{1,255}$)[a-zA-Z0-9]+([._+-][a-zA-Z0-9]+)*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        const formUnit = inputEmail.closest(".formUnit");
+
+        if (inputEmail.value !== inputEmail.getAttribute("value")) {
+            inputEmail.setAttribute("value", inputEmail.value);
+        }
+
+        formUnit.classList.remove("was-validated");
+
+        if (inputEmail.value !== inputEmail.getAttribute("value")) {
+            inputEmail.setAttribute("value", inputEmail.value);
+        }
 
         if(emailError && emailError.textContent !== ''){
             emailError.textContent = '';
@@ -75,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if(inputEmail.value.trim() === ''){
             inputEmail.classList.add('is-invalid');
             inputEmail.classList.remove('is-valid');
-            emailErrorJs.textContent = 'このフィールドの入力は必須です';
+            emailErrorJs.textContent = 'メールアドレスを入力してください';
         }else if (!emailPattern.test(inputEmail.value)) {
             inputEmail.classList.add('is-invalid');
             inputEmail.classList.remove('is-valid');
@@ -87,30 +133,38 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // リアルタイムで文字数をチェック
     inputPassword.addEventListener('input', () => {
         const passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
-        if (inputPassword.value.length < 8) {
+        if(inputPassword.value.trim() === ''){
+            inputPassword.classList.add('is-invalid');
+            inputPassword.classList.remove('is-valid');
+            passwordErrorJs.textContent = 'パスワードを入力してください';
+        }else if (inputPassword.value.length < 8) {
             inputPassword.classList.add('is-invalid');
             inputPassword.classList.remove('is-valid');
             passwordErrorJs.textContent = 'パスワードは8文字以上で入力してください'; 
         } else if(!passwordPattern.test(inputPassword.value)) {
             passwordErrorJs.textContent = 'パスワードは英数字を1文字以上含んでください';
+            inputPassword.classList.add('is-invalid');
+            inputPassword.classList.remove('is-valid');
         } else {
             inputPassword.classList.remove('is-invalid');
             inputPassword.classList.add('is-valid');
             passwordErrorJs.textContent = ''; 
         }
     });
-    
-    // リアルタイムで文字数をチェック
+
     inputPasswordConfirm.addEventListener('input', () => {
         if(passwordError && passwordError.textContent !== ''){
             passwordError.textContent = '';
         }
 
-        if (!(inputPasswordConfirm.value === inputPassword.value)) {
+        if(inputPasswordConfirm.value.trim() === ''){
+            inputPasswordConfirm.classList.add('is-invalid');
+            inputPasswordConfirm.classList.remove('is-valid');
+            passwordConfirmErrorJs.textContent = 'パスワードを入力してください';
+        }else if (!(inputPasswordConfirm.value === inputPassword.value)) {
             inputPasswordConfirm.classList.add('is-invalid');
             inputPasswordConfirm.classList.remove('is-valid');
             passwordConfirmErrorJs.textContent = 'パスワードが一致しません'; 
@@ -121,10 +175,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    if (document.querySelector('.validationError')) {
-        const ErrorJsForm = document.querySelector('.needs-validation');
-        if (ErrorJsForm) {
-        ErrorJsForm.classList.add('was-validated');
+    form.addEventListener("submit", function (event) {
+        inputs = form.querySelectorAll(".form-control");
+        let isValid = true;
+
+        inputs.forEach(input => {
+            if (input.classList.contains("is-invalid")) {
+                isValid = false;
+            }
+        });
+
+        if (!isValid) {
+            event.preventDefault();
+            event.stopPropagation();
+            alert("入力内容にエラーがあります。修正してください。");
         }
-    }
+    });
 });
