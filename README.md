@@ -100,3 +100,9 @@
 <img alt="支出履歴編集画面" src="https://github.com/user-attachments/assets/3abbdfec-433c-481f-b1e7-607ac4f615c7" />
 
 <img alt="収入履歴編集画面" src="https://github.com/user-attachments/assets/99b27a87-1891-473e-a04b-6c0754cde9d0" />
+
+### 今後実装したい機能
+- #### レスポンシブ対応
+- #### 設定画面</br> ユーザーネーム・メールアドレス・パスワードの変更などを可能に
+- #### 収支の簡易入力
+- #### 支出履歴編集画面内でのアイテム(商品名・カテゴリ・金額・個数を入れる欄)の追加や削除
