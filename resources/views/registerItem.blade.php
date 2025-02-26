@@ -53,7 +53,7 @@
                                     <label class="form-label" for="inputAmount">金額</label>
                                     <input type="text" name="amount" id="inputAmount" class="form-control mb-2" placeholder="半角英数字で入力" value="{{ $errors->has('amount') ? '' : old('amount') }}" required autocomplete="off">
                                     <div class="amountValidationErrorJs text-danger"></div>
-                                    @error('date')
+                                    @error('amount')
                                         <div class="validationError amountValidationError text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>

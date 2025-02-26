@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector(".needs-validation");
+    const formListBlock = document.querySelector('#formListBlock');
     const initialCategorySelect = document.querySelector('.formList select');
     const initialForm = document.querySelector('.formList');
     const inputShop = document.querySelector('#inputShop');
     const shopErrorJs = document.querySelector('.shopValidationErrorJs');
     const shopError = document.querySelector('.shopValidationError');
-    const form = document.querySelector(".needs-validation");
-    const formListBlock = document.querySelector('#formListBlock');
     let formCount = 0;
     let errorMessages = {};
 
@@ -184,23 +184,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    form.addEventListener("submit", function (event) {
-        let isValid = true;
-
-        document.querySelectorAll(".formList").forEach(formGroup => {
-            const index = formGroup.getAttribute('data-index');
-            Object.values(errorMessages[index] || {}).forEach(msg => {
-                if (msg) isValid = false;
-            });
-        });
-    
-        if (!isValid) {
-            event.preventDefault();
-            event.stopPropagation();
-            alert("入力内容にエラーがあります。修正してください。");
-        }
-    });
-
     inputShop.addEventListener('input', () => {
         if(shopError && shopError.textContent !== ''){
             shopError.textContent = '';
@@ -214,6 +197,23 @@ document.addEventListener('DOMContentLoaded', function() {
             inputShop.classList.remove('is-invalid');
             inputShop.classList.add('is-valid');
             shopErrorJs.textContent = '';
+        }
+    });
+
+    form.addEventListener("submit", function (event) {
+        inputs = form.querySelectorAll(".form-control");
+        let isValid = true;
+
+        inputs.forEach(input => {
+            if (input.classList.contains("is-invalid")) {
+                isValid = false;
+            }
+        });
+
+        if (!isValid) {
+            event.preventDefault();
+            event.stopPropagation();
+            alert("入力内容にエラーがあります。修正してください。");
         }
     });
 });

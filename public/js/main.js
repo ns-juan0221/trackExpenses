@@ -19,15 +19,15 @@ document.addEventListener('DOMContentLoaded', function () {
             const dateError = $('.dateValidationError');
             const dateValue = inputDate.val().trim();
             const dateSimplePattern = /^[0-9\/]+$/; 
-            const dateDetailPattern = /^\d{4}\/\d{2}\/\d{2}$/; 
+            const dateDetailPattern = /^\d{4}\/\d{1,2}\/\d{1,2}$/;
 
-            if (dateError && dateError.textContent !== '') {
-                dateError.textContent = '';
+            if (dateError && dateError.length > 0) {
+                dateError.text('');
             }
 
             if (dateValue === '') {
                 inputDate.removeClass('is-valid').addClass('is-invalid');
-                dateError.textContent = '';
+                dateErrorJs.text('日付を入力してください');
             } else if (!dateSimplePattern.test(dateValue)) {
                 inputDate.removeClass('is-valid').addClass('is-invalid');
                 dateErrorJs.text('数字と"/"以外の文字を入力しないでください');
@@ -59,11 +59,9 @@ function togglePassword() {
     const passwordField = document.getElementById('inputPassword');
     const showPasswordCheckbox = document.getElementById('showPassword');
 
-    // チェックボックスがチェックされたときに type を text に切り替える
     if (showPasswordCheckbox.checked) {
         passwordField.type = "text";
     } else {
-        // チェックが外されたときは再び password に切り替える
         passwordField.type = "password";
     }
 }
