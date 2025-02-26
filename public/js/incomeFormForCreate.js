@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector(".needs-validation");
     const inputAmount = document.querySelector('#inputAmount');
     const amountErrorJs = document.querySelector('.amountValidationErrorJs');
     const amountError = document.querySelector('.amountValidationError');
@@ -35,6 +36,23 @@ document.addEventListener('DOMContentLoaded', function() {
             inputCategory.classList.remove('is-invalid');
             inputCategory.classList.add('is-valid');
             categoryErrorJs.textContent = '';
+        }
+    });
+
+    form.addEventListener("submit", function (event) {
+        inputs = form.querySelectorAll(".form-control");
+        let isValid = true;
+
+        inputs.forEach(input => {
+            if (input.classList.contains("is-invalid")) {
+                isValid = false;
+            }
+        });
+
+        if (!isValid) {
+            event.preventDefault();
+            event.stopPropagation();
+            alert("入力内容にエラーがあります。修正してください。");
         }
     });
 });
