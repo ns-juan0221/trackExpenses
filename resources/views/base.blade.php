@@ -50,6 +50,31 @@
                     </li>
                 </ul>
             </nav>
+            <!-- スマホ用ハンバーガーメニュー（768px以下で表示） -->
+            <nav id="mobile-nav"  class="navbar navbar-success">
+                <div class="container-fluid">
+                    <!-- ハンバーガーボタン -->
+                    <button class="navbar-toggler" type="button" id="menuToggle">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+            </nav>
+
+            <div id="sideMenu" class="side-menu">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a href="{{ route('createUser') }}" class="btn btn-light text-center w-100">新規登録</a>
+                    </li>
+                    <li class="nav-item mt-2">
+                        <a href="{{ route('login')}}" class="btn btn-success text-center w-100">ログイン</a>
+                    </li>
+                    <li class="nav-item mt-2">
+                        <a href="{{ route('guestLogin') }}" class="btn btn-light text-center w-100">ゲストログイン</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- オーバーレイ (メニュー開いたときの背景) -->
+            <div id="overlay"></div>
         </header>
         @else
         <header id="header" class="header d-flex w-100 align-items-center border-bottom border-2 py-2">
@@ -127,6 +152,5 @@
         </footer>
         <!-- 日本語化ファイル (最新バージョンの適合するファイルを使用) -->
         <script src="{{ asset('js/datepicker-ja.js') }}"></script>
-        <script src="{{ asset('js/toggleContent.js') }}"></script>
     </body>
 </html>

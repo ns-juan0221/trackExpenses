@@ -91,13 +91,13 @@ button.btn-success:active {
 }
 
 button.btn-light {
-    background-color: #fff !important;
+    background-color: #ffffff !important;
     border: 1px solid #22c55e !important;
     color:#22c55e !important;
 }
 
 button.btn-light:hover {
-    background-color: #fff !important;
+    background-color: #fafafa !important;
 }
 
 button.btn-danger:hover {

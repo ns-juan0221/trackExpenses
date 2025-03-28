@@ -9,7 +9,6 @@
     </div>
     <div class="container-fluid flex-grow-1">
         <div class="mainArticle d-flex justify-content-center">
-            {{-- 今後、ドーナツチャートに変更できるようにする --}}
             <div class="BarGraph d-flex flex-column col-8 mt-4 me-1">
                 <div class="graphTitle d-flex justify-content-center align-items-center mt-3">
                     <p class="graphTitleText fs-3">半年間の支出遷移</p>
@@ -32,32 +31,32 @@
                         <p class="historyTitleText fs-5">直近の入出金履歴</p>
                     </div>
                     <div class="historyList px-2 flex-grow-1 mt-1">
-                        @foreach($totalBalances as $item)
+                        @foreach($totalBalances as $totalBalance)
                             <div class="listItem mb-2">
-                                <a href="#" class="itemLink" onclick="event.preventDefault(); document.getElementById('detailForm').submit();">
-                                    <form id="detailForm" method="POST" action="{{ route('detail') }}" style="display: none;">
+                                <a href="#" class="itemLink" onclick="event.preventDefault(); document.getElementById('detailForm-{{ $totalBalance->type }}-{{ $totalBalance->id }}').submit();">
+                                    <form method="POST" id="detailForm-{{ $totalBalance->type }}-{{ $totalBalance->id }}" action="{{ route('detail') }}" style="display: none;">
                                         @csrf
-                                        <input type="hidden" name="id" value="{{ $item->id }}">
-                                        <input type="hidden" name="type" value="outcome">
+                                        <input type="hidden" name="id" value="{{ $totalBalance->id }}">
+                                        <input type="hidden" name="type" value="{{ $totalBalance->type }}">
                                     </form>
 
                                     <div class="d-flex justify-content-between">
                                         <div class="listDate w-50 px-2">
-                                            {{ \Carbon\Carbon::parse($item->date)->format('Y/m/d') }}
+                                            {{ \Carbon\Carbon::parse($totalBalance->date)->format('Y/m/d') }}
                                         </div>
                                         <div class="listPrice w-50 pe-3">
-                                            @if ($item->type === 'income')
-                                                +{{ number_format($item->amount) }}円
+                                            @if ($totalBalance->type === 'income')
+                                                +{{ number_format($totalBalance->amount) }}円
                                             @else
-                                                -{{ number_format($item->amount) }}円
+                                                -{{ number_format($totalBalance->amount) }}円
                                             @endif
                                         </div>
                                     </div>
                                     <div class="listCategory ps-2">
-                                        @if ($item->type === 'income')
-                                            {{ $item->m_category_name }}
+                                        @if ($totalBalance->type === 'income')
+                                            {{ $totalBalance->m_category_name }}
                                         @else
-                                            {{ $item->m_category_name }}　->　{{ $item->s_category_name }}
+                                            {{ $totalBalance->m_category_name }}　->　{{ $totalBalance->s_category_name }}
                                         @endif
                                     </div>
                                 </a>

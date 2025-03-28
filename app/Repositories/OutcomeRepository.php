@@ -61,6 +61,20 @@ class OutcomeRepository {
         ", ['userId' => $userId, 'groupId' => $groupId]);
     }
 
+    public function getCurrentMonth(int $userId) {
+        return DB::selectOne("
+            SELECT 
+                DATE_FORMAT(CURDATE(), '%Y年%m月') AS month,
+                COALESCE(ROUND(SUM(totalPrice), 0), 0) AS total_sum
+            FROM 
+                outcome_groups
+            WHERE 
+                user_id = :userId 
+                AND del_flg = 0 
+                AND date BETWEEN DATE_FORMAT(CURDATE(), '%Y-%m-01') AND CURDATE()
+        ", ['userId' => $userId]);
+    }
+    
     /**
      * 過去半年間の月別支出合計を取得する
      *

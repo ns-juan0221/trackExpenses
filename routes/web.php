@@ -63,6 +63,7 @@ Route::post('histories', [MainController::class, 'search'])
 Route::post('detail', [MainController::class, 'showDetail'])
     ->name('detail')
     ->middleware('auth');
+Route::get('detail',[MainController::class, 'show']);
 
 //編集画面
 Route::get('edit/{id}/{type}', [MainController::class, 'edit'])

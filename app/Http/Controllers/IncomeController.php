@@ -97,7 +97,22 @@ class IncomeController extends Controller {
      */
     public function getById(int $id) {
         $userId = session('user_id');
+
         return $this->incomeRepository->getById($id,$userId);
+    }
+
+    public function getCurrentMonth() {
+        $userId = session('user_id');
+        $isPrevious = false;
+        $incomes = $this->incomeRepository->getCurrentMonth($userId);
+
+        if(is_null($incomes->total_sum)) {
+            $incomes = $this->incomeRepository->getPreviousMonth($userId);
+            $isPrevious = true;
+        }
+
+        Session::put('incomes', $incomes);
+        Session::put('isPrevious', $isPrevious);
     }
 
     /**
@@ -107,6 +122,7 @@ class IncomeController extends Controller {
      */
     public function getLeastItems() {
         $userId = session('user_id');
+
         return $this->incomeRepository->getRepresentativeItemsByUserId($userId);
     }
 
@@ -117,6 +133,7 @@ class IncomeController extends Controller {
      */
     public function getSampleLeastItems() {
         $userId = 1;
+
         return $this->incomeRepository->getRepresentativeItemsByUserId($userId);
     }
 }

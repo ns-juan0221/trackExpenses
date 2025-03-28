@@ -122,6 +122,7 @@ class OutcomeController extends Controller {
      */
     public function getItemsByGroupId(int $groupId) {
         $userId = session('user_id');
+
         return $this->outcomeRepository->getItemsByGroupId($userId,$groupId);
     }
 
@@ -133,6 +134,7 @@ class OutcomeController extends Controller {
      */
     public function getGroupByGroupId(int $groupId) {
         $userId = session('user_id');
+        
         return $this->outcomeRepository->getGroupByGroupId($userId,$groupId);
     }
 
@@ -275,6 +277,13 @@ class OutcomeController extends Controller {
         Session::put('labels', $labels);
         Session::put('lastYearValues', $lastYearValues);
         Session::put('currentYearValues', $currentYearValues);
+    }
+
+    public function getCurrentMonth() {
+        $userId = session('user_id');
+        $outcomes = $this->outcomeRepository->getCurrentMonth($userId);
+
+        Session::put('outcomes', $outcomes);
     }
 
     /**
