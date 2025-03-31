@@ -29,45 +29,38 @@ class MainController extends Controller {
     }
 
     /**
-     * ゲストユーザー用のダッシュボードを表示する
-     * 
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
-     */
-    public function guestIndex() {
-        $this->outcomeController->getSampleHalfYearGroupsAndLeastItems();
-        $labels = Session::get('labels');
-        $lastYearValues = Session::get('lastYearValues');
-        $currentYearValues = Session::get('currentYearValues');
-        $outcomes = collect(Session::get('outcomes'));
-        $incomes = collect($this->incomeController->getSampleLeastItems());
-        $totalBalances = $incomes->merge($outcomes)->sortByDesc('date')->take(6);
-
-        if (is_null($labels) || is_null($lastYearValues) || is_null($currentYearValues) || is_null($totalBalances)) {
-            return redirect()->route('login')->withErrors(['login_error' => 'ログインが必要です'])->withInput();
-        }
-
-        return view('guest',compact('labels', 'lastYearValues', 'currentYearValues','totalBalances'));
-    }
-
-    /**
      * ユーザーダッシュボードを表示する
      * 
      * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
-    public function index() {
-        $this->outcomeController->getHalfYearGroupsAndLeastItems();
-        $labels = Session::get('labels');
-        $lastYearValues = Session::get('lastYearValues');
-        $currentYearValues = Session::get('currentYearValues');
-        $outcomes = collect(Session::get('outcomes'));
-        $incomes = collect($this->incomeController->getLeastItems());
-        $totalBalances = $incomes->merge($outcomes)->sortByDesc('date')->take(6);
+    public function index(Request $request) {
+        if ($this->isMobile($request)) {
+            return $this->indexMobile();
+        } else {
+            $this->outcomeController->getHalfYearGroupsAndLeastItems();
+            $labels = Session::get('labels');
+            $lastYearValues = Session::get('lastYearValues');
+            $currentYearValues = Session::get('currentYearValues');
+            $outcomes = collect(Session::get('outcomes'));
+            $incomes = collect($this->incomeController->getLeastItems());
+            $totalBalances = $incomes->merge($outcomes)->sortByDesc('date')->take(6);
 
-        if (is_null($labels) || is_null($lastYearValues) || is_null($currentYearValues) || is_null($totalBalances)) {
-            return redirect()->route('login')->withErrors(['login_error' => 'ログインが必要です'])->withInput();
+            if (is_null($labels) || is_null($lastYearValues) || is_null($currentYearValues) || is_null($totalBalances)) {
+                return redirect()->route('login')->withErrors(['login_error' => 'ログインが必要です'])->withInput();
+            }
+
+            return view('main',compact('labels', 'lastYearValues', 'currentYearValues', 'totalBalances'));
         }
+    }
 
-        return view('main',compact('labels', 'lastYearValues', 'currentYearValues','totalBalances'));
+    public function indexMobile() {
+        $this->outcomeController->getCurrentMonth();
+        $this->incomeController->getCurrentMonth();
+        $outcomes = session('outcomes');
+        $incomes = session('incomes');
+        $isPrevious = session('isPrevious');
+
+        return view('mobile.main', compact('outcomes', 'incomes', 'isPrevious'));
     }
 
     /**
@@ -75,7 +68,7 @@ class MainController extends Controller {
      * 
      * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
-    public function show() {
+    public function show(Request $request) {
         $this->categoryController->getCategories();
         $userId = session('user_id');
         $incomes = collect($this->incomeController->getByUserId($userId));
@@ -99,7 +92,11 @@ class MainController extends Controller {
             return redirect()->route('login')->withErrors(['login_error' => 'ログインが必要です'])->withInput();
         }
 
-        return view('log', compact('totalBalances','groupedOutcomeCategories','incomeCategories'));
+        if ($this->isMobile($request)) {
+            return view('mobile.log', compact('totalBalances'));
+        } else {
+            return view('log', compact('totalBalances', 'groupedOutcomeCategories', 'incomeCategories'));
+        }
     }
 
     /**
@@ -119,7 +116,11 @@ class MainController extends Controller {
 
         $totalBalances = $this->searchController->search($request);
 
-        return view('log', compact('totalBalances','groupedOutcomeCategories','incomeCategories'));
+        if ($this->isMobile($request)) {
+            return view('mobile.log', compact('totalBalances'));
+        } else {
+            return view('log', compact('totalBalances','groupedOutcomeCategories','incomeCategories'));
+        }
     }
 
     /**
@@ -127,7 +128,7 @@ class MainController extends Controller {
      * 
      * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
-    public function create() {
+    public function create(Request $request) {
         $type = request('type');
         $this->categoryController->getCategories();
         $groupedOutcomeCategories = Session::get('groupedOutcomeCategories');
@@ -137,7 +138,11 @@ class MainController extends Controller {
             return redirect()->route('login')->withErrors(['login_error' => 'ログインが必要です'])->withInput();
         }
 
-        return view('registerItem', compact('groupedOutcomeCategories','incomeCategories','type'));
+        if ($this->isMobile($request)) {
+            return view('mobile.registerItem', compact('groupedOutcomeCategories','incomeCategories','type'));
+        } else {
+            return view('registerItem', compact('groupedOutcomeCategories','incomeCategories','type'));
+        }
     }
 
     /**
@@ -167,10 +172,18 @@ class MainController extends Controller {
         if ($type === 'income') {
             $income = $this->incomeController->getById($id);
 
+            if($this->isMobile($request)){
+                return view('mobile.logItemDetail', compact('income','type'));
+            }
+
             return view('logItemDetail', compact('income','type'));
         }else {
             $outcomeItems = $this->outcomeController->getItemsByGroupId($id);
             $outcomeGroup = $this->outcomeController->getGroupByGroupId($id);
+
+            if($this->isMobile($request)){
+                return view('mobile.logItemDetail', compact('outcomeItems', 'outcomeGroup', 'type'));
+            }
 
             return view('logItemDetail', compact('outcomeItems', 'outcomeGroup', 'type'));
         }
@@ -183,7 +196,7 @@ class MainController extends Controller {
      * @param string $type
      * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
-    public function edit(int $id, string $type) {
+    public function edit(Request $request, int $id, string $type) {
         if ($type === 'income') {
             $this->categoryController->getIncomeCategories();
             $incomeCategories = Session::get('incomeCategories');
@@ -193,6 +206,11 @@ class MainController extends Controller {
             }
 
             $income = $this->incomeController->getById($id);
+
+            if($this->isMobile($request)){
+                return view('mobile.edit', compact('income','type','incomeCategories'));
+            }
+
             return view('edit', compact('income','type','incomeCategories'));
         }else {
             $this->categoryController->getOutcomeCategories();
@@ -213,6 +231,10 @@ class MainController extends Controller {
                 'memo' => $outcomeGroup->memo
             ];
             
+            if($this->isMobile($request)){
+                return view('mobile.edit', compact('outcomeItems','formattedOutcomeGroup','type','groupedOutcomeCategories'));
+            }
+
             return view('edit', compact('outcomeItems','formattedOutcomeGroup','type','groupedOutcomeCategories'));
         }
     }
@@ -245,5 +267,11 @@ class MainController extends Controller {
         } else {
             return redirect()->route('histories')->with('error', '不正な削除リクエストです。');
         }
+    }
+
+    private function isMobile(Request $request) {
+        $agent = $request->header('User-Agent');
+        
+        return preg_match('/(android|iphone|ipad|ipod|blackberry|windows phone)/i', $agent);
     }
 }

@@ -55,4 +55,32 @@ class IncomeRepository {
             WHERE i.del_flg = 0 AND user_id = :userId
         ", ['userId' => $userId]);
     }
+
+    public function getCurrentMonth(int $userId) {
+        return DB::selectOne("
+            SELECT 
+                DATE_FORMAT(CURDATE(), '%Y年%m月') AS month,
+                COALESCE(ROUND(SUM(amount), 0), 0) AS total_sum
+            FROM 
+                incomes
+            WHERE 
+                user_id = :userId 
+                AND del_flg = 0 
+                AND date BETWEEN DATE_FORMAT(CURDATE(), '%Y-%m-01') AND CURDATE()
+        ", ['userId' => $userId]);
+    }
+
+    public function getPreviousMonth(int $userId) {
+        return DB::selectOne("
+            SELECT 
+                DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH), '%Y年%m月') AS month,
+                COALESCE(ROUND(SUM(amount), 0), 0) AS total_sum
+            FROM 
+                incomes
+            WHERE 
+                user_id = :userId 
+                AND del_flg = 0 
+                AND date BETWEEN DATE_FORMAT(CURDATE(), '%Y-%m-01') AND CURDATE()
+        ", ['userId' => $userId]);
+    }
 }

@@ -26,7 +26,7 @@
             </div>
         @endif
         <div class="mainArticle d-flex justify-content-center">
-            <div class="editForm col-9 mt-3">
+            <div class="editForm mt-3">
                 <div class="editBox p-2">
                     <form action="{{ route('update') }}" class="formContainer needs-validation" method="POST">
                         @csrf
@@ -85,7 +85,7 @@
                                         <div class="validationError shopValidationError text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="labelList d-flex flex-row mt-2">
+                                <div class="labelList d-flex flex-row mt-2 border-bottom border-2">
                                     <label class="form-label col-3">商品名</label>
                                     <label class="form-label col-3">カテゴリ</label>
                                     <label class="form-label col-3">金額</label>
@@ -94,7 +94,7 @@
                                 <div id="formListBlock">
                                     @foreach ($outcomeItems as $index => $item)
                                         <input type="hidden" name="id[]" value="{{ $item->id }}">
-                                        <div class="formList d-flex flex-column">
+                                        <div class="formList d-flex flex-column mt-1 border-bottom border-2">
                                             <div class="inputList mb-2 d-flex flex-row">
                                                 <div class="form-group form-item col-3 me-1">
                                                     <label class="form-label visually-hidden" for="item-{{ $index }}">商品名</label>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
-    <head>
+<head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -10,9 +10,7 @@
         <!-- Bootstrap CSS (CDN) -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
         <!-- jQuery UI CSS (CDN) -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css" rel="stylesheet">
-        <!-- Datepickerテーマbaseを選択 -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.min.css" rel="stylesheet">
+        <link href="https://code.jquery.com/ui/1.14.0/themes/base/jquery-ui.min.css" rel="stylesheet">
         <!-- Remodal (CDN) -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.1/remodal.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.1/remodal-default-theme.min.css" rel="stylesheet">
@@ -23,90 +21,115 @@
         @else
         <link rel="stylesheet" href="{{ asset('css/article.css') }}">
         @endif
-
-        <!-- jQueryのCDN(jQuery) -->
+        <title>@yield('title')</title>
+        <!-- jQuery (CDN) -->
         <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-            <!-- jQuery UI (最新版1.13.2) -->
-            <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+        <!-- jQuery UI (最新版1.14.0) -->
+        <script src="https://code.jquery.com/ui/1.14.0/jquery-ui.min.js"></script>
         <!-- Remodal (CDN) -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.1/remodal.min.js"></script>
-        <title>@yield('title')</title>
+        <script src="{{ asset('js/main.js') }}"></script>
     </head>
     <body  class="d-flex flex-column min-vh-100">
         @if (Request::is('/') || Request::is('createUser'))
-        <header id="header" class="header d-flex w-100 align-items-center border-bottom border-2 py-2">
-            <a href="{{ route('main') }}" class="header-logo">
-                <img src="{{ asset('img/header_icon.png') }}" alt="マネーログ" height="47" width="141">
-            </a>
-            <nav id="nav">
-                <ul class="nav-btn">
-                    <li>
-                        <a href="{{ route('createUser') }}" class="btn btn-light text-center">新規登録</a>
-                    </li>
-                    <li class="ms-2">
-                        <a href="{{ route('login')}}" class="btn btn-success text-center">ログイン</a>
-                    </li>
-                    <li class="ms-2">
-                        <a href="{{ route('guestLogin') }}" class="btn btn-light text-center">ゲストログイン</a>
-                    </li>
-                </ul>
-            </nav>
-        </header>
-        @else
-        <header id="header" class="header d-flex w-100 align-items-center border-bottom border-2 py-2">
-            <a href="{{ route('main') }}" class="header-logo">
-                <img src="{{ asset('img/header_icon.png') }}" alt="マネーログ" height="47" width="141">
-            </a>
-            <nav id="nav">
-                <ul class="nav-btn">
-                    <li>
-                        <a href="{{ route('register') }}" class="btn btn-light text-center">入力</a>
-                    </li>
-                    <li class="ms-2">
-                        <a href="{{ route('histories') }}" class="btn btn-success text-center">入出金履歴</a>
-                    </li>
-                    {{-- 追加機能 --}}
-                    {{-- <li>
-                        <a href="#" class="btn btn-success text-center">設定</a>
-                    </li> --}}
-                    <li class="ms-2">
-                        <a href="{{ route('logout') }}" class="btn btn-light text-center">ログアウト</a>
-                    </li>
-                </ul>
-            </nav>
-            <!-- スマホ用ハンバーガーメニュー（768px以下で表示） -->
-            <nav id="mobile-nav"  class="navbar navbar-success">
-                <div class="container-fluid">
-                    <!-- ハンバーガーボタン -->
-                    <button class="navbar-toggler" type="button" id="menuToggle">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+            <header id="header" class="header d-flex w-100 align-items-center border-bottom border-2 py-2">
+                <a href="{{ route('main') }}" class="header-logo">
+                    <img src="{{ asset('img/header_icon.png') }}" alt="マネーログ" height="47" width="141">
+                </a>
+                <nav id="nav">
+                    <ul class="nav-btn">
+                        <li>
+                            <a href="{{ route('createUser') }}" class="btn btn-light text-center">新規登録</a>
+                        </li>
+                        <li class="ms-2">
+                            <a href="{{ route('login')}}" class="btn btn-success text-center">ログイン</a>
+                        </li>
+                        <li class="ms-2">
+                            <a href="{{ route('guestLogin') }}" class="btn btn-light text-center">ゲストログイン</a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- スマホ用ハンバーガーメニュー（768px以下で表示） -->
+                <nav id="mobile-nav"  class="navbar navbar-success">
+                    <div class="container-fluid">
+                        <!-- ハンバーガーボタン -->
+                        <button class="navbar-toggler" type="button" id="menuToggle">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
+                </nav>
+    
+                <div id="sideMenu" class="side-menu">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="{{ route('createUser') }}" class="btn btn-light text-center w-100">新規登録</a>
+                        </li>
+                        <li class="nav-item mt-2">
+                            <a href="{{ route('login')}}" class="btn btn-success text-center w-100">ログイン</a>
+                        </li>
+                        <li class="nav-item mt-2">
+                            <a href="{{ route('guestLogin') }}" class="btn btn-light text-center w-100">ゲストログイン</a>
+                        </li>
+                    </ul>
                 </div>
-            </nav>
+                <!-- オーバーレイ (メニュー開いたときの背景) -->
+                <div id="overlay"></div>
+            </header>
+        @else
+            <header id="header" class="header d-flex w-100 align-items-center border-bottom border-2 py-2">
+                <a href="{{ route('main') }}" class="header-logo">
+                    <img src="{{ asset('img/header_icon.png') }}" alt="マネーログ" height="47" width="141">
+                </a>
+                <nav id="nav">
+                    <ul class="nav-btn">
+                        <li>
+                            <a href="{{ route('register') }}" class="btn btn-light text-center">入力</a>
+                        </li>
+                        <li class="ms-2">
+                            <a href="{{ route('histories') }}" class="btn btn-success text-center">入出金履歴</a>
+                        </li>
+                        {{-- 追加機能 --}}
+                        {{-- <li>
+                            <a href="#" class="btn btn-success text-center">設定</a>
+                        </li> --}}
+                        <li class="ms-2">
+                            <a href="{{ route('logout') }}" class="btn btn-light text-center">ログアウト</a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- スマホ用ハンバーガーメニュー（768px以下で表示） -->
+                <nav id="mobile-nav"  class="navbar navbar-success">
+                    <div class="container-fluid">
+                        <!-- ハンバーガーボタン -->
+                        <button class="navbar-toggler" type="button" id="menuToggle">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
+                </nav>
 
-            <div id="sideMenu" class="side-menu">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a href="{{ route('register') }}" class="btn btn-light text-center w-100">入力</a>
-                    </li>
-                    <li class="nav-item mt-2">
-                        <a href="{{ route('histories') }}" class="btn btn-success text-center w-100">入出金履歴</a>
-                    </li>
-                    <li class="nav-item mt-2">
-                        <a href="{{ route('logout') }}" class="btn btn-light text-center w-100">ログアウト</a>
-                    </li>
-                </ul>
-            </div>
+                <div id="sideMenu" class="side-menu">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="{{ route('register') }}" class="btn btn-light text-center w-100">入力</a>
+                        </li>
+                        <li class="nav-item mt-2">
+                            <a href="{{ route('histories') }}" class="btn btn-success text-center w-100">入出金履歴</a>
+                        </li>
+                        <li class="nav-item mt-2">
+                            <a href="{{ route('logout') }}" class="btn btn-light text-center w-100">ログアウト</a>
+                        </li>
+                    </ul>
+                </div>
 
-            <!-- オーバーレイ (メニュー開いたときの背景) -->
-            <div id="overlay"></div>
-            
-        </header>
+                <!-- オーバーレイ (メニュー開いたときの背景) -->
+                <div id="overlay"></div>
+                
+            </header>
         @endif
 
         <main class="flex-grow-1">
-        @yield('content')
+            @yield('content')
 
         </main>
         <footer class="text-center p-2">
@@ -127,6 +150,5 @@
         </footer>
         <!-- 日本語化ファイル (最新バージョンの適合するファイルを使用) -->
         <script src="{{ asset('js/datepicker-ja.js') }}"></script>
-        <script src="{{ asset('js/main.js') }}"></script>
     </body>
 </html>

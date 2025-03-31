@@ -22,6 +22,16 @@ body {
     height: auto;
 }
 
+.donutChart {
+    background-color:  rgba(255, 255, 255, 0.7) !important;
+}
+
+.noteOnChart {
+    text-align: center;
+    color: gray;
+    font-size: 14px;
+}
+
 .history {
     height: 100%;
     width: auto;
@@ -137,7 +147,7 @@ body {
     max-height: calc(100vh - 250px);
     overflow-y: auto; 
     border: 2px solid #000000;
-    margin-top: -2px;
+    margin-top: -3px;
     position: relative;
     z-index: 5;
 }
@@ -155,6 +165,38 @@ body {
 
 #formListBlock .formList:first-of-type .remove-form {
     visibility: hidden;
+}
+
+@media (max-width: 768px) {
+    .createBox {
+        max-height: calc(100vh - 230px);
+    }
+
+    .form-item, .form-category, .form-price, .form-amount {
+        flex: unset;
+    }
+
+    .inputList {
+        flex-wrap: wrap;
+        row-gap: 0.5rem;
+    }
+
+    .form-item {
+        min-width: 190px;
+        width: 40%;
+    }
+    .form-category {
+        min-width: 145px;
+        width: 30%;
+    }
+    .form-price {
+        min-width: 100px;
+        width: 20%;
+    }
+    .form-amount {
+        min-width: 100px;
+        width: 10%;
+    }
 }
 
 .calendarContainer {
@@ -385,12 +427,72 @@ body {
     z-index: 1051 !important; /* Bootstrapのmodal(1050)より上にする */
 }
 
+@media (max-width: 768px) {
+    .searchTable {
+        width: 100%;
+    }
+
+    .dateLabel {
+        border-bottom: 1px solid #4ade80;
+    }
+
+    .itemKeywordInput,.shopKeywordInput,.memoKeywordInput,.priceInput,.dateInput {
+        padding: 5px;
+    }
+
+    .dateInput {
+        border-bottom: 1px solid #22c55e;
+    }
+
+    .searchTable #minPrice,#maxPrice {
+        width: 100%;
+        padding-left: 16px;
+        padding-right: 10px;
+        box-sizing: border-box;
+    }
+
+    .searchTable .yen {
+        position: absolute;
+        left: 6px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 14px;
+        color: #666;
+    }
+
+    .logDetailItem,.logDetailPrice {
+        width: 40%;
+    }
+
+    .logDetailAmount {
+        width: 20%;
+    }
+
+    .btnGroup .editBtn,.deleteBtn {
+        width: 40%;
+    }
+
+    a.btn-success {
+        background-color:#22c55e !important;
+        border: 1px solid #22c55e !important;
+        box-shadow: none;
+        transition: none;
+    }
+    
+    a.btn-success:hover {
+        background-color: #34ce6c !important;
+        border: 1px solid #34ce6c !important;
+        transform: none;
+        box-shadow: none;
+    }
+}
+
 .logBox {
     background-color:  rgba(255, 255, 255, 0.7) !important;
 }
 
 .logDetailContainer {
-    max-height: calc(100vh - 150px);
+    max-height: calc(100vh - 180px);
     overflow-y: auto; 
     background-color: rgba(255, 255, 255, 0.7);
 }
