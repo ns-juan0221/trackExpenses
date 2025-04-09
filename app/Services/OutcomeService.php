@@ -36,10 +36,60 @@ class OutcomeService {
     }
 
     /**
+      * 更新時の支出データのバリデーションを行う
+      *
+      * @param array $data
+      * @return \Illuminate\Contracts\Validation\Validator
+      */
+      public function validateUpdatedOutcome(array $data) {
+        // delFlgが0のインデックスだけ抽出
+        $validIndexes = collect($data['delFlg'] ?? [])
+        ->filter(fn($flg) => $flg == 0)
+        ->keys()
+        ->all();
+
+        $filteredData = [
+            'date' => $data['date'] ?? null,
+            'shop' => $data['shop'] ?? null,
+            'totalPrice' => $data['totalPrice'] ?? null,
+            'memo' => $data['memo'] ?? null,
+            'item' => [],
+            'category' => [],
+            'price' => [],
+            'amount' => [],
+        ];
+
+        foreach ($validIndexes as $i) {
+            $filteredData['item'][$i] = $data['item'][$i] ?? null;
+            $filteredData['category'][$i] = $data['category'][$i] ?? null;
+            $filteredData['price'][$i] = $data['price'][$i] ?? null;
+            $filteredData['amount'][$i] = $data['amount'][$i] ?? null;
+        }
+
+        return Validator::make($filteredData, [
+            'date' => 'required|date',
+            'shop' => 'required|string|max:255',
+            'item' => 'required|array',
+            'item.*' => 'required|string|max:255',
+            'category' => 'required|array',
+            'category.*' => [
+                'required',
+                'regex:/^outcome-main-\d+\|outcome-sub-\d+$/',
+            ],
+            'price' => 'required|array',
+            'price.*' => 'required|numeric',
+            'amount' => 'required|array',
+            'amount.*' => 'required|numeric',
+            'totalPrice' => 'required|numeric',
+            'memo' => 'nullable|string|max:255',
+        ]);
+    }
+
+    /**
      * バリデーション済みのデータから支出アイテムデータを準備する
      *
      * @param array $validatedData
-     * @return array
+     * @return array $itemsData
      */
     public function prepareItemsData(array $validatedData) {
         $itemsData = [];
@@ -62,7 +112,7 @@ class OutcomeService {
     }   
     
     /**
-     * OutcomeItemのデータを整える
+     * 更新時のバリデーション済みのデータから支出アイテムデータを準備する
      *
      * @param array $validatedData
      * @return array $itemsData
@@ -82,11 +132,12 @@ class OutcomeService {
                 's_category_id' => $subCategoryId,
                 'price' => $validatedData['price'][$index],
                 'amount' => $validatedData['amount'][$index],
+                'delFlg' => $validatedData['delFlg'][$index],
             ];
         }
 
         return $itemsData;
-    }   
+    }
 
     /**
      * 支出データを作成する
@@ -138,36 +189,42 @@ class OutcomeService {
                 'memo' => $updatedOutcomeGroupData['memo'] ?? '',
             ]);
 
-            $existingItemIds = OutcomeItem::where('group_id', $updatedOutcomeGroupData['id'])->pluck('id')->toArray();
+            $existingItemIds = OutcomeItem::where('group_id', $updatedOutcomeGroupData['id'])
+            ->pluck('id')
+            ->toArray();
             $newItemIds = [];
 
-            foreach ($updatedOutcomeItemsData as $updatedOutcomeItemData) {
-                if (!empty($updatedOutcomeItemData['id'])) {
-                    $item = OutcomeItem::findOrFail($updatedOutcomeItemData['id']);
-                    $item->update([
-                        'date' => $updatedOutcomeItemData['date'],
-                        'item' => $updatedOutcomeItemData['item'],
-                        'm_category_id' => $updatedOutcomeItemData['m_category_id'],
-                        's_category_id' => $updatedOutcomeItemData['s_category_id'],
-                        'price' => $updatedOutcomeItemData['price'],
-                        'amount' => $updatedOutcomeItemData['amount'],
-                    ]);
-
-                    $newItemIds[] = $updatedOutcomeItemData['id'];
+            foreach ($updatedOutcomeItemsData as $itemData) {
+                if (!empty($itemData['id'])) {
+                    if (!empty($itemData['delFlg']) && $itemData['delFlg'] == 1) {
+                        OutcomeItem::where('id', $itemData['id'])->update(['del_flg' => true]);
+                    } else {
+                        OutcomeItem::where('id', $itemData['id'])->update([
+                            'date' => $itemData['date'],
+                            'item' => $itemData['item'],
+                            'm_category_id' => $itemData['m_category_id'],
+                            's_category_id' => $itemData['s_category_id'],
+                            'price' => $itemData['price'],
+                            'amount' => $itemData['amount'],
+                        ]);
+                        $newItemIds[] = $itemData['id'];
+                    }
                 } else {
-                    $newItem = OutcomeItem::create([
-                        'user_id' => session('user_id'),
-                        'group_id' => $updatedOutcomeGroupData['id'],
-                        'date' => $updatedOutcomeItemData['date'],
-                        'item' => $updatedOutcomeItemData['item'],
-                        'm_category_id' => $updatedOutcomeItemData['m_category_id'],
-                        's_category_id' => $updatedOutcomeItemData['s_category_id'],
-                        'price' => $updatedOutcomeItemData['price'],
-                        'amount' => $updatedOutcomeItemData['amount'],
-                        'del_flg' => false,
-                    ]);
+                    if (!empty($itemData['delFlg']) || $itemData['delFlg'] == 0) {
+                        $newItem = OutcomeItem::create([
+                            'user_id' => session('user_id'),
+                            'group_id' => $updatedOutcomeGroupData['id'],
+                            'date' => $itemData['date'],
+                            'item' => $itemData['item'],
+                            'm_category_id' => $itemData['m_category_id'],
+                            's_category_id' => $itemData['s_category_id'],
+                            'price' => $itemData['price'],
+                            'amount' => $itemData['amount'],
+                            'del_flg' => false,
+                        ]);
 
-                    $newItemIds[] = $newItem->id;
+                        $newItemIds[] = $newItem->id;
+                    }
                 }
             }
 

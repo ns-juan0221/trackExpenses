@@ -2,6 +2,19 @@
 @section('title', '取引の編集')
 
 @section('content')
+    @if (session('success') || session('error'))
+        <script>
+            window.onload = function() {
+                @if (session('success'))
+                    alert("{{ session('success') }}");
+                @endif
+    
+                @if (session('error'))
+                    alert("{{ session('error') }}");
+                @endif
+            };
+        </script>
+     @endif
     <div class="routeDisplay w-100 border-bottom border-2">
         <p class="ms-2 p-1">
             <a href="{{ route('main') }}">ホーム</a>  ->  
@@ -85,22 +98,24 @@
                                         <div class="validationError shopValidationError text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="labelList d-flex flex-row mt-2">
-                                    <label class="form-label col-3">商品名</label>
-                                    <label class="form-label col-3">カテゴリ</label>
-                                    <label class="form-label col-3">金額</label>
-                                    <label class="form-label col-3">個数</label>
-                                </div>
+                                <div class="labelList d-flex flex-row mt-2 justify-content-center">
+                                    <label class="label col-3 me-1">商品名</label>
+                                    <label class="label col-3 me-1">カテゴリ</label>
+                                    <label class="label col-2 me-1">金額</label>
+                                    <label class="label col-2 me-1">個数</label>
+                                    <label class="label col-1"></label>
+                                 </div>
                                 <div id="formListBlock">
-                                    @foreach ($outcomeItems as $index => $item)
-                                        <input type="hidden" name="id[]" value="{{ $item->id }}">
-                                        <div class="formList d-flex flex-column">
-                                            <div class="inputList mb-2 d-flex flex-row">
-                                                <div class="form-group form-item col-3 me-1">
+                                @foreach ($outcomeItems as $index => $item)
+                                        <div class="formList d-flex flex-column mt-2">
+                                            <input id="id-{{ $index }}" type="hidden" name="id[]" value="{{ $item->id }}">
+                                            <input id="delFlg-{{ $index }}" type="hidden" name="delFlg[]" value="0">
+                                            <div class="inputList d-flex flex-row justify-content-center">
+                                                <div class="form-group col-3 me-1">
                                                     <label class="form-label visually-hidden" for="item-{{ $index }}">商品名</label>
                                                     <input type="text" name="item[]" id="item-{{ $index }}" class="form-control item" value="{{ old('item.' . $index, $item->item) }}" required autocomplete="off">
                                                 </div>
-                                                <div class="form-group form-category col-3 me-1">
+                                                <div class="form-group col-3 me-1">
                                                     <label class="form-label visually-hidden" for="category-{{ $index }}">カテゴリ</label>
                                                     <select name="category[]" id="category-{{ $index }}" class="form-control category">
                                                         @foreach ($groupedOutcomeCategories as $groupedOutcomeCategory)
@@ -115,14 +130,16 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                                <div class="form-group col-3 me-1">
+                                                <div class="form-group col-2 me-1">
                                                     <label class="form-label visually-hidden" for="price-{{ $index }}">金額</label>
                                                     <input type="text" name="price[]" id="price-{{ $index }}" class="form-control price" value="{{ old('price.' . $index, floor($item->price)) }}" required autocomplete="off">
                                                 </div>
-                                                <div class="form-group col-3 me-1">
+                                                <div class="form-group col-2 me-1">
                                                     <label class="form-label visually-hidden" for="amount-{{ $index }}">個数</label>
                                                     <input type="text" name="amount[]" id="amount-{{ $index }}" class="form-control amount" value="{{ old('amount.' . $index, $item->amount) }}" required autocomplete="off">
                                                 </div>
+                                                <!-- 削除ボタン -->
+                                                <button type="button" class="btn btn-danger remove-form col-1">削除</button>
                                             </div>
                                             <div class="errorList">
                                                 <div class="formListValidationErrorJs text-danger"></div>
@@ -130,6 +147,11 @@
                                             </div>
                                         </div>
                                     @endforeach
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <!-- プラスボタン -->
+                                    <div class="col-9 me-2"></div>
+                                    <button type="button" id="add-form" class="btn btn-primary mt-2 mb-2 text-end">＋ フォームを追加</button>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="totalPrice">合計金額</label>
@@ -148,7 +170,7 @@
         </div>
     </div>
     @if($type === 'income')
-        <script src="{{ asset('js/incomeFormForEdit.js')}}"></script>
+        <script src="{{ asset('js/incomeForm.js')}}"></script>
     @else
         <script src="{{ asset('js/outcomeFormForEdit.js')}}"></script>
     @endif

@@ -144,8 +144,8 @@
         </div>
     </div>
     @if($type === 'income')
-        <script src="{{ asset('js/incomeFormForCreate.js')}}"></script>
+        <script src="{{ asset('js/incomeForm.js')}}"></script>
     @else
-        <script src="{{ asset('js/outcomeFormForCreate.js')}}"></script>
+        <script src="{{ asset('js/outcomeFormForRegister.js')}}"></script>
     @endif
 @endsection

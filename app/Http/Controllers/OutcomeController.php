@@ -34,7 +34,7 @@ class OutcomeController extends Controller {
      */
     public function store(Request $request) {
         try {
-            $validator = $this->outcomeService->validateOutcome($request->all());
+            $validator = $this->outcomeService->validateUpdatedOutcome($request->all());
             $validator->validate();
 
             $groupData = [

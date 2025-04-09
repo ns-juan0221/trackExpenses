@@ -112,22 +112,22 @@
                         <tbody class="logItemArticle">
                             @foreach($outcomeItems as $item)
                                 <tr>
-                                    <td class="col-1 p-2"><span class="">{{ $item->item }}</span></td>
-                                    <td class="col-1 p-2"><span class="">{{ $item->m_category_name }}</span></td>
-                                    <td class="col-1 p-2"><span class="">{{ $item->s_category_name }}</span></td>
-                                    <td class="col-1 py-2 pe-2"><span class="">{{ number_format($item->price, 0, ',', ',') }}円</span></td>
-                                    <td class="col-1 py-2 pe-2"><span class="">{{ $item->amount }}個</span></td>
-                                    <td class="col-1 py-2 pe-2"><span class="">{{ number_format($item->totalPrice, 0, ',', ',') }}円</span></td>
+                                    <td><span>{{ $item->item }}</span></td>
+                                    <td><span>{{ $item->m_category_name }}</span></td>
+                                    <td><span>{{ $item->s_category_name }}</span></td>
+                                    <td><span>{{ number_format($item->price, 0, ',', ',') }}円</span></td>
+                                    <td><span>{{ $item->amount }}個</span></td>
+                                    <td><span>{{ number_format($item->totalPrice, 0, ',', ',') }}円</span></td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
-                <div class="memo d-flex justify-content-end m-3">
-                    <div class="col-10">
-                        <div class="memoTitle col-10">
-                            メモ
-                        </div>
+                <div class="memo d-flex m-3">
+                     <div class="memoTitle">
+                         メモ
+                     </div>
+                     <div class="memoContent">
                         {{ $outcomeGroup->memo }}
                     </div>
                 </div>
