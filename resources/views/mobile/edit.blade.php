@@ -150,6 +150,6 @@
     @if($type === 'income')
         <script src="{{ asset('js/incomeForm.js')}}"></script>
     @else
-        <script src="{{ asset('js/outcomeForm.js')}}"></script>
+        <script src="{{ asset('js/outcomeFormForEdit.js')}}"></script>
     @endif
 @endsection
