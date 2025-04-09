@@ -64,10 +64,12 @@ class OutcomeController extends Controller {
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request) {
+        Log::info('OutcomeController update method called');
         try {
-            $validator = $this->outcomeService->validateOutcome($request->all());
+            $validator = $this->outcomeService->validateUpdatedOutcome($request->all());
             $validator->validate();
 
+            Log::info('validation passed', $request->all());
             $groupData = [
                 'id' => $request['groupId'],
                 'date' => $request['date'],
@@ -76,8 +78,10 @@ class OutcomeController extends Controller {
                 'memo' => $request['memo'],
             ];
 
+            Log::info('groupData prepared');
             $itemsData = $this->outcomeService->prepareUpdatedItemsData($request->all());
             
+            Log::info('ItemsData prepared');
             return $this->outcomeService->updateOutcome($groupData, $itemsData);
         } catch (ValidationException $e) {
             Log::error('Validation failed', ['errors' => $e->errors()]);

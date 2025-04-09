@@ -112,8 +112,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 errorMessages[index].price = '金額を入力してください';
                 field.classList.add('is-invalid');
                 field.classList.remove('is-valid');
-            } else if (isNaN(fieldValue) || fieldValue <= 0) {
-                errorMessages[index].price = '金額は1以上の半角数字で入力してください';
+            } else if (isNaN(fieldValue) || fieldValue <= 0 || !Number.isInteger(Number(fieldValue))) {
+                errorMessages[index].price = '金額は1以上の半角で入力してください';
                 field.classList.add('is-invalid');
                 field.classList.remove('is-valid');
             } else {
@@ -126,8 +126,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 errorMessages[index].amount = '個数を入力してください';
                 field.classList.add('is-invalid');
                 field.classList.remove('is-valid');
-            } else if (isNaN(fieldValue) || fieldValue <= 0) {
-                errorMessages[index].amount = '個数は1以上の半角数字で入力してください';
+            } else if (isNaN(fieldValue) || fieldValue <= 0 || !Number.isInteger(Number(fieldValue))) {
+                errorMessages[index].amount = '個数は1以上の半角整数で入力してください';
                 field.classList.add('is-invalid');
                 field.classList.remove('is-valid');
             } else {
@@ -136,7 +136,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 field.classList.add('is-valid');
             }
         }
-        // });
 
         const priorityOrder = ['item', 'category', 'price', 'amount'];
 

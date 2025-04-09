@@ -251,6 +251,7 @@ class MainController extends Controller {
             return $this->incomeController->update($request);
         }
 
+        Log::info('MainController update method called');
         return $this->outcomeController->update($request);
     }
 

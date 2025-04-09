@@ -16,10 +16,10 @@ document.addEventListener('DOMContentLoaded', function() {
             inputAmount.classList.remove('is-valid');
             inputAmount.classList.add('is-invalid');
             amountErrorJs.textContent = '金額を入力してください';
-        } else if (isNaN(inputValue) || inputValue <= 0) {
+        } else if (isNaN(inputValue) || inputValue <= 0 || !Number.isInteger(Number(fieldValue))) {
             inputAmount.classList.remove('is-valid');
             inputAmount.classList.add('is-invalid');
-            amountErrorJs = '正しい金額を入力してください';
+            amountErrorJs.textContent = '金額は1以上の半角整数で入力してください';
         } else {
             inputAmount.classList.remove('is-invalid');
             inputAmount.classList.add('is-valid');
@@ -27,11 +27,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    inputCategory.addEventListener('input', () => {
-        if (inputCategory.value.trim() === '') {
+    inputCategory.addEventListener('change', () => {
+        if (inputCategory.value === 'default' || inputCategory.value.trim() === '') {
             inputCategory.classList.remove('is-valid');
             inputCategory.classList.add('is-invalid');
-            categoryErrorJs.textContent = '名前を入力してください';
+            categoryErrorJs.textContent = 'カテゴリを選択してください';
         } else {
             inputCategory.classList.remove('is-invalid');
             inputCategory.classList.add('is-valid');

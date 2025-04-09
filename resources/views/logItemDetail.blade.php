@@ -97,13 +97,13 @@
                         </tr>
                     </tbody>
                 </table>
-                <div class="d-flex justify-content-end m-3">
-                    <table class="col-10">
+                <div class="mx-3">
+                    <table>
                         <thead class="logItemTitle border border-3">
                             <tr>
                                 <th class="col-1">商品名</th>
                                 <th class="col-1">メインカテゴリ</th>
-                                <th class="col-1">サブカテゴリ</th>
+                                <th class="col-2">サブカテゴリ</th>
                                 <th class="col-1">金額</th>
                                 <th class="col-1">個数</th>
                                 <th class="col-1">合計金額</th>
@@ -112,22 +112,22 @@
                         <tbody class="logItemArticle">
                             @foreach($outcomeItems as $item)
                                 <tr>
-                                    <td class="col-1 p-2"><span class="">{{ $item->item }}</span></td>
-                                    <td class="col-1 p-2"><span class="">{{ $item->m_category_name }}</span></td>
-                                    <td class="col-1 p-2"><span class="">{{ $item->s_category_name }}</span></td>
-                                    <td class="col-1 py-2 pe-2"><span class="">{{ number_format($item->price, 0, ',', ',') }}円</span></td>
-                                    <td class="col-1 py-2 pe-2"><span class="">{{ $item->amount }}個</span></td>
-                                    <td class="col-1 py-2 pe-2"><span class="">{{ number_format($item->totalPrice, 0, ',', ',') }}円</span></td>
+                                    <td class=""><span class="">{{ $item->item }}</span></td>
+                                    <td class=""><span class="">{{ $item->m_category_name }}</span></td>
+                                    <td class=""><span class="">{{ $item->s_category_name }}</span></td>
+                                    <td class=""><span class="">{{ number_format($item->price, 0, ',', ',') }}円</span></td>
+                                    <td class=""><span class="">{{ $item->amount }}個</span></td>
+                                    <td class=""><span class="">{{ number_format($item->totalPrice, 0, ',', ',') }}円</span></td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
-                <div class="memo d-flex justify-content-end m-3">
-                    <div class="col-10">
-                        <div class="memoTitle col-10">
-                            メモ
-                        </div>
+                <div class="memo d-flex m-3">
+                    <div class="memoTitle">
+                        メモ
+                    </div>
+                    <div class="memoContent">
                         {{ $outcomeGroup->memo }}
                     </div>
                 </div>
