@@ -63,11 +63,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // 初期フォームの監視を設定
-    document.querySelectorAll('.price, .amount').forEach(function (input) {
-        input.addEventListener('input', updateTotalPrice);
-    });
-
     formListBlock.addEventListener('input', (e) => {
         if (e.target.matches('.item, .category, .price, .amount')) {
             const formGroup = e.target.closest('.formList');
@@ -105,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     form.addEventListener("submit", function (event) {
-        inputs = form.querySelectorAll(".form-control");
+        const inputs = form.querySelectorAll(".form-control");
         let isValid = true;
 
         inputs.forEach(input => {

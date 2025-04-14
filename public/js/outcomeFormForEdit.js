@@ -43,7 +43,6 @@ document.addEventListener('DOMContentLoaded', function() {
             errorElement.textContent = '';
         }
 
-        // 新しいフォームグループをフォームコンテナに追加
         document.getElementById('formListBlock').appendChild(formList);
         initializeForm(formList, formCount);
 
