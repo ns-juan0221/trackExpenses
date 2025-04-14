@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const shopErrorJs = document.querySelector('.shopValidationErrorJs');
     const shopError = document.querySelector('.shopValidationError');
 
-
     let errorMessages = {};
 
     document.querySelectorAll('.formList').forEach((formElement, index) => {
@@ -44,7 +43,6 @@ document.addEventListener('DOMContentLoaded', function() {
             errorElement.textContent = '';
         }
 
-        // 新しいフォームグループをフォームコンテナに追加
         document.getElementById('formListBlock').appendChild(formList);
         initializeForm(formList, formCount);
 

@@ -1,4 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const errorTexts = {
+        shopNameRequired: '名前を入力してください',
+        itemRequired: '商品名を入力してください',
+        categoryRequired: 'カテゴリを選択してください',
+        priceRequired: '金額を入力してください',
+        priceInvalid: '金額は1以上の半角整数で入力してください',
+        amountRequired: '個数を入力してください',
+        amountInvalid: '個数は1以上の半角整数で入力してください',
+    };
+
     const form = document.querySelector(".needs-validation");
     const formListBlock = document.querySelector('#formListBlock');
     const initialCategorySelect = document.querySelector('.formList select');
@@ -6,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const inputShop = document.querySelector('#inputShop');
     const shopErrorJs = document.querySelector('.shopValidationErrorJs');
     const shopError = document.querySelector('.shopValidationError');
+
     let formCount = 0;
     let errorMessages = {};
 
@@ -43,7 +54,6 @@ document.addEventListener('DOMContentLoaded', function() {
             errorElement.textContent = '';
         }
 
-        // 新しいフォームグループをフォームコンテナに追加
         document.getElementById('formListBlock').appendChild(formList);
         initializeForm(formList, formCount);
 
@@ -51,11 +61,6 @@ document.addEventListener('DOMContentLoaded', function() {
         formList.querySelectorAll('.price, .amount').forEach(function (input) {
             input.addEventListener('input', updateTotalPrice);
         });
-    });
-
-    // 初期フォームの監視を設定
-    document.querySelectorAll('.price, .amount').forEach(function (input) {
-        input.addEventListener('input', updateTotalPrice);
     });
 
     formListBlock.addEventListener('input', (e) => {
@@ -78,6 +83,39 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    inputShop.addEventListener('input', () => {
+        if(shopError) {
+            shopError.textContent = '';
+        }
+    
+        if (inputShop.value.trim() === '') {
+            inputShop.classList.remove('is-valid');
+            inputShop.classList.add('is-invalid');
+            shopErrorJs.textContent = errorTexts.shopNameRequired;
+        } else {
+            inputShop.classList.remove('is-invalid');
+            inputShop.classList.add('is-valid');
+            shopErrorJs.textContent = '';
+        }
+    });
+
+    form.addEventListener("submit", function (event) {
+        const inputs = form.querySelectorAll(".form-control");
+        let isValid = true;
+
+        inputs.forEach(input => {
+            if (input.classList.contains("is-invalid")) {
+                isValid = false;
+            }
+        });
+
+        if (!isValid) {
+            event.preventDefault();
+            event.stopPropagation();
+            alert("入力内容にエラーがあります。修正してください。");
+        }
+    });
+
     function validateField(field, index) {
         const fieldValue = field.value.trim();
         const formGroup = field.closest('.formList');
@@ -89,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (field.classList.contains('item')) {
             if (!fieldValue) {
-                errorMessages[index].item = '品目を入力してください';
+                errorMessages[index].item = errorTexts.itemRequired;
                 field.classList.add('is-invalid');
                 field.classList.remove('is-valid');
             } else {
@@ -99,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } else if (field.classList.contains('category')) {
             if (!fieldValue || fieldValue === 'default') {
-                errorMessages[index].category = 'カテゴリを選択してください';
+                errorMessages[index].category = errorTexts.categoryRequired;
                 field.classList.add('is-invalid');
                 field.classList.remove('is-valid');
             } else {
@@ -109,11 +147,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } else if (field.classList.contains('price')) {
             if (!fieldValue) {
-                errorMessages[index].price = '金額を入力してください';
+                errorMessages[index].price = errorTexts.priceRequired;
                 field.classList.add('is-invalid');
                 field.classList.remove('is-valid');
             } else if (isNaN(fieldValue) || fieldValue <= 0 || !Number.isInteger(Number(fieldValue))) {
-                errorMessages[index].price = '金額は1以上の半角で入力してください';
+                errorMessages[index].price = errorTexts.priceInvalid;
                 field.classList.add('is-invalid');
                 field.classList.remove('is-valid');
             } else {
@@ -123,11 +161,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } else if (field.classList.contains('amount')) {
             if (!fieldValue) {
-                errorMessages[index].amount = '個数を入力してください';
+                errorMessages[index].amount = errorTexts.amountRequired;
                 field.classList.add('is-invalid');
                 field.classList.remove('is-valid');
             } else if (isNaN(fieldValue) || fieldValue <= 0 || !Number.isInteger(Number(fieldValue))) {
-                errorMessages[index].amount = '個数は1以上の半角整数で入力してください';
+                errorMessages[index].amount = errorTexts.amountInvalid;
                 field.classList.add('is-invalid');
                 field.classList.remove('is-valid');
             } else {
@@ -184,37 +222,4 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
-
-    inputShop.addEventListener('input', () => {
-        if(shopError && shopError.textContent !== ''){
-            shopError.textContent = '';
-        }
-    
-        if (inputShop.value.trim() === '') {
-            inputShop.classList.remove('is-valid');
-            inputShop.classList.add('is-invalid');
-            shopErrorJs.textContent = '名前を入力してください';
-        } else {
-            inputShop.classList.remove('is-invalid');
-            inputShop.classList.add('is-valid');
-            shopErrorJs.textContent = '';
-        }
-    });
-
-    form.addEventListener("submit", function (event) {
-        inputs = form.querySelectorAll(".form-control");
-        let isValid = true;
-
-        inputs.forEach(input => {
-            if (input.classList.contains("is-invalid")) {
-                isValid = false;
-            }
-        });
-
-        if (!isValid) {
-            event.preventDefault();
-            event.stopPropagation();
-            alert("入力内容にエラーがあります。修正してください。");
-        }
-    });
 });
